@@ -1,0 +1,10 @@
+{
+    "packageName": "LadybugDisplaySchema",
+    "projectName": "LadybugDisplaySchema",
+    "packageUrl": "https://github.com/ladybug-tools/ladybug-display-schema-dotnet",
+    "packageVersion": "0.3.0",
+    "targetFramework": "v4.5",
+    "sourceFolder": "src",
+    "optionalAssemblyInfo": false,
+    "optionalProjectFile": false
+}
