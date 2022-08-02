@@ -35,12 +35,16 @@ os.mkdir(saving_dir)
 json_file1 = f"{base_url}/graphic_inheritance.json"
 # display
 json_file2 = f"{base_url}/display_inheritance.json"
+# geometry
+json_file3 = f"{base_url}/geometry_inheritance.json"
 
 files = [
     json_file1,
     json_file1.replace("inheritance.json", "mapper.json"),
     json_file2,
-    json_file2.replace("inheritance.json", "mapper.json")
+    json_file2.replace("inheritance.json", "mapper.json"),
+    json_file3,
+    json_file3.replace("inheritance.json", "mapper.json")
     ]
 
 for f in files:

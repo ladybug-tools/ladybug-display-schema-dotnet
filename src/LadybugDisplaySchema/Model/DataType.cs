@@ -24,43 +24,48 @@ using System.ComponentModel.DataAnnotations;
 namespace LadybugDisplaySchema
 {
     /// <summary>
-    /// A single line segment face in 2D space.
+    /// Data type representation.
     /// </summary>
     [Serializable]
-    [DataContract(Name = "LineSegment2D")]
-    public partial class LineSegment2D : OpenAPIGenBaseModel, IEquatable<LineSegment2D>, IValidatableObject
+    [DataContract(Name = "DataType")]
+    public partial class DataType : OpenAPIGenBaseModel, IEquatable<DataType>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSegment2D" /> class.
+        /// Text to indicate the type of data. This governs the behavior of the data type and the acceptable units. The DataTypes enumeration contains all acceptable types.
+        /// </summary>
+        /// <value>Text to indicate the type of data. This governs the behavior of the data type and the acceptable units. The DataTypes enumeration contains all acceptable types.</value>
+        [DataMember(Name="data_type")]
+        public DataTypes _DataType { get; set; }   
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataType" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected LineSegment2D() 
+        protected DataType() 
         { 
             // Set non-required readonly properties with defaultValue
-            this.Type = "LineSegment2D";
+            this.Type = "DataType";
         }
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineSegment2D" /> class.
+        /// Initializes a new instance of the <see cref="DataType" /> class.
         /// </summary>
-        /// <param name="p">Line segment base point as 2 (x, y) values. (required).</param>
-        /// <param name="v">Line segment direction vector as 2 (x, y) values. (required).</param>
-        public LineSegment2D
+        /// <param name="dataType">Text to indicate the type of data. This governs the behavior of the data type and the acceptable units. The DataTypes enumeration contains all acceptable types. (required).</param>
+        /// <param name="name">Text to indicate how the data type displays. This can be more specific than the data_type. (required).</param>
+        public DataType
         (
-           List<double> p, List<double> v// Required parameters
+           DataTypes dataType, string name// Required parameters
             // Optional parameters
         ) : base()// BaseClass
         {
-            // to ensure "p" is required (not null)
-            this.P = p ?? throw new ArgumentNullException("p is a required property for LineSegment2D and cannot be null");
-            // to ensure "v" is required (not null)
-            this.V = v ?? throw new ArgumentNullException("v is a required property for LineSegment2D and cannot be null");
+            this._DataType = dataType;
+            // to ensure "name" is required (not null)
+            this.Name = name ?? throw new ArgumentNullException("name is a required property for DataType and cannot be null");
 
             // Set non-required readonly properties with defaultValue
-            this.Type = "LineSegment2D";
+            this.Type = "DataType";
 
             // check if object is valid, only check for inherited class
-            if (this.GetType() == typeof(LineSegment2D))
+            if (this.GetType() == typeof(DataType))
                 this.IsValid(throwException: true);
         }
 
@@ -69,20 +74,14 @@ namespace LadybugDisplaySchema
         /// Gets or Sets Type
         /// </summary>
         [DataMember(Name = "type")]
-        public override string Type { get; protected set; }  = "LineSegment2D";
+        public override string Type { get; protected set; }  = "DataType";
 
         /// <summary>
-        /// Line segment base point as 2 (x, y) values.
+        /// Text to indicate how the data type displays. This can be more specific than the data_type.
         /// </summary>
-        /// <value>Line segment base point as 2 (x, y) values.</value>
-        [DataMember(Name = "p", IsRequired = true)]
-        public List<double> P { get; set; } 
-        /// <summary>
-        /// Line segment direction vector as 2 (x, y) values.
-        /// </summary>
-        /// <value>Line segment direction vector as 2 (x, y) values.</value>
-        [DataMember(Name = "v", IsRequired = true)]
-        public List<double> V { get; set; } 
+        /// <value>Text to indicate how the data type displays. This can be more specific than the data_type.</value>
+        [DataMember(Name = "name", IsRequired = true)]
+        public string Name { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -90,7 +89,7 @@ namespace LadybugDisplaySchema
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
-            return "LineSegment2D";
+            return "DataType";
         }
 
         /// <summary>
@@ -103,20 +102,20 @@ namespace LadybugDisplaySchema
                 return this.ToString();
             
             var sb = new StringBuilder();
-            sb.Append("LineSegment2D:\n");
+            sb.Append("DataType:\n");
             sb.Append("  Type: ").Append(Type).Append("\n");
-            sb.Append("  P: ").Append(P).Append("\n");
-            sb.Append("  V: ").Append(V).Append("\n");
+            sb.Append("  DataType: ").Append(this._DataType).Append("\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
             return sb.ToString();
         }
   
         /// <summary>
         /// Returns the object from JSON string
         /// </summary>
-        /// <returns>LineSegment2D object</returns>
-        public static LineSegment2D FromJson(string json)
+        /// <returns>DataType object</returns>
+        public static DataType FromJson(string json)
         {
-            var obj = JsonConvert.DeserializeObject<LineSegment2D>(json, JsonSetting.AnyOfConvertSetting);
+            var obj = JsonConvert.DeserializeObject<DataType>(json, JsonSetting.AnyOfConvertSetting);
             if (obj == null)
                 return null;
             return obj.Type.ToLower() == obj.GetType().Name.ToLower() && obj.IsValid(throwException: true) ? obj : null;
@@ -125,8 +124,8 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Creates a new instance with the same properties.
         /// </summary>
-        /// <returns>LineSegment2D object</returns>
-        public virtual LineSegment2D DuplicateLineSegment2D()
+        /// <returns>DataType object</returns>
+        public virtual DataType DuplicateDataType()
         {
             return FromJson(this.ToJson());
         }
@@ -137,7 +136,7 @@ namespace LadybugDisplaySchema
         /// <returns>OpenAPIGenBaseModel</returns>
         public override OpenAPIGenBaseModel Duplicate()
         {
-            return DuplicateLineSegment2D();
+            return DuplicateDataType();
         }
 
         /// <summary>
@@ -146,7 +145,7 @@ namespace LadybugDisplaySchema
         /// <returns>OpenAPIGenBaseModel</returns>
         public override OpenAPIGenBaseModel DuplicateOpenAPIGenBaseModel()
         {
-            return DuplicateLineSegment2D();
+            return DuplicateDataType();
         }
      
         /// <summary>
@@ -157,27 +156,21 @@ namespace LadybugDisplaySchema
         public override bool Equals(object input)
         {
             input = input is AnyOf anyOf ? anyOf.Obj : input;
-            return this.Equals(input as LineSegment2D);
+            return this.Equals(input as DataType);
         }
 
         /// <summary>
-        /// Returns true if LineSegment2D instances are equal
+        /// Returns true if DataType instances are equal
         /// </summary>
-        /// <param name="input">Instance of LineSegment2D to be compared</param>
+        /// <param name="input">Instance of DataType to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(LineSegment2D input)
+        public bool Equals(DataType input)
         {
             if (input == null)
                 return false;
             return base.Equals(input) && 
-                (
-                    this.P == input.P ||
-                    Extension.AllEquals(this.P, input.P)
-                ) && 
-                (
-                    this.V == input.V ||
-                    Extension.AllEquals(this.V, input.V)
-                ) && 
+                    Extension.Equals(this._DataType, input._DataType) && 
+                    Extension.Equals(this.Name, input.Name) && 
                     Extension.Equals(this.Type, input.Type);
         }
 
@@ -190,10 +183,10 @@ namespace LadybugDisplaySchema
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
-                if (this.P != null)
-                    hashCode = hashCode * 59 + this.P.GetHashCode();
-                if (this.V != null)
-                    hashCode = hashCode * 59 + this.V.GetHashCode();
+                if (this._DataType != null)
+                    hashCode = hashCode * 59 + this._DataType.GetHashCode();
+                if (this.Name != null)
+                    hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
                 return hashCode;
@@ -210,12 +203,8 @@ namespace LadybugDisplaySchema
             foreach(var x in base.BaseValidate(validationContext)) yield return x;
 
             
-
-            
-
-            
             // Type (string) pattern
-            Regex regexType = new Regex(@"^LineSegment2D$", RegexOptions.CultureInvariant);
+            Regex regexType = new Regex(@"^DataType$", RegexOptions.CultureInvariant);
             if (this.Type != null && false == regexType.Match(this.Type).Success)
             {
                 yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for Type, must match a pattern of " + regexType, new [] { "Type" });
