@@ -187,12 +187,8 @@ namespace LadybugDisplaySchema
                     this.Axis == input.Axis ||
                     Extension.AllEquals(this.Axis, input.Axis)
                 ) && 
-                (
-                    Extension.Equals(this.Radius, input.Radius)
-                ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                );
+                    Extension.Equals(this.Radius, input.Radius) && 
+                    Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>

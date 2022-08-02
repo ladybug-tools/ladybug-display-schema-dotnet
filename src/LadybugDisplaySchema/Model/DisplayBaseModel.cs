@@ -149,12 +149,8 @@ namespace LadybugDisplaySchema
             if (input == null)
                 return false;
             return base.Equals(input) && 
-                (
-                    Extension.Equals(this.UserData, input.UserData)
-                ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                );
+                    Extension.Equals(this.UserData, input.UserData) && 
+                    Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>

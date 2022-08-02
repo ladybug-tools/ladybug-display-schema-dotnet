@@ -133,10 +133,7 @@ namespace LadybugDisplaySchema
         {
             if (input == null)
                 return false;
-            return 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                );
+            return Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>

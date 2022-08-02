@@ -187,9 +187,7 @@ namespace LadybugDisplaySchema
                     this.Faces == input.Faces ||
                     Extension.AllEquals(this.Faces, input.Faces)
                 ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                ) && 
+                    Extension.Equals(this.Type, input.Type) && 
                 (
                     this.Colors == input.Colors ||
                     Extension.AllEquals(this.Colors, input.Colors)

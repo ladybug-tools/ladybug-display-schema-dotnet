@@ -37,7 +37,7 @@ namespace LadybugDisplaySchema
         protected Cone() 
         { 
             // Set non-required readonly properties with defaultValue
-            this.Type = "Sphere";
+            this.Type = "Cone";
         }
         
         /// <summary>
@@ -59,7 +59,7 @@ namespace LadybugDisplaySchema
             this.Angle = angle;
 
             // Set non-required readonly properties with defaultValue
-            this.Type = "Sphere";
+            this.Type = "Cone";
 
             // check if object is valid, only check for inherited class
             if (this.GetType() == typeof(Cone))
@@ -71,7 +71,7 @@ namespace LadybugDisplaySchema
         /// Gets or Sets Type
         /// </summary>
         [DataMember(Name = "type")]
-        public override string Type { get; protected set; }  = "Sphere";
+        public override string Type { get; protected set; }  = "Cone";
 
         /// <summary>
         /// The point at the tip of the cone as 3 (x, y, z) values.
@@ -187,12 +187,8 @@ namespace LadybugDisplaySchema
                     this.Axis == input.Axis ||
                     Extension.AllEquals(this.Axis, input.Axis)
                 ) && 
-                (
-                    Extension.Equals(this.Angle, input.Angle)
-                ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                );
+                    Extension.Equals(this.Angle, input.Angle) && 
+                    Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>

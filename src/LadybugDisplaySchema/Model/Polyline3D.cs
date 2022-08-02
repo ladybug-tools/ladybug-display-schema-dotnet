@@ -173,12 +173,8 @@ namespace LadybugDisplaySchema
                     this.Vertices == input.Vertices ||
                     Extension.AllEquals(this.Vertices, input.Vertices)
                 ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                ) && 
-                (
-                    Extension.Equals(this.Interpolated, input.Interpolated)
-                );
+                    Extension.Equals(this.Type, input.Type) && 
+                    Extension.Equals(this.Interpolated, input.Interpolated);
         }
 
         /// <summary>

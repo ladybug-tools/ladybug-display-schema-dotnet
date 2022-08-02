@@ -187,21 +187,11 @@ namespace LadybugDisplaySchema
             if (input == null)
                 return false;
             return base.Equals(input) && 
-                (
-                    Extension.Equals(this.Plane, input.Plane)
-                ) && 
-                (
-                    Extension.Equals(this.Radius, input.Radius)
-                ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                ) && 
-                (
-                    Extension.Equals(this.A1, input.A1)
-                ) && 
-                (
-                    Extension.Equals(this.A2, input.A2)
-                );
+                    Extension.Equals(this.Plane, input.Plane) && 
+                    Extension.Equals(this.Radius, input.Radius) && 
+                    Extension.Equals(this.Type, input.Type) && 
+                    Extension.Equals(this.A1, input.A1) && 
+                    Extension.Equals(this.A2, input.A2);
         }
 
         /// <summary>

@@ -178,9 +178,7 @@ namespace LadybugDisplaySchema
                     this.V == input.V ||
                     Extension.AllEquals(this.V, input.V)
                 ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                );
+                    Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>

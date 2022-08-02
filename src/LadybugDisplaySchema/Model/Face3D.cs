@@ -182,16 +182,12 @@ namespace LadybugDisplaySchema
                     this.Boundary == input.Boundary ||
                     Extension.AllEquals(this.Boundary, input.Boundary)
                 ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                ) && 
+                    Extension.Equals(this.Type, input.Type) && 
                 (
                     this.Holes == input.Holes ||
                     Extension.AllEquals(this.Holes, input.Holes)
                 ) && 
-                (
-                    Extension.Equals(this.Plane, input.Plane)
-                );
+                    Extension.Equals(this.Plane, input.Plane);
         }
 
         /// <summary>

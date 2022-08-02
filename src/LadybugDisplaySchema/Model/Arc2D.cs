@@ -191,18 +191,10 @@ namespace LadybugDisplaySchema
                     this.C == input.C ||
                     Extension.AllEquals(this.C, input.C)
                 ) && 
-                (
-                    Extension.Equals(this.R, input.R)
-                ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                ) && 
-                (
-                    Extension.Equals(this.A1, input.A1)
-                ) && 
-                (
-                    Extension.Equals(this.A2, input.A2)
-                );
+                    Extension.Equals(this.R, input.R) && 
+                    Extension.Equals(this.Type, input.Type) && 
+                    Extension.Equals(this.A1, input.A1) && 
+                    Extension.Equals(this.A2, input.A2);
         }
 
         /// <summary>

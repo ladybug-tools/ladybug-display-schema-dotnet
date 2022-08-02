@@ -173,12 +173,8 @@ namespace LadybugDisplaySchema
                     this.Center == input.Center ||
                     Extension.AllEquals(this.Center, input.Center)
                 ) && 
-                (
-                    Extension.Equals(this.Radius, input.Radius)
-                ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                );
+                    Extension.Equals(this.Radius, input.Radius) && 
+                    Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>

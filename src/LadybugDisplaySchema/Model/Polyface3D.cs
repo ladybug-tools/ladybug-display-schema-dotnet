@@ -187,12 +187,8 @@ namespace LadybugDisplaySchema
                     this.FaceIndices == input.FaceIndices ||
                     Extension.AllEquals(this.FaceIndices, input.FaceIndices)
                 ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                ) && 
-                (
-                    Extension.Equals(this.EdgeInformation, input.EdgeInformation)
-                );
+                    Extension.Equals(this.Type, input.Type) && 
+                    Extension.Equals(this.EdgeInformation, input.EdgeInformation);
         }
 
         /// <summary>

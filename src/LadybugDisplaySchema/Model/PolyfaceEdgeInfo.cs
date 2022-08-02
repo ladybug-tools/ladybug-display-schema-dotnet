@@ -178,9 +178,7 @@ namespace LadybugDisplaySchema
                     this.EdgeTypes == input.EdgeTypes ||
                     Extension.AllEquals(this.EdgeTypes, input.EdgeTypes)
                 ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                );
+                    Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>

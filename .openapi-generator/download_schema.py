@@ -19,11 +19,9 @@ def download(url, dir):
 
 args = sys.argv[1:]
 if args == []:
-    base_url = "https://www.ladybug.tools/honeybee-schema"
+    base_url = "https://www.ladybug.tools/ladybug-display-schema"
 else:
-    base_url = f"https://github.com/ladybug-tools/honeybee-schema/releases/download/{args[0]}"  # v1.17.0
-
-# base_url = "https://www.ladybug.tools/honeybee-schema"
+    base_url = f"https://github.com/ladybug-tools/ladybug-display-schema/releases/download/{args[0]}"  # v1.17.0
 
 
 saving_dir = os.path.join(os.getcwd(), '.openapi-docs')
@@ -33,19 +31,16 @@ if os.path.exists(saving_dir):
 os.mkdir(saving_dir)
 
 
-# model
-json_file1 = f"{base_url}/model_inheritance.json"
-# simulation-parameter
-json_file2 = f"{base_url}/simulation-parameter_inheritance.json"
-# validation report
-json_file3 = f"{base_url}/validation-report.json"
+# graphic
+json_file1 = f"{base_url}/graphic_inheritance.json"
+# display
+json_file2 = f"{base_url}/display_inheritance.json"
 
 files = [
     json_file1,
     json_file1.replace("inheritance.json", "mapper.json"),
     json_file2,
-    json_file2.replace("inheritance.json", "mapper.json"),
-    json_file3
+    json_file2.replace("inheritance.json", "mapper.json")
     ]
 
 for f in files:

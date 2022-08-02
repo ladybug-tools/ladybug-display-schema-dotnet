@@ -181,18 +181,10 @@ namespace LadybugDisplaySchema
             if (input == null)
                 return false;
             return base.Equals(input) && 
-                (
-                    Extension.Equals(this.Color, input.Color)
-                ) && 
-                (
-                    Extension.Equals(this.Geometry, input.Geometry)
-                ) && 
-                (
-                    Extension.Equals(this.Type, input.Type)
-                ) && 
-                (
-                    Extension.Equals(this.DisplayMode, input.DisplayMode)
-                );
+                    Extension.Equals(this.Color, input.Color) && 
+                    Extension.Equals(this.Geometry, input.Geometry) && 
+                    Extension.Equals(this.Type, input.Type) && 
+                    Extension.Equals(this.DisplayMode, input.DisplayMode);
         }
 
         /// <summary>
