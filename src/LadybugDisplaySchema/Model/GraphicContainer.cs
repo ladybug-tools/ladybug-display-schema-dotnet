@@ -53,7 +53,7 @@ namespace LadybugDisplaySchema
         public GraphicContainer
         (
            List<double> values, // Required parameters
-           AnyOf<Mesh2D, Mesh3D, Polyface3D, List<AnyOf<Mesh2D, Mesh3D, Polyface3D>>> geometry = default, Point3D minPoint= default, Point3D maxPoint= default, LegendParameters legendParameters= default, DataType dataType= default, string unit = ""// Optional parameters
+           AnyOf<Mesh2D,Mesh3D,Polyface3D,List<AnyOf<Vector2D, Point2D, Ray2D, LineSegment2D, Polyline2D, Arc2D, Polygon2D,Mesh2D, Vector3D, Point3D, Ray3D, Plane, LineSegment3D, Polyline3D, Arc3D, Face3D, Mesh3D, Polyface3D, Sphere, Cylinder>>> geometry= default, Point3D minPoint= default, Point3D maxPoint= default, LegendParameters legendParameters= default, DataType dataType= default, string unit = ""// Optional parameters
         ) : base()// BaseClass
         {
             // to ensure "values" is required (not null)
@@ -92,7 +92,7 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <value>An optional ladybug-geometry object (or list of ladybug-geometry objects) that is aligned with the input values. If a Mesh or Polyface is specified here, it is expected that the number of values match the number of faces or the number of vertices. If a list of geometry objects is specified (ie. a list of Point3Ds), it is expected that the length of this list align with the number of values.</value>
         [DataMember(Name = "geometry")]
-        public AnyOf<Mesh2D,Mesh3D,Polyface3D, List<AnyOf<Mesh2D,Mesh3D,Polyface3D>>> Geometry { get; set; } 
+        public AnyOf<Mesh2D,Mesh3D,Polyface3D, List<AnyOf<Vector2D, Point2D, Ray2D, LineSegment2D, Polyline2D, Arc2D, Polygon2D, Mesh2D, Vector3D, Point3D, Ray3D, Plane, LineSegment3D, Polyline3D, Arc3D, Face3D, Mesh3D, Polyface3D, Sphere, Cylinder>>> Geometry { get; set; } 
         /// <summary>
         /// A Point3D object for the minimum of the bounding box around the graphic geometry. If None, then there must be an input for geometry and the bounding box around this geometry will be used to set up the graphic container.
         /// </summary>
