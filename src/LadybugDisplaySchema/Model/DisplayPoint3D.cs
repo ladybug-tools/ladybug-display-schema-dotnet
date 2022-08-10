@@ -45,17 +45,19 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <param name="color">Color for the geometry. (required).</param>
         /// <param name="geometry">Point3D for the geometry. (required).</param>
+        /// <param name="radius">Number for the radius with which the point should be displayed in pixels (for the screen) or millimeters (in print)..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public DisplayPoint3D
         (
            Color color, Point3D geometry, // Required parameters
-            Object userData= default// Optional parameters
+            Object userData= default, AnyOf<Default,double> radius= default// Optional parameters
         ) : base(userData: userData)// BaseClass
         {
             // to ensure "color" is required (not null)
             this.Color = color ?? throw new ArgumentNullException("color is a required property for DisplayPoint3D and cannot be null");
             // to ensure "geometry" is required (not null)
             this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for DisplayPoint3D and cannot be null");
+            this.Radius = radius;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "DisplayPoint3D";
@@ -84,6 +86,12 @@ namespace LadybugDisplaySchema
         /// <value>Point3D for the geometry.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
         public Point3D Geometry { get; set; } 
+        /// <summary>
+        /// Number for the radius with which the point should be displayed in pixels (for the screen) or millimeters (in print).
+        /// </summary>
+        /// <value>Number for the radius with which the point should be displayed in pixels (for the screen) or millimeters (in print).</value>
+        [DataMember(Name = "radius")]
+        public AnyOf<Default,double> Radius { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -109,6 +117,7 @@ namespace LadybugDisplaySchema
             sb.Append("  UserData: ").Append(UserData).Append("\n");
             sb.Append("  Color: ").Append(Color).Append("\n");
             sb.Append("  Geometry: ").Append(Geometry).Append("\n");
+            sb.Append("  Radius: ").Append(Radius).Append("\n");
             return sb.ToString();
         }
   
@@ -174,7 +183,8 @@ namespace LadybugDisplaySchema
             return base.Equals(input) && 
                     Extension.Equals(this.Color, input.Color) && 
                     Extension.Equals(this.Geometry, input.Geometry) && 
-                    Extension.Equals(this.Type, input.Type);
+                    Extension.Equals(this.Type, input.Type) && 
+                    Extension.Equals(this.Radius, input.Radius);
         }
 
         /// <summary>
@@ -192,6 +202,8 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.Geometry.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
+                if (this.Radius != null)
+                    hashCode = hashCode * 59 + this.Radius.GetHashCode();
                 return hashCode;
             }
         }

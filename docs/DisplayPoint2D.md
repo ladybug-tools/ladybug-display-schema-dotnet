@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **Color** | [**Color**](Color.md) | Color for the geometry. | 
 **Geometry** | [**Point2D**](Point2D.md) | Point2D for the geometry. | 
 **Type** | **string** |  | [optional] [readonly] [default to "DisplayPoint2D"]
+**Radius** | [**AnyOfDefaultnumber**](AnyOfDefaultnumber.md) | Number for the radius with which the point should be displayed in pixels (for the screen) or millimeters (in print). | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)
