@@ -1,0 +1,33 @@
+name: CD
+
+on: 
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: "Checkout Master Branch"
+        uses: actions/checkout@v2
+
+      - name: Update Assembly Version
+        run: |
+          python .openapi-generator/update_assembly_version.py
+      
+      - name: Build
+        run: |
+          dotnet restore
+          dotnet build --configuration Release /nowarn:CS0472,CS0108
+
+      - name: Run Unit Tests
+        working-directory: src/LadybugDisplaySchema.Tests
+        run: |
+          dotnet test --configuration Release
+
+      - name: Deploy
+        working-directory: src/LadybugDisplaySchema
+        run: |
+          dotnet pack --configuration Release
+          dotnet nuget push bin\Release\LadybugDisplaySchema.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
