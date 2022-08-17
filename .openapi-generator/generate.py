@@ -10,7 +10,7 @@ generator_folder = os.path.join(root, '.openapi-generator')
 # '.openapi-docs/model_inheritance.json'
 json1 = os.path.join(doc_folder, 'display_inheritance.json')
 json2 = os.path.join(doc_folder, 'geometry_inheritance.json')
-json3 = os.path.join(doc_folder, 'graphic_inheritance.json')
+json3 = os.path.join(doc_folder, 'visualization_inheritance.json')
 
 # update version
 # python .openapi-generator/pre_gen_script.py ".openapi-docs/display_inheritance.json"
@@ -29,7 +29,7 @@ subprocess.call(f"npx @openapitools/openapi-generator-cli generate -i {json3} -t
 
 
 # post process files
-# python .openapi-generator/post_gen_script.py ".openapi-docs/simulation-parameter_inheritance.json"
+# python .openapi-generator/post_gen_script.py ".openapi-docs/display_inheritance.json"
 # python .openapi-generator/post_gen_script.py ".openapi-docs/model_inheritance.json"
 time.sleep(1)
 subprocess.call(f"python {generator_folder}/post_gen_script.py {json2}", shell=True)
@@ -49,7 +49,7 @@ subprocess.call(f"python {generator_folder}/update_assembly_version.py", shell=T
 
 json1 = os.path.join(doc_folder, 'display_mapper.json')
 json2 = os.path.join(doc_folder, 'geometry_mapper.json')
-json3 = os.path.join(doc_folder, 'graphic_mapper.json')
+json3 = os.path.join(doc_folder, 'visualization_mapper.json')
 # python .openapi-generator/create_interface.py ".openapi-docs/simulation-parameter_mapper.json"
 # python .openapi-generator/create_interface.py ".openapi-docs/model_mapper.json"
 time.sleep(1)

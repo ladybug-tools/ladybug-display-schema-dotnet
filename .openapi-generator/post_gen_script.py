@@ -21,6 +21,7 @@ def get_allof_types(obj, allofList):
         return
 
     if 'anyOf' in list(obj.keys()):
+        
         uitems = []
         for uitem in obj['anyOf']:
             typeKeys = uitem.keys()
@@ -233,12 +234,14 @@ def replace_anyof_type(read_data, anyof_types):
     data = read_data
     for items in anyof_types:
         if len(items) > 0:
-            replace_source = "AnyOf%s" % ("".join(items).replace('number', 'double'))
-            replace_new = "AnyOf<%s>" % (",".join(items).replace('number', 'double'))
+            replace_source = "AnyOf%s" % ("".join(items))
+            replace_new = "AnyOf<%s>" % (", ".join(items).replace('number', 'double').replace('integer', 'int'))
             rex = "(%s)(?=[ >)])" % replace_source # find replace_source only with " "(space) or ">" follows
             if re.findall(rex, data) != []:
                 data = re.sub(rex, replace_new, data)
                 print("|---Replacing %s to %s" % (replace_source, replace_new))
+            else:
+                print("|---Failed to find %s" % (replace_source))
     return data
 
 
@@ -357,3 +360,4 @@ check_types(json_file, mapper_json)
 # fix enums
 classes_enum_data = get_enum_parameters(json_file, mapper_json)
 fix_enums_with_defaults(classes_enum_data, f'./src/{name_space}/Model')
+
