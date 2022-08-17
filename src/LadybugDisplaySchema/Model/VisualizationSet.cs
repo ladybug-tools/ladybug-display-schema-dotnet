@@ -24,45 +24,31 @@ using System.ComponentModel.DataAnnotations;
 namespace LadybugDisplaySchema
 {
     /// <summary>
-    /// A ray object in 3D space with display properties.
+    /// A visualization set containing analysis and context geometry to be visualized.
     /// </summary>
     [Serializable]
-    [DataContract(Name = "DisplayRay3D")]
-    public partial class DisplayRay3D : DisplayBaseModel, IEquatable<DisplayRay3D>, IValidatableObject
+    [DataContract(Name = "VisualizationSet")]
+    public partial class VisualizationSet : OpenAPIGenBaseModel, IEquatable<VisualizationSet>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DisplayRay3D" /> class.
+        /// Initializes a new instance of the <see cref="VisualizationSet" /> class.
         /// </summary>
-        [JsonConstructorAttribute]
-        protected DisplayRay3D() 
-        { 
-            // Set non-required readonly properties with defaultValue
-            this.Type = "DisplayRay3D";
-        }
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DisplayRay3D" /> class.
-        /// </summary>
-        /// <param name="color">Color for the geometry. (required).</param>
-        /// <param name="geometry">Ray3D for the geometry. (required).</param>
-        /// <param name="layer">Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such..</param>
-        /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
-        public DisplayRay3D
+        /// <param name="analysisGeometry">An AnalysisGeometry object for spatial data that should be displayed in the visualization..</param>
+        /// <param name="contextGeometry">An optional list of ladybug-geometry or ladybug-display objects that gives context to the analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization..</param>
+        public VisualizationSet
         (
-           Color color, Ray3D geometry, // Required parameters
-            string layer= default, Object userData= default // Optional parameters
-        ) : base(layer: layer, userData: userData )// BaseClass
+            // Required parameters
+           AnalysisGeometry analysisGeometry= default, List<IDisplay> contextGeometry= default// Optional parameters
+        ) : base()// BaseClass
         {
-            // to ensure "color" is required (not null)
-            this.Color = color ?? throw new ArgumentNullException("color is a required property for DisplayRay3D and cannot be null");
-            // to ensure "geometry" is required (not null)
-            this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for DisplayRay3D and cannot be null");
+            this.AnalysisGeometry = analysisGeometry;
+            this.ContextGeometry = contextGeometry;
 
             // Set non-required readonly properties with defaultValue
-            this.Type = "DisplayRay3D";
+            this.Type = "VisualizationSet";
 
             // check if object is valid, only check for inherited class
-            if (this.GetType() == typeof(DisplayRay3D))
+            if (this.GetType() == typeof(VisualizationSet))
                 this.IsValid(throwException: true);
         }
 
@@ -71,20 +57,20 @@ namespace LadybugDisplaySchema
         /// Gets or Sets Type
         /// </summary>
         [DataMember(Name = "type")]
-        public override string Type { get; protected set; }  = "DisplayRay3D";
+        public override string Type { get; protected set; }  = "VisualizationSet";
 
         /// <summary>
-        /// Color for the geometry.
+        /// An AnalysisGeometry object for spatial data that should be displayed in the visualization.
         /// </summary>
-        /// <value>Color for the geometry.</value>
-        [DataMember(Name = "color", IsRequired = true)]
-        public Color Color { get; set; } 
+        /// <value>An AnalysisGeometry object for spatial data that should be displayed in the visualization.</value>
+        [DataMember(Name = "analysis_geometry")]
+        public AnalysisGeometry AnalysisGeometry { get; set; } 
         /// <summary>
-        /// Ray3D for the geometry.
+        /// An optional list of ladybug-geometry or ladybug-display objects that gives context to the analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.
         /// </summary>
-        /// <value>Ray3D for the geometry.</value>
-        [DataMember(Name = "geometry", IsRequired = true)]
-        public Ray3D Geometry { get; set; } 
+        /// <value>An optional list of ladybug-geometry or ladybug-display objects that gives context to the analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.</value>
+        [DataMember(Name = "context_geometry")]
+        public List<IDisplay> ContextGeometry { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -92,7 +78,7 @@ namespace LadybugDisplaySchema
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
-            return "DisplayRay3D";
+            return "VisualizationSet";
         }
 
         /// <summary>
@@ -105,22 +91,20 @@ namespace LadybugDisplaySchema
                 return this.ToString();
             
             var sb = new StringBuilder();
-            sb.Append("DisplayRay3D:\n");
+            sb.Append("VisualizationSet:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
-            sb.Append("  Layer: ").Append(this.Layer).Append("\n");
-            sb.Append("  UserData: ").Append(this.UserData).Append("\n");
-            sb.Append("  Color: ").Append(this.Color).Append("\n");
-            sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
+            sb.Append("  AnalysisGeometry: ").Append(this.AnalysisGeometry).Append("\n");
+            sb.Append("  ContextGeometry: ").Append(this.ContextGeometry).Append("\n");
             return sb.ToString();
         }
   
         /// <summary>
         /// Returns the object from JSON string
         /// </summary>
-        /// <returns>DisplayRay3D object</returns>
-        public static DisplayRay3D FromJson(string json)
+        /// <returns>VisualizationSet object</returns>
+        public static VisualizationSet FromJson(string json)
         {
-            var obj = JsonConvert.DeserializeObject<DisplayRay3D>(json, JsonSetting.AnyOfConvertSetting);
+            var obj = JsonConvert.DeserializeObject<VisualizationSet>(json, JsonSetting.AnyOfConvertSetting);
             if (obj == null)
                 return null;
             return obj.Type.ToLower() == obj.GetType().Name.ToLower() && obj.IsValid(throwException: true) ? obj : null;
@@ -129,8 +113,8 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Creates a new instance with the same properties.
         /// </summary>
-        /// <returns>DisplayRay3D object</returns>
-        public virtual DisplayRay3D DuplicateDisplayRay3D()
+        /// <returns>VisualizationSet object</returns>
+        public virtual VisualizationSet DuplicateVisualizationSet()
         {
             return FromJson(this.ToJson());
         }
@@ -141,16 +125,16 @@ namespace LadybugDisplaySchema
         /// <returns>OpenAPIGenBaseModel</returns>
         public override OpenAPIGenBaseModel Duplicate()
         {
-            return DuplicateDisplayRay3D();
+            return DuplicateVisualizationSet();
         }
 
         /// <summary>
         /// Creates a new instance with the same properties.
         /// </summary>
         /// <returns>OpenAPIGenBaseModel</returns>
-        public override DisplayBaseModel DuplicateDisplayBaseModel()
+        public override OpenAPIGenBaseModel DuplicateOpenAPIGenBaseModel()
         {
-            return DuplicateDisplayRay3D();
+            return DuplicateVisualizationSet();
         }
      
         /// <summary>
@@ -161,22 +145,25 @@ namespace LadybugDisplaySchema
         public override bool Equals(object input)
         {
             input = input is AnyOf anyOf ? anyOf.Obj : input;
-            return this.Equals(input as DisplayRay3D);
+            return this.Equals(input as VisualizationSet);
         }
 
         /// <summary>
-        /// Returns true if DisplayRay3D instances are equal
+        /// Returns true if VisualizationSet instances are equal
         /// </summary>
-        /// <param name="input">Instance of DisplayRay3D to be compared</param>
+        /// <param name="input">Instance of VisualizationSet to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(DisplayRay3D input)
+        public bool Equals(VisualizationSet input)
         {
             if (input == null)
                 return false;
             return base.Equals(input) && 
-                    Extension.Equals(this.Color, input.Color) && 
-                    Extension.Equals(this.Geometry, input.Geometry) && 
-                    Extension.Equals(this.Type, input.Type);
+                    Extension.Equals(this.Type, input.Type) && 
+                    Extension.Equals(this.AnalysisGeometry, input.AnalysisGeometry) && 
+                (
+                    this.ContextGeometry == input.ContextGeometry ||
+                    Extension.AllEquals(this.ContextGeometry, input.ContextGeometry)
+                );
         }
 
         /// <summary>
@@ -188,12 +175,12 @@ namespace LadybugDisplaySchema
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
-                if (this.Color != null)
-                    hashCode = hashCode * 59 + this.Color.GetHashCode();
-                if (this.Geometry != null)
-                    hashCode = hashCode * 59 + this.Geometry.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
+                if (this.AnalysisGeometry != null)
+                    hashCode = hashCode * 59 + this.AnalysisGeometry.GetHashCode();
+                if (this.ContextGeometry != null)
+                    hashCode = hashCode * 59 + this.ContextGeometry.GetHashCode();
                 return hashCode;
             }
         }
@@ -209,7 +196,7 @@ namespace LadybugDisplaySchema
 
             
             // Type (string) pattern
-            Regex regexType = new Regex(@"^DisplayRay3D$", RegexOptions.CultureInvariant);
+            Regex regexType = new Regex(@"^VisualizationSet$", RegexOptions.CultureInvariant);
             if (this.Type != null && false == regexType.Match(this.Type).Success)
             {
                 yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for Type, must match a pattern of " + regexType, new [] { "Type" });
