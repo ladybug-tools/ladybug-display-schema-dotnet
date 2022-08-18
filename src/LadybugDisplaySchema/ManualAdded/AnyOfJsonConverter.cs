@@ -17,7 +17,7 @@ namespace LadybugDisplaySchema
         public override AnyOf ReadJson(JsonReader reader, Type objectType, AnyOf existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var objType = objectType;
-            var validTypes = objType.GenericTypeArguments;
+            var validTypes = objType.GenericTypeArguments.ToList();
 
             // null value assigned to AnyOf type, ignore 
             if (reader.TokenType == JsonToken.Null)
@@ -29,10 +29,27 @@ namespace LadybugDisplaySchema
             if (data == null)
             {
                 var jObject = JObject.Load(reader);
+                if (jObject["type"] == null) 
+                    throw new ArgumentException($"Unable to load {reader.Path}");
 
-                if (jObject["type"] != null)
+                var typeName = jObject["type"].Value<string>();
+                var interfaceTypes = validTypes.Where(_ => _.IsInterface);
+                if (interfaceTypes.Any())
                 {
-                    var typeName = jObject["type"].Value<string>();
+                    var assembly = objectType.Assembly;
+                    var assemblyName = assembly.GetName().Name;
+                    foreach (var interfaceType in interfaceTypes)
+                    {
+                        var realObjectType = assembly.GetType($"{assemblyName}.{typeName}", false, true);
+                        if (realObjectType != null && interfaceType.IsAssignableFrom(realObjectType))
+                        {
+                            data = jObject.ToObject(realObjectType, serializer);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
                     var type = validTypes.FirstOrDefault(_ => _.Name.Equals(typeName, StringComparison.CurrentCultureIgnoreCase));
                     if (type != null)
                     {
@@ -40,15 +57,16 @@ namespace LadybugDisplaySchema
                     }
                     else
                     {
-                        throw new ArgumentException($"{typeName} is not a valid type for {reader.Path}, this might because of mismatch version of honeybee schema!");
+                        throw new ArgumentException($"{typeName} is not a valid type for {reader.Path}, this might because of mismatch version of schema!");
                     }
                 }
-                else
+
+
+                if (data == null)
                 {
-                    throw new ArgumentException($"Unable to load {reader.Path}");
+                    throw new ArgumentException($"{typeName} is not a valid type of {string.Join(",", validTypes.Select(_=>_.Name))}, this might because of mismatch version of schema!");
                 }
             }
-           
 
             var inputType = data.GetType();
 
@@ -59,16 +77,10 @@ namespace LadybugDisplaySchema
                 inputType = typeof(double);
                 data = double.Parse(data.ToString());
             }
-         
-            if (validTypes.ToList().Contains(inputType))
-            {
-                var obj = Activator.CreateInstance(objectType, new object[] {data});
-                return obj as AnyOf;
-            }
-            else
-            {
-                throw new ArgumentException($"{data} is {inputType} type, which doesn't match any of [{string.Join(", ", validTypes.Select(_=>_.ToString()))}]");
-            }
+
+
+            var obj = Activator.CreateInstance(objectType, new object[] { data });
+            return obj as AnyOf;
 
         }
 

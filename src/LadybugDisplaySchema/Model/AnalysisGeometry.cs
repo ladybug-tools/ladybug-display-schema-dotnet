@@ -48,7 +48,7 @@ namespace LadybugDisplaySchema
         /// <param name="activeData">An integer to denote which of the input data_sets should be displayed by default. (default to 0).</param>
         public AnalysisGeometry
         (
-           AnyOf<Mesh2D, Mesh3D, Polyface3D, List<IGeometry>> geometry, List<VisualizationData> dataSets, // Required parameters
+           List<AnyOf<IGeometry>> geometry, List<VisualizationData> dataSets, // Required parameters
            int activeData = 0// Optional parameters
         ) : base()// BaseClass
         {
@@ -79,7 +79,7 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <value>A ladybug-geometry object or list of ladybug-geometry objects that is aligned with the values in the input data_sets. If a Mesh or Polyface is specified here, it is expected that the number of values match the number of faces or the number of vertices. If a list of geometry objects is specified (ie. a list of Point3Ds), it is expected that the length of this list align with the number of values.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
-        public AnyOf<Mesh2D, Mesh3D, Polyface3D, List<IGeometry>> Geometry { get; set; } 
+        public List<AnyOf<IGeometry>> Geometry { get; set; } 
         /// <summary>
         /// An list of VisualizationData objects representing the data sets that are associated with the input geometry.
         /// </summary>

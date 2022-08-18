@@ -38,7 +38,7 @@ namespace LadybugDisplaySchema
         public VisualizationSet
         (
             // Required parameters
-           AnalysisGeometry analysisGeometry= default, List<IDisplay> contextGeometry= default// Optional parameters
+           AnalysisGeometry analysisGeometry= default, List<AnyOf<IDisplay>> contextGeometry = default// Optional parameters
         ) : base()// BaseClass
         {
             this.AnalysisGeometry = analysisGeometry;
@@ -70,7 +70,7 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <value>An optional list of ladybug-geometry or ladybug-display objects that gives context to the analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.</value>
         [DataMember(Name = "context_geometry")]
-        public List<IDisplay> ContextGeometry { get; set; } 
+        public List<AnyOf<IDisplay>> ContextGeometry { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
