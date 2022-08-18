@@ -32,11 +32,23 @@ namespace LadybugDisplaySchema
 
         internal void CheckType(object Object)
         {
+            if (Object == null)
+                return;
+
             var objType = Object.GetType();
+
+            // check if there is interface
+            var interfaceTypes = AllValidTypes.Where(_ => _.IsInterface).FirstOrDefault(_=> _.IsAssignableFrom(objType));
+            if (interfaceTypes != null)
+            {
+                this.Obj = Object;
+                return;
+            }
+
             var isValidType = this.AllValidTypes.Contains(objType);
             if (!isValidType)
             {
-                throw new ArgumentException("Not acceptable type!");
+                throw new ArgumentException($"Type {objType} doesn't match any of [{string.Join(", ", AllValidTypes.Select(_ => _.ToString()))}]");
             }
             else
             {
