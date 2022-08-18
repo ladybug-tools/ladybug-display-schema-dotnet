@@ -1,0 +1,57 @@
+{
+  "type": "AnalysisGeometry",
+  "data_sets": [
+    {
+      "type": "VisualizationData",
+      "values": [ 0, 20, 40, 60, 80],
+      "legend_parameters": {
+        "continuous_legend": false,
+        "decimal_count": 2,
+        "include_larger_smaller": false,
+        "vertical": true,
+        "font": "Arial",
+        "colors": [
+          {
+            "r": 4,
+            "g": 25,
+            "b": 145,
+            "a": 255,
+            "type": "Color"
+          },
+          {
+            "r": 7,
+            "g": 48,
+            "b": 224,
+            "a": 255,
+            "type": "Color"
+          },
+          {
+            "r": 166,
+            "g": 249,
+            "b": 86,
+            "a": 255,
+            "type": "Color"
+          }
+        ],
+        "title": "lux",
+        "min": 0,
+        "max": 2000,
+        "ordinal_dictionary": null,
+        "type": "LegendParameters"
+      },
+      "data_type": {
+        "name": "Indoor Illuminance",
+        "data_type": "Illuminance",
+        "type": "DataType"
+      },
+      "unit": "lux"
+    }
+  ],
+  "geometry": [
+    {
+      "type": "Arc2D",
+      "c": [ 1, 2 ],
+      "r": 3
+    }
+  ]
+}
