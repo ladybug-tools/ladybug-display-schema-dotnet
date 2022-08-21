@@ -30,6 +30,17 @@ namespace LadybugDisplaySchema
     [DataContract(Name = "LegendParameters")]
     public partial class LegendParameters : OpenAPIGenBaseModel, IEquatable<LegendParameters>, IValidatableObject
     {
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LegendParameters" /> class.
+        /// </summary>
+        [JsonConstructorAttribute]
+        protected LegendParameters()
+        {
+            // Set non-required readonly properties with defaultValue
+            this.Type = "LegendParameters";
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LegendParameters" /> class.
         /// </summary>
