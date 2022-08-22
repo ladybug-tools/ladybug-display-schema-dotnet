@@ -12,6 +12,13 @@ namespace LadybugDisplaySchema.Test
 
     public class FromJsonTests
     {
+        [Test]
+        public void LegendParamTest()
+        {
+            var obj = new LegendParameters(10, 100);
+            Assert.IsTrue(obj != null);
+
+        }
 
         //D:\Dev\ladybug_tools\ladybug-display-schema-dotnet\src\LadybugDisplaySchema.Tests\bin\Debug\net5
         string _projDir = new System.IO.DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
