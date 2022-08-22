@@ -61,5 +61,14 @@ namespace LadybugDisplaySchema
         {
             return !(left == right);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (obj is LadybugObject input)
+                return Extension.Equals(this.Type, input.Type);
+            return false;
+        }
     }
 }

@@ -71,6 +71,8 @@ namespace LadybugDisplaySchema
         {
             if (ReferenceEquals(this, null))
                 return ReferenceEquals(obj, null) ? true : false;
+            if (obj is AnyOf anotherAnyOf)
+                return this.Obj.Equals(anotherAnyOf.Obj);
             return this.Obj.Equals(obj);
         }
         public override int GetHashCode()
@@ -88,7 +90,7 @@ namespace LadybugDisplaySchema
             if (ReferenceEquals(obj, null))
                 return ReferenceEquals(anotherObj, null) ? true : false;
 
-            return obj.Obj.Equals(anotherObj);
+            return obj.Equals(anotherObj);
         }
 
         public static bool operator != (AnyOf obj, object anotherObj)
