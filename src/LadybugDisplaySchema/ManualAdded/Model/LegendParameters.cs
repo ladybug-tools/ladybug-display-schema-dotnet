@@ -22,14 +22,14 @@ namespace LadybugDisplaySchema
 
         public bool HasOrdinalDictionary => this.OrdinalDictionary != null && this.GetOrdinalDictionary().Count > 0;
 
-        public LegendParameters(int x = 50, int y = 100)
+        public LegendParameters(int x = 50, int y = 100): this()
         {
             initDefault();
             this.BasePlane.O = new List<double>() { X, Y, 0 };
             Colors = LegendColorSet.Presets.First().Value.ToList();
         }
 
-        public LegendParameters(double min, double max, int numSegs, List<Color> colors = default)
+        public LegendParameters(double min, double max, int numSegs, List<Color> colors = default) : this()
         {
             initDefault();
             Min = min;
