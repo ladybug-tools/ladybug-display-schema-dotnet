@@ -83,17 +83,8 @@ namespace LadybugDisplaySchema
                 inputType = typeof(int);
             }
 
-            // check types
-            if (allValidTypes.Contains(inputType))
-            {
-                var obj = Activator.CreateInstance(objectType, new object[] { data });
-                return obj as AnyOf;
-            }
-            else
-            {
-                throw new ArgumentException($"{data} is {inputType} type, which doesn't match any of [{string.Join(", ", validTypes.Select(_ => _.ToString()))}]");
-            }
-
+            var obj = Activator.CreateInstance(objectType, new object[] { data });
+            return obj as AnyOf;
 
         }
 
