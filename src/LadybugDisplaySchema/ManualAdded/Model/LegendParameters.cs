@@ -42,6 +42,7 @@ namespace LadybugDisplaySchema
 
         private void initDefault()
         {
+            this.ResetBaseLocation();
             this.BasePlane.O = new List<double>() { 10, 100, 0 };
             this.SegmentWidth = 25;
             this.SegmentHeight = 36;
@@ -165,10 +166,10 @@ namespace LadybugDisplaySchema
 
         public void ResetBaseLocation(double X = default, double Y = default, double Z = default)
         {
-            var basePt = this.BasePlane.Origin;
-            basePt.X = X;
-            basePt.Y = Y;
-            basePt.Z = Z;
+            if (this.BasePlane == null)
+                this.BasePlane = new Plane(new Vector3D(0,0,1), new Point3D(X,Y,Z));
+
+            var basePt = new Point3D(X, Y, Z);
             this.BasePlane.O = basePt.ToDecimalList();
         }
 
