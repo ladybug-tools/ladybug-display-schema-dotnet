@@ -16,8 +16,11 @@ namespace LadybugDisplaySchema.Test
         public void LegendParamTest()
         {
             var obj = new LegendParameters(10, 100);
-            Assert.IsTrue(obj != null);
-
+            var dup = obj.DuplicateLegendParameters();
+            Assert.AreEqual(obj.ToString(), dup.ToString());
+            Assert.IsTrue(obj.Equals( dup));
+            Assert.AreEqual(obj, dup);
+            Assert.IsTrue(obj == dup);  
         }
 
         //D:\Dev\ladybug_tools\ladybug-display-schema-dotnet\src\LadybugDisplaySchema.Tests\bin\Debug\net5
