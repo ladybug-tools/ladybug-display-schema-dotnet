@@ -12,7 +12,7 @@ namespace LadybugDisplaySchema
 
         public double MinValue => this.Min != null && this.Min.Obj is double d ? d : 0;
         public double MaxValue => this.Max != null && this.Max.Obj is double d ? d : 100;
-        public double TextHeightValue => this.TextHeight != null && this.TextHeight.Obj is double d ? d : 0;
+        public double TextHeightValue => this.TextHeight != null && this.TextHeight.Obj is double d ? d : 12;
         public int SegmentCountValue => this.SegmentCount != null && this.SegmentCount.Obj is int d ? d : 3;
         public double SegmentWidthValue => this.SegmentWidth != null && this.SegmentWidth.Obj is double d ? d : 25;
         public double SegmentHeightValue => this.SegmentHeight != null && this.SegmentHeight.Obj is double d ? d : 36;
