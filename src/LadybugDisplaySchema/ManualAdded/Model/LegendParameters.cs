@@ -22,6 +22,8 @@ namespace LadybugDisplaySchema
 
         public bool HasOrdinalDictionary => this.OrdinalDictionary != null && this.GetOrdinalDictionary().Count > 0;
 
+        public List<Color> ColorsWithDefault => this.Colors ?? _defaultColorSet.ToList();
+
         public LegendParameters(int x = 50, int y = 100): this()
         {
             initDefault();
@@ -64,13 +66,13 @@ namespace LadybugDisplaySchema
         private List<double> _colorDomains;
         private List<double> ColorDomains()
         {
-            if (_colorDomains != null && _colorDomains.Count == this.Colors.Count)
+            var cs = this.ColorsWithDefault;
+            if (_colorDomains != null && _colorDomains.Count == cs.Count)
                 return _colorDomains;
 
-            if (this.Colors.Count < 2)
+            if (cs.Count < 2)
                 throw new System.ArgumentException("Need at least 2 colors");
 
-            var cs = this.Colors;
             double factor = 1.0 / (cs.Count - 1);
             var bounds = cs.Select((_, i) => i * factor).ToList();
             _colorDomains = bounds;
@@ -91,9 +93,7 @@ namespace LadybugDisplaySchema
 
         public Color CalColor(double value)
         {
-
-            var colors = this.Colors.ToList();
-
+            var colors = this.ColorsWithDefault.ToList();
             var colorStart = colors.First();
             var colorEnd = colors.Last();
             if (value <= this.MinValue)
