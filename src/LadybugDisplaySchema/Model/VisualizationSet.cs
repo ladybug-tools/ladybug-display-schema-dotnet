@@ -28,21 +28,32 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Serializable]
     [DataContract(Name = "VisualizationSet")]
-    public partial class VisualizationSet : OpenAPIGenBaseModel, IEquatable<VisualizationSet>, IValidatableObject
+    public partial class VisualizationSet : VisualizationBase, IEquatable<VisualizationSet>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VisualizationSet" /> class.
         /// </summary>
-        /// <param name="analysisGeometry">An AnalysisGeometry object for spatial data that should be displayed in the visualization..</param>
-        /// <param name="contextGeometry">An optional list of ladybug-geometry or ladybug-display objects that gives context to the analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization..</param>
+        [JsonConstructorAttribute]
+        protected VisualizationSet() 
+        { 
+            // Set non-required readonly properties with defaultValue
+            this.Type = "VisualizationSet";
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VisualizationSet" /> class.
+        /// </summary>
+        /// <param name="geometry">A list of AnalysisGeometry and ContextGeometry objects to display in the visualization. Each geometry object will typically be translated to its own layer within the interface that renders the VisualizationSet..</param>
+        /// <param name="identifier">Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters. (required).</param>
+        /// <param name="displayName">Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier..</param>
+        /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public VisualizationSet
         (
-            // Required parameters
-           AnalysisGeometry analysisGeometry= default, List<AnyOf<IDisplay>> contextGeometry = default// Optional parameters
-        ) : base()// BaseClass
+            string identifier, // Required parameters
+            string displayName= default, Object userData= default, List<AnyOf<AnalysisGeometry, ContextGeometry>> geometry= default// Optional parameters
+        ) : base(identifier: identifier, displayName: displayName, userData: userData )// BaseClass
         {
-            this.AnalysisGeometry = analysisGeometry;
-            this.ContextGeometry = contextGeometry;
+            this.Geometry = geometry;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "VisualizationSet";
@@ -60,17 +71,11 @@ namespace LadybugDisplaySchema
         public override string Type { get; protected set; }  = "VisualizationSet";
 
         /// <summary>
-        /// An AnalysisGeometry object for spatial data that should be displayed in the visualization.
+        /// A list of AnalysisGeometry and ContextGeometry objects to display in the visualization. Each geometry object will typically be translated to its own layer within the interface that renders the VisualizationSet.
         /// </summary>
-        /// <value>An AnalysisGeometry object for spatial data that should be displayed in the visualization.</value>
-        [DataMember(Name = "analysis_geometry")]
-        public AnalysisGeometry AnalysisGeometry { get; set; } 
-        /// <summary>
-        /// An optional list of ladybug-geometry or ladybug-display objects that gives context to the analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.
-        /// </summary>
-        /// <value>An optional list of ladybug-geometry or ladybug-display objects that gives context to the analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.</value>
-        [DataMember(Name = "context_geometry")]
-        public List<AnyOf<IDisplay>> ContextGeometry { get; set; } 
+        /// <value>A list of AnalysisGeometry and ContextGeometry objects to display in the visualization. Each geometry object will typically be translated to its own layer within the interface that renders the VisualizationSet.</value>
+        [DataMember(Name = "geometry")]
+        public List<AnyOf<AnalysisGeometry, ContextGeometry>> Geometry { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -93,8 +98,10 @@ namespace LadybugDisplaySchema
             var sb = new StringBuilder();
             sb.Append("VisualizationSet:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
-            sb.Append("  AnalysisGeometry: ").Append(this.AnalysisGeometry).Append("\n");
-            sb.Append("  ContextGeometry: ").Append(this.ContextGeometry).Append("\n");
+            sb.Append("  Identifier: ").Append(this.Identifier).Append("\n");
+            sb.Append("  DisplayName: ").Append(this.DisplayName).Append("\n");
+            sb.Append("  UserData: ").Append(this.UserData).Append("\n");
+            sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
             return sb.ToString();
         }
   
@@ -132,7 +139,7 @@ namespace LadybugDisplaySchema
         /// Creates a new instance with the same properties.
         /// </summary>
         /// <returns>OpenAPIGenBaseModel</returns>
-        public override OpenAPIGenBaseModel DuplicateOpenAPIGenBaseModel()
+        public override VisualizationBase DuplicateVisualizationBase()
         {
             return DuplicateVisualizationSet();
         }
@@ -159,10 +166,9 @@ namespace LadybugDisplaySchema
                 return false;
             return base.Equals(input) && 
                     Extension.Equals(this.Type, input.Type) && 
-                    Extension.Equals(this.AnalysisGeometry, input.AnalysisGeometry) && 
                 (
-                    this.ContextGeometry == input.ContextGeometry ||
-                    Extension.AllEquals(this.ContextGeometry, input.ContextGeometry)
+                    this.Geometry == input.Geometry ||
+                    Extension.AllEquals(this.Geometry, input.Geometry)
                 );
         }
 
@@ -177,10 +183,8 @@ namespace LadybugDisplaySchema
                 int hashCode = base.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
-                if (this.AnalysisGeometry != null)
-                    hashCode = hashCode * 59 + this.AnalysisGeometry.GetHashCode();
-                if (this.ContextGeometry != null)
-                    hashCode = hashCode * 59 + this.ContextGeometry.GetHashCode();
+                if (this.Geometry != null)
+                    hashCode = hashCode * 59 + this.Geometry.GetHashCode();
                 return hashCode;
             }
         }

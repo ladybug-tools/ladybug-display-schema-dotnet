@@ -21,6 +21,7 @@ Name | Type | Description | Notes
 **SegmentWidth** | [**AnyOfDefaultnumber**](AnyOfDefaultnumber.md) | A number to set the width for each of the legend segments. | [optional] 
 **TextHeight** | [**AnyOfDefaultnumber**](AnyOfDefaultnumber.md) | A number to set the height for the legend text. Default is 1/3 of the segment_height. | [optional] 
 **Font** | **string** | Text string to set the font for the legend text. Examples include \&quot;Arial\&quot;, \&quot;Times New Roman\&quot;, \&quot;Courier\&quot;. Note that this parameter may not have an effect on certain interfaces that have limited access to fonts. | [optional] [default to "Arial"]
+**UserData** | **Object** | Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list). | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

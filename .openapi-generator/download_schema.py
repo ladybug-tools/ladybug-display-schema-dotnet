@@ -3,9 +3,11 @@ import urllib.request
 import json
 import shutil
 import sys
+import ssl
 
 
 def download(url, dir):
+    ssl._create_default_https_context = ssl._create_unverified_context
     json_url = urllib.request.urlopen(url)
     data = json.loads(json_url.read())
 
@@ -32,7 +34,7 @@ os.mkdir(saving_dir)
 
 
 # graphic
-json_file1 = f"{base_url}/graphic_inheritance.json"
+json_file1 = f"{base_url}/visualization_inheritance.json"
 # display
 json_file2 = f"{base_url}/display_inheritance.json"
 # geometry

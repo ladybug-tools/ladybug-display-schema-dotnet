@@ -305,8 +305,21 @@ namespace LadybugDisplaySchema
             return target;
         }
 
+        public static Dictionary<string, object> GetUserData(this LegendParameters obj)
+        {
+            var ud = ToDictionary(obj.UserData);
+            obj.UserData = ud;
+            return ud;
+        }
 
-        
+        public static void AddUserData(this LegendParameters obj, string key, object vaule)
+        {
+            if (obj == null || vaule == null || key == null)
+                return;
+
+            var ud = obj.GetUserData();
+            ud.TryAddUpdate(key, vaule);
+        }
         public static Dictionary<string, object> GetUserData(this DisplayBaseModel obj)
         {
             var ud = ToDictionary(obj.UserData);

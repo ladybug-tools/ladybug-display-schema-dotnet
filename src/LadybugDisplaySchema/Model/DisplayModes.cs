@@ -33,28 +33,28 @@ namespace LadybugDisplaySchema
     public enum DisplayModes
     {
         /// <summary>
-        /// Enum Shaded for value: Shaded
-        /// </summary>
-        [EnumMember(Value = "Shaded")]
-        Shaded = 1,
-
-        /// <summary>
         /// Enum Surface for value: Surface
         /// </summary>
         [EnumMember(Value = "Surface")]
-        Surface = 2,
+        Surface = 1,
 
         /// <summary>
         /// Enum SurfaceWithEdges for value: SurfaceWithEdges
         /// </summary>
         [EnumMember(Value = "SurfaceWithEdges")]
-        SurfaceWithEdges = 3,
+        SurfaceWithEdges = 2,
 
         /// <summary>
         /// Enum Wireframe for value: Wireframe
         /// </summary>
         [EnumMember(Value = "Wireframe")]
-        Wireframe = 4
+        Wireframe = 3,
+
+        /// <summary>
+        /// Enum Points for value: Points
+        /// </summary>
+        [EnumMember(Value = "Points")]
+        Points = 4
 
     }
 

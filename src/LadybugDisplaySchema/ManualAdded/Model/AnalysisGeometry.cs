@@ -36,7 +36,7 @@ namespace LadybugDisplaySchema
         }
 
         public AnalysisGeometry(IEnumerable<IGeometry> geometry, List<VisualizationData> dataSets)
-          : this(geometry.Select(_ => new AnyOf<IGeometry>(_)).ToList(), dataSets)
+          : this(System.Guid.NewGuid().ToString(), geometry.ToList(), dataSets)
         {
         }
 

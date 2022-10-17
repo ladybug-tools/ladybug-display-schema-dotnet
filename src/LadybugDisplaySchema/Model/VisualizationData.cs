@@ -47,10 +47,11 @@ namespace LadybugDisplaySchema
         /// <param name="legendParameters">An Optional LegendParameters object to override default parameters of the legend. None indicates that default legend parameters will be used..</param>
         /// <param name="dataType">Optional DataType from the ladybug datatype subpackage (ie. Temperature()) , which will be used to assign default legend properties. If None, the legend associated with this object will contain no units unless a unit below is specified..</param>
         /// <param name="unit">Optional text string for the units of the values. (ie. \&quot;C\&quot;). If None, the default units of the data_type will be used. (default to &quot;&quot;).</param>
+        /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public VisualizationData
         (
            List<double> values, // Required parameters
-           LegendParameters legendParameters= default, DataType dataType= default, string unit = ""// Optional parameters
+           LegendParameters legendParameters= default, AnyOf<DataType, GenericDataType> dataType= default, string unit = "", Object userData= default// Optional parameters
         ) : base()// BaseClass
         {
             // to ensure "values" is required (not null)
@@ -59,6 +60,7 @@ namespace LadybugDisplaySchema
             this.DataType = dataType;
             // use default value if no "unit" provided
             this.Unit = unit ?? "";
+            this.UserData = userData;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "VisualizationData";
@@ -92,13 +94,19 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <value>Optional DataType from the ladybug datatype subpackage (ie. Temperature()) , which will be used to assign default legend properties. If None, the legend associated with this object will contain no units unless a unit below is specified.</value>
         [DataMember(Name = "data_type")]
-        public DataType DataType { get; set; } 
+        public AnyOf<DataType, GenericDataType> DataType { get; set; } 
         /// <summary>
         /// Optional text string for the units of the values. (ie. \&quot;C\&quot;). If None, the default units of the data_type will be used.
         /// </summary>
         /// <value>Optional text string for the units of the values. (ie. \&quot;C\&quot;). If None, the default units of the data_type will be used.</value>
         [DataMember(Name = "unit")]
         public string Unit { get; set; }  = "";
+        /// <summary>
+        /// Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).
+        /// </summary>
+        /// <value>Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).</value>
+        [DataMember(Name = "user_data")]
+        public Object UserData { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -125,6 +133,7 @@ namespace LadybugDisplaySchema
             sb.Append("  LegendParameters: ").Append(this.LegendParameters).Append("\n");
             sb.Append("  DataType: ").Append(this.DataType).Append("\n");
             sb.Append("  Unit: ").Append(this.Unit).Append("\n");
+            sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             return sb.ToString();
         }
   
@@ -195,7 +204,8 @@ namespace LadybugDisplaySchema
                     Extension.Equals(this.Type, input.Type) && 
                     Extension.Equals(this.LegendParameters, input.LegendParameters) && 
                     Extension.Equals(this.DataType, input.DataType) && 
-                    Extension.Equals(this.Unit, input.Unit);
+                    Extension.Equals(this.Unit, input.Unit) && 
+                    Extension.Equals(this.UserData, input.UserData);
         }
 
         /// <summary>
@@ -217,6 +227,8 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.DataType.GetHashCode();
                 if (this.Unit != null)
                     hashCode = hashCode * 59 + this.Unit.GetHashCode();
+                if (this.UserData != null)
+                    hashCode = hashCode * 59 + this.UserData.GetHashCode();
                 return hashCode;
             }
         }

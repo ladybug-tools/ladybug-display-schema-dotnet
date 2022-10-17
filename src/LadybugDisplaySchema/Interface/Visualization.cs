@@ -9,7 +9,9 @@ namespace LadybugDisplaySchema
 namespace LadybugDisplaySchema
 {
 	public partial class AnalysisGeometry: LadybugDisplaySchema.IVisualization {}
+	public partial class ContextGeometry: LadybugDisplaySchema.IVisualization {}
 	public partial class DataType: LadybugDisplaySchema.IVisualization {}
+	public partial class GenericDataType: LadybugDisplaySchema.IVisualization {}
 	public partial class LegendParameters: LadybugDisplaySchema.IVisualization {}
 	public partial class VisualizationData: LadybugDisplaySchema.IVisualization {}
 	public partial class VisualizationSet: LadybugDisplaySchema.IVisualization {}

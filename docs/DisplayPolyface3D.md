@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Geometry** | [**Polyface3D**](Polyface3D.md) | Polyface3D for the geometry. | 
 **Colors** | [**List&lt;Color&gt;**](Color.md) | A list of colors that correspond to either the faces of the polyface or the vertices of the polyface. It can also be a single color for the entire polyface. | 
 **Type** | **string** |  | [optional] [readonly] [default to "DisplayPolyface3D"]
-**DisplayMode** | **DisplayModes** | Text to indicate the display mode (shaded, wireframe, etc.). The DisplayModes enumeration contains all acceptable types. | [optional] 
+**DisplayMode** | **DisplayModes** | Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

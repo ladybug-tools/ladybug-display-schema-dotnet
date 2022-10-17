@@ -6,6 +6,12 @@ namespace LadybugDisplaySchema
 {
     public partial class LegendParameters 
     {
+
+        protected LegendParameters()
+        {
+            this.Type = "LegendParameters";
+        }
+
         public double X => (this.BasePlane?.O?.GetElementByIndex(0)).GetValueOrDefault();
         public double Y => (this.BasePlane?.O?.GetElementByIndex(1)).GetValueOrDefault();
         public double Z => (this.BasePlane?.O?.GetElementByIndex(2)).GetValueOrDefault();

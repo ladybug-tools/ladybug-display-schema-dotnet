@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Color** | [**Color**](Color.md) | Color for the geometry. | 
 **Geometry** | [**Polygon2D**](Polygon2D.md) | Polygon2D for the geometry. | 
 **Type** | **string** |  | [optional] [readonly] [default to "DisplayPolygon2D"]
-**DisplayMode** | **DisplayModes** | Text to indicate the display mode (shaded, wireframe, etc.). The DisplayModes enumeration contains all acceptable types. | [optional] 
+**DisplayMode** | **DisplayModes** | Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

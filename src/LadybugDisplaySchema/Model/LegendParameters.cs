@@ -30,17 +30,6 @@ namespace LadybugDisplaySchema
     [DataContract(Name = "LegendParameters")]
     public partial class LegendParameters : OpenAPIGenBaseModel, IEquatable<LegendParameters>, IValidatableObject
     {
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LegendParameters" /> class.
-        /// </summary>
-        [JsonConstructorAttribute]
-        protected LegendParameters()
-        {
-            // Set non-required readonly properties with defaultValue
-            this.Type = "LegendParameters";
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LegendParameters" /> class.
         /// </summary>
@@ -59,10 +48,11 @@ namespace LadybugDisplaySchema
         /// <param name="segmentWidth">A number to set the width for each of the legend segments..</param>
         /// <param name="textHeight">A number to set the height for the legend text. Default is 1/3 of the segment_height..</param>
         /// <param name="font">Text string to set the font for the legend text. Examples include \&quot;Arial\&quot;, \&quot;Times New Roman\&quot;, \&quot;Courier\&quot;. Note that this parameter may not have an effect on certain interfaces that have limited access to fonts. (default to &quot;Arial&quot;).</param>
+        /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public LegendParameters
         (
             // Required parameters
-           AnyOf<Default, double> min= default, AnyOf<Default, double> max= default, AnyOf<Default, int> segmentCount= default, List<Color> colors= default, string title = "", Plane basePlane= default, bool continuousLegend = false, Object ordinalDictionary= default, int decimalCount = 2, bool includeLargerSmaller = false, bool vertical = true, AnyOf<Default, double> segmentHeight= default, AnyOf<Default, double> segmentWidth= default, AnyOf<Default, double> textHeight= default, string font = "Arial"// Optional parameters
+           AnyOf<Default, double> min= default, AnyOf<Default, double> max= default, AnyOf<Default, int> segmentCount= default, List<Color> colors= default, string title = "", Plane basePlane= default, bool continuousLegend = false, Object ordinalDictionary= default, int decimalCount = 2, bool includeLargerSmaller = false, bool vertical = true, AnyOf<Default, double> segmentHeight= default, AnyOf<Default, double> segmentWidth= default, AnyOf<Default, double> textHeight= default, string font = "Arial", Object userData= default// Optional parameters
         ) : base()// BaseClass
         {
             this.Min = min;
@@ -82,6 +72,7 @@ namespace LadybugDisplaySchema
             this.TextHeight = textHeight;
             // use default value if no "font" provided
             this.Font = font ?? "Arial";
+            this.UserData = userData;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "LegendParameters";
@@ -188,6 +179,12 @@ namespace LadybugDisplaySchema
         /// <value>Text string to set the font for the legend text. Examples include \&quot;Arial\&quot;, \&quot;Times New Roman\&quot;, \&quot;Courier\&quot;. Note that this parameter may not have an effect on certain interfaces that have limited access to fonts.</value>
         [DataMember(Name = "font")]
         public string Font { get; set; }  = "Arial";
+        /// <summary>
+        /// Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).
+        /// </summary>
+        /// <value>Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).</value>
+        [DataMember(Name = "user_data")]
+        public Object UserData { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -225,6 +222,7 @@ namespace LadybugDisplaySchema
             sb.Append("  SegmentWidth: ").Append(this.SegmentWidth).Append("\n");
             sb.Append("  TextHeight: ").Append(this.TextHeight).Append("\n");
             sb.Append("  Font: ").Append(this.Font).Append("\n");
+            sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             return sb.ToString();
         }
   
@@ -306,7 +304,8 @@ namespace LadybugDisplaySchema
                     Extension.Equals(this.SegmentHeight, input.SegmentHeight) && 
                     Extension.Equals(this.SegmentWidth, input.SegmentWidth) && 
                     Extension.Equals(this.TextHeight, input.TextHeight) && 
-                    Extension.Equals(this.Font, input.Font);
+                    Extension.Equals(this.Font, input.Font) && 
+                    Extension.Equals(this.UserData, input.UserData);
         }
 
         /// <summary>
@@ -350,6 +349,8 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.TextHeight.GetHashCode();
                 if (this.Font != null)
                     hashCode = hashCode * 59 + this.Font.GetHashCode();
+                if (this.UserData != null)
+                    hashCode = hashCode * 59 + this.UserData.GetHashCode();
                 return hashCode;
             }
         }

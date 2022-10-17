@@ -28,8 +28,14 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Serializable]
     [DataContract(Name = "AnalysisGeometry")]
-    public partial class AnalysisGeometry : OpenAPIGenBaseModel, IEquatable<AnalysisGeometry>, IValidatableObject
+    public partial class AnalysisGeometry : VisualizationBase, IEquatable<AnalysisGeometry>, IValidatableObject
     {
+        /// <summary>
+        /// Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.
+        /// </summary>
+        /// <value>Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.</value>
+        [DataMember(Name="display_mode")]
+        public DisplayModes DisplayMode { get; set; } = DisplayModes.Surface;
         /// <summary>
         /// Initializes a new instance of the <see cref="AnalysisGeometry" /> class.
         /// </summary>
@@ -43,21 +49,25 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Initializes a new instance of the <see cref="AnalysisGeometry" /> class.
         /// </summary>
-        /// <param name="geometry">A ladybug-geometry object or list of ladybug-geometry objects that is aligned with the values in the input data_sets. If a Mesh or Polyface is specified here, it is expected that the number of values match the number of faces or the number of vertices. If a list of geometry objects is specified (ie. a list of Point3Ds), it is expected that the length of this list align with the number of values. (required).</param>
+        /// <param name="geometry">A list of ladybug-geometry objects that is aligned with the values in the input data_sets. The length of this list should usually be equal to the total number of values in each data_set, indicating that each geometry gets a single color. Alternatively, if all of the geometry objects are meshes, the number of values in the data can be equal to the total number of faces across the meshes or the total number of vertices across the meshes. (required).</param>
         /// <param name="dataSets">An list of VisualizationData objects representing the data sets that are associated with the input geometry. (required).</param>
         /// <param name="activeData">An integer to denote which of the input data_sets should be displayed by default. (default to 0).</param>
+        /// <param name="displayMode">Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types..</param>
+        /// <param name="identifier">Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters. (required).</param>
+        /// <param name="displayName">Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier..</param>
+        /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public AnalysisGeometry
         (
-           List<AnyOf<IGeometry>> geometry, List<VisualizationData> dataSets, // Required parameters
-           int activeData = 0// Optional parameters
-        ) : base()// BaseClass
+            string identifier, List<IGeometry> geometry, List<VisualizationData> dataSets, // Required parameters
+            string displayName= default, Object userData= default, int activeData = 0, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
+        ) : base(identifier: identifier, displayName: displayName, userData: userData )// BaseClass
         {
             // to ensure "geometry" is required (not null)
             this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for AnalysisGeometry and cannot be null");
-
             // to ensure "dataSets" is required (not null)
             this.DataSets = dataSets ?? throw new ArgumentNullException("dataSets is a required property for AnalysisGeometry and cannot be null");
             this.ActiveData = activeData;
+            this.DisplayMode = displayMode;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "AnalysisGeometry";
@@ -75,11 +85,11 @@ namespace LadybugDisplaySchema
         public override string Type { get; protected set; }  = "AnalysisGeometry";
 
         /// <summary>
-        /// A ladybug-geometry object or list of ladybug-geometry objects that is aligned with the values in the input data_sets. If a Mesh or Polyface is specified here, it is expected that the number of values match the number of faces or the number of vertices. If a list of geometry objects is specified (ie. a list of Point3Ds), it is expected that the length of this list align with the number of values.
+        /// A list of ladybug-geometry objects that is aligned with the values in the input data_sets. The length of this list should usually be equal to the total number of values in each data_set, indicating that each geometry gets a single color. Alternatively, if all of the geometry objects are meshes, the number of values in the data can be equal to the total number of faces across the meshes or the total number of vertices across the meshes.
         /// </summary>
-        /// <value>A ladybug-geometry object or list of ladybug-geometry objects that is aligned with the values in the input data_sets. If a Mesh or Polyface is specified here, it is expected that the number of values match the number of faces or the number of vertices. If a list of geometry objects is specified (ie. a list of Point3Ds), it is expected that the length of this list align with the number of values.</value>
+        /// <value>A list of ladybug-geometry objects that is aligned with the values in the input data_sets. The length of this list should usually be equal to the total number of values in each data_set, indicating that each geometry gets a single color. Alternatively, if all of the geometry objects are meshes, the number of values in the data can be equal to the total number of faces across the meshes or the total number of vertices across the meshes.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
-        public List<AnyOf<IGeometry>> Geometry { get; set; } 
+        public List<IGeometry> Geometry { get; set; } 
         /// <summary>
         /// An list of VisualizationData objects representing the data sets that are associated with the input geometry.
         /// </summary>
@@ -114,9 +124,13 @@ namespace LadybugDisplaySchema
             var sb = new StringBuilder();
             sb.Append("AnalysisGeometry:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
+            sb.Append("  Identifier: ").Append(this.Identifier).Append("\n");
+            sb.Append("  DisplayName: ").Append(this.DisplayName).Append("\n");
+            sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
             sb.Append("  DataSets: ").Append(this.DataSets).Append("\n");
             sb.Append("  ActiveData: ").Append(this.ActiveData).Append("\n");
+            sb.Append("  DisplayMode: ").Append(this.DisplayMode).Append("\n");
             return sb.ToString();
         }
   
@@ -154,7 +168,7 @@ namespace LadybugDisplaySchema
         /// Creates a new instance with the same properties.
         /// </summary>
         /// <returns>OpenAPIGenBaseModel</returns>
-        public override OpenAPIGenBaseModel DuplicateOpenAPIGenBaseModel()
+        public override VisualizationBase DuplicateVisualizationBase()
         {
             return DuplicateAnalysisGeometry();
         }
@@ -180,13 +194,17 @@ namespace LadybugDisplaySchema
             if (input == null)
                 return false;
             return base.Equals(input) && 
-                    Extension.Equals(this.Geometry, input.Geometry) && 
+                (
+                    this.Geometry == input.Geometry ||
+                    Extension.AllEquals(this.Geometry, input.Geometry)
+                ) && 
                 (
                     this.DataSets == input.DataSets ||
                     Extension.AllEquals(this.DataSets, input.DataSets)
                 ) && 
                     Extension.Equals(this.Type, input.Type) && 
-                    Extension.Equals(this.ActiveData, input.ActiveData);
+                    Extension.Equals(this.ActiveData, input.ActiveData) && 
+                    Extension.Equals(this.DisplayMode, input.DisplayMode);
         }
 
         /// <summary>
@@ -206,6 +224,8 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.ActiveData != null)
                     hashCode = hashCode * 59 + this.ActiveData.GetHashCode();
+                if (this.DisplayMode != null)
+                    hashCode = hashCode * 59 + this.DisplayMode.GetHashCode();
                 return hashCode;
             }
         }

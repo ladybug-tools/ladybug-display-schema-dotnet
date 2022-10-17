@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **Geometry** | [**Mesh2D**](Mesh2D.md) | Mesh2D for the geometry. | 
 **Colors** | [**List&lt;Color&gt;**](Color.md) | A list of colors that correspond to either the faces of the mesh or the vertices of the mesh. It can also be a single color for the entire mesh. | 
 **Type** | **string** |  | [optional] [readonly] [default to "DisplayMesh2D"]
-**DisplayMode** | **DisplayModes** | Text to indicate the display mode (shaded, wireframe, etc.). The DisplayModes enumeration contains all acceptable types. | [optional] 
+**DisplayMode** | **DisplayModes** | Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

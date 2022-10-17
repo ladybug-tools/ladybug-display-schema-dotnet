@@ -31,11 +31,11 @@ namespace LadybugDisplaySchema
     public partial class DisplayMesh3D : DisplayBaseModel, IEquatable<DisplayMesh3D>, IValidatableObject
     {
         /// <summary>
-        /// Text to indicate the display mode (shaded, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.
+        /// Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.
         /// </summary>
-        /// <value>Text to indicate the display mode (shaded, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.</value>
+        /// <value>Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.</value>
         [DataMember(Name="display_mode")]
-        public DisplayModes DisplayMode { get; set; } = DisplayModes.Shaded;
+        public DisplayModes DisplayMode { get; set; } = DisplayModes.Surface;
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayMesh3D" /> class.
         /// </summary>
@@ -51,13 +51,13 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <param name="geometry">Mesh3D for the geometry. (required).</param>
         /// <param name="colors">A list of colors that correspond to either the faces of the mesh or the vertices of the mesh. It can also be a single color for the entire mesh. (required).</param>
-        /// <param name="displayMode">Text to indicate the display mode (shaded, wireframe, etc.). The DisplayModes enumeration contains all acceptable types..</param>
+        /// <param name="displayMode">Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types..</param>
         /// <param name="layer">Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public DisplayMesh3D
         (
            Mesh3D geometry, List<Color> colors, // Required parameters
-            string layer= default, Object userData= default, DisplayModes displayMode= DisplayModes.Shaded// Optional parameters
+            string layer= default, Object userData= default, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
         ) : base(layer: layer, userData: userData )// BaseClass
         {
             // to ensure "geometry" is required (not null)

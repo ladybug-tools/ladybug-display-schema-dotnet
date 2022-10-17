@@ -24,53 +24,43 @@ using System.ComponentModel.DataAnnotations;
 namespace LadybugDisplaySchema
 {
     /// <summary>
-    /// A mesh in 2D space with display properties.
+    /// An object representing context geometry to display.
     /// </summary>
     [Serializable]
-    [DataContract(Name = "DisplayMesh2D")]
-    public partial class DisplayMesh2D : DisplayBaseModel, IEquatable<DisplayMesh2D>, IValidatableObject
+    [DataContract(Name = "ContextGeometry")]
+    public partial class ContextGeometry : VisualizationBase, IEquatable<ContextGeometry>, IValidatableObject
     {
         /// <summary>
-        /// Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.
-        /// </summary>
-        /// <value>Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.</value>
-        [DataMember(Name="display_mode")]
-        public DisplayModes DisplayMode { get; set; } = DisplayModes.Surface;
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DisplayMesh2D" /> class.
+        /// Initializes a new instance of the <see cref="ContextGeometry" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected DisplayMesh2D() 
+        protected ContextGeometry() 
         { 
             // Set non-required readonly properties with defaultValue
-            this.Type = "DisplayMesh2D";
+            this.Type = "ContextGeometry";
         }
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="DisplayMesh2D" /> class.
+        /// Initializes a new instance of the <see cref="ContextGeometry" /> class.
         /// </summary>
-        /// <param name="geometry">Mesh2D for the geometry. (required).</param>
-        /// <param name="colors">A list of colors that correspond to either the faces of the mesh or the vertices of the mesh. It can also be a single color for the entire mesh. (required).</param>
-        /// <param name="displayMode">Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types..</param>
-        /// <param name="layer">Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such..</param>
+        /// <param name="geometry">A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization. (required).</param>
+        /// <param name="identifier">Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters. (required).</param>
+        /// <param name="displayName">Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
-        public DisplayMesh2D
+        public ContextGeometry
         (
-           Mesh2D geometry, List<Color> colors, // Required parameters
-            string layer= default, Object userData= default, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
-        ) : base(layer: layer, userData: userData )// BaseClass
+            string identifier, List<IDisplay> geometry, // Required parameters
+            string displayName= default, Object userData= default // Optional parameters
+        ) : base(identifier: identifier, displayName: displayName, userData: userData )// BaseClass
         {
             // to ensure "geometry" is required (not null)
-            this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for DisplayMesh2D and cannot be null");
-            // to ensure "colors" is required (not null)
-            this.Colors = colors ?? throw new ArgumentNullException("colors is a required property for DisplayMesh2D and cannot be null");
-            this.DisplayMode = displayMode;
+            this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for ContextGeometry and cannot be null");
 
             // Set non-required readonly properties with defaultValue
-            this.Type = "DisplayMesh2D";
+            this.Type = "ContextGeometry";
 
             // check if object is valid, only check for inherited class
-            if (this.GetType() == typeof(DisplayMesh2D))
+            if (this.GetType() == typeof(ContextGeometry))
                 this.IsValid(throwException: true);
         }
 
@@ -79,20 +69,14 @@ namespace LadybugDisplaySchema
         /// Gets or Sets Type
         /// </summary>
         [DataMember(Name = "type")]
-        public override string Type { get; protected set; }  = "DisplayMesh2D";
+        public override string Type { get; protected set; }  = "ContextGeometry";
 
         /// <summary>
-        /// Mesh2D for the geometry.
+        /// A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.
         /// </summary>
-        /// <value>Mesh2D for the geometry.</value>
+        /// <value>A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
-        public Mesh2D Geometry { get; set; } 
-        /// <summary>
-        /// A list of colors that correspond to either the faces of the mesh or the vertices of the mesh. It can also be a single color for the entire mesh.
-        /// </summary>
-        /// <value>A list of colors that correspond to either the faces of the mesh or the vertices of the mesh. It can also be a single color for the entire mesh.</value>
-        [DataMember(Name = "colors", IsRequired = true)]
-        public List<Color> Colors { get; set; } 
+        public List<IDisplay> Geometry { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -100,7 +84,7 @@ namespace LadybugDisplaySchema
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
-            return "DisplayMesh2D";
+            return "ContextGeometry";
         }
 
         /// <summary>
@@ -113,23 +97,22 @@ namespace LadybugDisplaySchema
                 return this.ToString();
             
             var sb = new StringBuilder();
-            sb.Append("DisplayMesh2D:\n");
+            sb.Append("ContextGeometry:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
-            sb.Append("  Layer: ").Append(this.Layer).Append("\n");
+            sb.Append("  Identifier: ").Append(this.Identifier).Append("\n");
+            sb.Append("  DisplayName: ").Append(this.DisplayName).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
-            sb.Append("  Colors: ").Append(this.Colors).Append("\n");
-            sb.Append("  DisplayMode: ").Append(this.DisplayMode).Append("\n");
             return sb.ToString();
         }
   
         /// <summary>
         /// Returns the object from JSON string
         /// </summary>
-        /// <returns>DisplayMesh2D object</returns>
-        public static DisplayMesh2D FromJson(string json)
+        /// <returns>ContextGeometry object</returns>
+        public static ContextGeometry FromJson(string json)
         {
-            var obj = JsonConvert.DeserializeObject<DisplayMesh2D>(json, JsonSetting.AnyOfConvertSetting);
+            var obj = JsonConvert.DeserializeObject<ContextGeometry>(json, JsonSetting.AnyOfConvertSetting);
             if (obj == null)
                 return null;
             return obj.Type.ToLower() == obj.GetType().Name.ToLower() && obj.IsValid(throwException: true) ? obj : null;
@@ -138,8 +121,8 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Creates a new instance with the same properties.
         /// </summary>
-        /// <returns>DisplayMesh2D object</returns>
-        public virtual DisplayMesh2D DuplicateDisplayMesh2D()
+        /// <returns>ContextGeometry object</returns>
+        public virtual ContextGeometry DuplicateContextGeometry()
         {
             return FromJson(this.ToJson());
         }
@@ -150,16 +133,16 @@ namespace LadybugDisplaySchema
         /// <returns>OpenAPIGenBaseModel</returns>
         public override OpenAPIGenBaseModel Duplicate()
         {
-            return DuplicateDisplayMesh2D();
+            return DuplicateContextGeometry();
         }
 
         /// <summary>
         /// Creates a new instance with the same properties.
         /// </summary>
         /// <returns>OpenAPIGenBaseModel</returns>
-        public override DisplayBaseModel DuplicateDisplayBaseModel()
+        public override VisualizationBase DuplicateVisualizationBase()
         {
-            return DuplicateDisplayMesh2D();
+            return DuplicateContextGeometry();
         }
      
         /// <summary>
@@ -170,26 +153,24 @@ namespace LadybugDisplaySchema
         public override bool Equals(object input)
         {
             input = input is AnyOf anyOf ? anyOf.Obj : input;
-            return this.Equals(input as DisplayMesh2D);
+            return this.Equals(input as ContextGeometry);
         }
 
         /// <summary>
-        /// Returns true if DisplayMesh2D instances are equal
+        /// Returns true if ContextGeometry instances are equal
         /// </summary>
-        /// <param name="input">Instance of DisplayMesh2D to be compared</param>
+        /// <param name="input">Instance of ContextGeometry to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(DisplayMesh2D input)
+        public bool Equals(ContextGeometry input)
         {
             if (input == null)
                 return false;
             return base.Equals(input) && 
-                    Extension.Equals(this.Geometry, input.Geometry) && 
                 (
-                    this.Colors == input.Colors ||
-                    Extension.AllEquals(this.Colors, input.Colors)
+                    this.Geometry == input.Geometry ||
+                    Extension.AllEquals(this.Geometry, input.Geometry)
                 ) && 
-                    Extension.Equals(this.Type, input.Type) && 
-                    Extension.Equals(this.DisplayMode, input.DisplayMode);
+                    Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>
@@ -203,12 +184,8 @@ namespace LadybugDisplaySchema
                 int hashCode = base.GetHashCode();
                 if (this.Geometry != null)
                     hashCode = hashCode * 59 + this.Geometry.GetHashCode();
-                if (this.Colors != null)
-                    hashCode = hashCode * 59 + this.Colors.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
-                if (this.DisplayMode != null)
-                    hashCode = hashCode * 59 + this.DisplayMode.GetHashCode();
                 return hashCode;
             }
         }
@@ -224,7 +201,7 @@ namespace LadybugDisplaySchema
 
             
             // Type (string) pattern
-            Regex regexType = new Regex(@"^DisplayMesh2D$", RegexOptions.CultureInvariant);
+            Regex regexType = new Regex(@"^ContextGeometry$", RegexOptions.CultureInvariant);
             if (this.Type != null && false == regexType.Match(this.Type).Success)
             {
                 yield return new System.ComponentModel.DataAnnotations.ValidationResult("Invalid value for Type, must match a pattern of " + regexType, new [] { "Type" });
