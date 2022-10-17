@@ -55,9 +55,9 @@ namespace LadybugDisplaySchema
                     };
                 legendPar = legendPar.DuplicateLegendParameters();
 
-                legendPar.Min = legendPar.Min == null || legendPar.Min is Default ? min : legendPar.Min;
-                legendPar.Max = legendPar.Max == null || legendPar.Max is Default ? max : legendPar.Max;
-                legendPar.SegmentCount = legendPar.SegmentCount == null || legendPar.SegmentCount is Default ? 10 : legendPar.SegmentCount;
+                legendPar.Min = legendPar.Min == null || legendPar.Min.Obj is Default ? min : legendPar.Min;
+                legendPar.Max = legendPar.Max == null || legendPar.Max.Obj is Default ? max : legendPar.Max;
+                legendPar.SegmentCount = legendPar.SegmentCount == null || legendPar.SegmentCount.Obj is Default ? 10 : legendPar.SegmentCount;
                 legendPar.OrdinalDictionary = keyMapper;
                 legendPar.ContinuousLegend = false;
 
@@ -77,9 +77,9 @@ namespace LadybugDisplaySchema
                 var legendPar = this.LegendParameters ?? new LegendParameters(min, max, 10) { ContinuousLegend = true };
                 legendPar = legendPar.DuplicateLegendParameters();
 
-                legendPar.Min = legendPar.Min == null || legendPar.Min is Default ? min : legendPar.Min;
-                legendPar.Max = legendPar.Max == null || legendPar.Max is Default ? max : legendPar.Max;
-                legendPar.SegmentCount = legendPar.SegmentCount == null || legendPar.SegmentCount is Default ? 10 : legendPar.SegmentCount;
+                legendPar.Min = legendPar.Min == null || legendPar.Min.Obj is Default ? min : legendPar.Min;
+                legendPar.Max = legendPar.Max == null || legendPar.Max.Obj is Default ? max : legendPar.Max;
+                legendPar.SegmentCount = legendPar.SegmentCount == null || legendPar.SegmentCount.Obj is Default ? 10 : legendPar.SegmentCount;
 
                 legendPar.OrdinalDictionary = null;
                 this.LegendParameters = legendPar;

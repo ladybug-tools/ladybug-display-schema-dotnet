@@ -49,7 +49,7 @@ namespace LadybugDisplaySchema
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public ContextGeometry
         (
-            string identifier, List<IDisplay> geometry, // Required parameters
+            string identifier, List<AnyOf<IDisplay>> geometry, // Required parameters
             string displayName= default, Object userData= default // Optional parameters
         ) : base(identifier: identifier, displayName: displayName, userData: userData )// BaseClass
         {
@@ -76,7 +76,7 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <value>A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
-        public List<IDisplay> Geometry { get; set; } 
+        public List<AnyOf<IDisplay>> Geometry { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object

@@ -5,15 +5,6 @@ namespace LadybugDisplaySchema
 {
     public partial class Vector2D 
     {
-        /// <summary>
-        /// Number of decimals to use for calculation.
-        /// </summary>
-        protected const int APPROX = 6;
-        /// <summary>
-        /// Default tolerance to for calculation.
-        /// </summary>
-        protected const double TOL = 0.000001;
-
  
         
         public double Magnitude

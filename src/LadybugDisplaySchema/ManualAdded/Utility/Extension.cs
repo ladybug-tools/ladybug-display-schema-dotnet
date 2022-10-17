@@ -110,7 +110,7 @@ namespace LadybugDisplaySchema
             }
         }
 
-        public static bool Equals(object x, object y)
+        public new static bool Equals(object x, object y)
         {
 
             if (x == y)

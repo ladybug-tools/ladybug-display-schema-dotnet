@@ -58,7 +58,7 @@ namespace LadybugDisplaySchema
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public AnalysisGeometry
         (
-            string identifier, List<IGeometry> geometry, List<VisualizationData> dataSets, // Required parameters
+            string identifier, List<AnyOf<IGeometry>> geometry, List<VisualizationData> dataSets, // Required parameters
             string displayName= default, Object userData= default, int activeData = 0, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
         ) : base(identifier: identifier, displayName: displayName, userData: userData )// BaseClass
         {
@@ -89,7 +89,7 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <value>A list of ladybug-geometry objects that is aligned with the values in the input data_sets. The length of this list should usually be equal to the total number of values in each data_set, indicating that each geometry gets a single color. Alternatively, if all of the geometry objects are meshes, the number of values in the data can be equal to the total number of faces across the meshes or the total number of vertices across the meshes.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
-        public List<IGeometry> Geometry { get; set; } 
+        public List<AnyOf<IGeometry>> Geometry { get; set; } 
         /// <summary>
         /// An list of VisualizationData objects representing the data sets that are associated with the input geometry.
         /// </summary>

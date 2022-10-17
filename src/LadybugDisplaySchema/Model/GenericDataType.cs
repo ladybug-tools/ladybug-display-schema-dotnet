@@ -37,7 +37,7 @@ namespace LadybugDisplaySchema
         protected GenericDataType() 
         { 
             // Set non-required readonly properties with defaultValue
-            this.Type = "DataType";
+            this.Type = "GenericDataType";
         }
         
         /// <summary>
@@ -73,7 +73,7 @@ namespace LadybugDisplaySchema
             this.Cumulative = cumulative;
 
             // Set non-required readonly properties with defaultValue
-            this.Type = "DataType";
+            this.Type = "GenericDataType";
 
             // check if object is valid, only check for inherited class
             if (this.GetType() == typeof(GenericDataType))
@@ -85,7 +85,7 @@ namespace LadybugDisplaySchema
         /// Gets or Sets Type
         /// </summary>
         [DataMember(Name = "type")]
-        public override string Type { get; protected set; }  = "DataType";
+        public override string Type { get; protected set; }  = "GenericDataType";
 
         /// <summary>
         /// Text to indicate how the data type displays. This can be more specific than the data_type.

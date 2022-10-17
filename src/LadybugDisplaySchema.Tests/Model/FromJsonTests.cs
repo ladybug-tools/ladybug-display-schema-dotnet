@@ -36,8 +36,9 @@ namespace LadybugDisplaySchema.Test
             Assert.AreEqual(obj.Type, "AnalysisGeometry");
             var geos = obj.Geometry.Where(_ => _ != null).ToList();
             Assert.AreEqual(geos.Count, 1);
-            var cGeo = geos[0].Obj as Arc2D;
-            Assert.AreEqual(cGeo.R, 3);
+            var cGeo = geos[0].Obj as Mesh2D;
+            Assert.AreEqual(cGeo.Colors, null);
+            Assert.AreEqual(cGeo.Faces.Count, 100);
 
         }
 
@@ -50,10 +51,10 @@ namespace LadybugDisplaySchema.Test
 
             var obj = VisualizationSet.FromJson(json);
             Assert.AreEqual(obj.Type, "VisualizationSet");
-            var contexts = obj.ContextGeometry.Where(_ => _ != null).ToList();
-            Assert.AreEqual(contexts.Count, 2);
-            var cGeo = contexts[0].Obj as DisplayArc2D;
-            Assert.IsTrue(cGeo.LineWidth.Obj is Default);
+            var contexts = obj.Geometry.OfType<ContextGeometry>().Where(_ => _ != null).ToList();
+            Assert.AreEqual(contexts.Count, 1);
+            var cGeo = contexts.First().Geometry.FirstOrDefault().Obj as DisplayFace3D;
+            Assert.IsTrue(cGeo.DisplayMode == DisplayModes.Wireframe);
 
         }
 
@@ -65,7 +66,15 @@ namespace LadybugDisplaySchema.Test
             var json = File.ReadAllText(file);
             var obj = DisplayArc2D.FromJson(json);
 
-            Assert.IsTrue(obj.LineWidth.Obj is Default);
+            if (obj.LineWidth.Obj is double d)
+            {
+                Assert.AreEqual(d, 1);
+            }
+            else
+            {
+                Assert.IsTrue(obj.LineWidth.Obj is Default);
+            }
+            
 
         }
 
