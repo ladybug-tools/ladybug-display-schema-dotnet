@@ -12,6 +12,6 @@
     "b": 0,
     "a": 255
   },
-  "line_width": { "type": "Default" },
+  "line_width": 1,
   "line_type": "Dashed"
 }

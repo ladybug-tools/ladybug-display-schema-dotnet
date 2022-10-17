@@ -11,7 +11,7 @@ namespace LadybugDisplaySchema
         /// Get the magnitude of the vector.
         /// </summary>
 
-        public new double Magnitude
+        public double Magnitude
         {
             get
             {
@@ -23,7 +23,7 @@ namespace LadybugDisplaySchema
         /// Get the magnitude squared of the vector.
         /// </summary>
         
-        public new double MagnitudeSquared
+        public double MagnitudeSquared
         {
             get
             {
@@ -37,7 +37,7 @@ namespace LadybugDisplaySchema
         /// Boolean to note whether the vector is zero.
         /// </summary>
         
-        public new bool IsNotZero
+        public bool IsNotZero
         {
             get
             {
@@ -60,7 +60,7 @@ namespace LadybugDisplaySchema
         /// Get Vector3D as an array of two numbers
         /// </summary>
         /// <returns>Array</returns>
-        public new double[] ToArray()
+        public double[] ToArray()
         {
             return new[] { X, Y, Z };
         }
@@ -71,7 +71,7 @@ namespace LadybugDisplaySchema
         /// <param name="tolerance">The tolerance below which the vector is considered to
         /// be a zero vector.</param>
         /// <returns>True o false.</returns>
-        public new bool IsZero(double tolerance)
+        public bool IsZero(double tolerance)
         {
             return (Math.Abs(X) <= tolerance) &&
                 (Math.Abs(Y) <= tolerance) && 
@@ -96,7 +96,7 @@ namespace LadybugDisplaySchema
         /// Get a copy of this vector that is reversed.
         /// </summary>
         /// <returns>Reversed Vector3D.</returns>
-        public new Vector3D Reverse()
+        public Vector3D Reverse()
         {
             return new Vector3D(-X, -Y, -Z);
         }
@@ -117,7 +117,7 @@ namespace LadybugDisplaySchema
         /// Get a copy of the vector that is a unit vector (magnitude=1)
         /// </summary>
         /// <returns>Vector3D object.</returns>
-        public new Vector3D Normalize()
+        public Vector3D Normalize()
         {
             var d = Magnitude;
             if (d != 0)
@@ -281,7 +281,7 @@ namespace LadybugDisplaySchema
                 vec.Z / other);
         }
 
-        public new Vector3D Floor(double other)
+        public Vector3D Floor(double other)
         {
             return new Vector3D(Math.Floor(X / other),
                         Math.Floor(Y / other),
