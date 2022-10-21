@@ -38,21 +38,19 @@ namespace LadybugDisplaySchema
         /// <param name="segmentCount">An integer representing the number of steps between the high and low boundary of the legend. The default is set to 11 or it will be equal to the number of items in the ordinal_dictionary. Any custom values input in here should always be greater than or equal to 2..</param>
         /// <param name="colors">An list of color objects. Default is the Ladybug original colorset..</param>
         /// <param name="title">Text string for Legend title. Typically, the units of the data are used here but the type of data might also be used. (default to &quot;&quot;).</param>
-        /// <param name="basePlane">A Ladybug Plane object to note the starting point from where the legend will be generated. The default is the world XY plane at origin (0, 0, 0)..</param>
         /// <param name="continuousLegend">Boolean noting whether legend is drawn as a gradient or discrete segments. (default to false).</param>
         /// <param name="ordinalDictionary">Optional dictionary that maps values to text categories. If None, numerical values will be used for the legend segments. If not, text categories will be used and the legend will be ordinal. Note that, if the number of items in the dictionary are less than the segment_count, some segments will not receive any label. Examples for possible dictionaries include: {-1: \&quot;Cold\&quot;, 0: \&quot;Neutral\&quot;, 1: \&quot;Hot\&quot;}, {0: \&quot;False\&quot;, 1: \&quot;True\&quot;}.</param>
         /// <param name="decimalCount">An an integer for the number of decimal places in the legend text. Note that this input has no bearing on the resulting legend text when an ordinal_dictionary is present. (default to 2).</param>
         /// <param name="includeLargerSmaller">Boolean noting whether &gt; and &lt; should be included in legend segment text. (default to false).</param>
         /// <param name="vertical">Boolean noting whether legend is vertical (True) or horizontal (False). (default to true).</param>
-        /// <param name="segmentHeight">A number to set the height for each of the legend segments..</param>
-        /// <param name="segmentWidth">A number to set the width for each of the legend segments..</param>
-        /// <param name="textHeight">A number to set the height for the legend text. Default is 1/3 of the segment_height..</param>
         /// <param name="font">Text string to set the font for the legend text. Examples include \&quot;Arial\&quot;, \&quot;Times New Roman\&quot;, \&quot;Courier\&quot;. Note that this parameter may not have an effect on certain interfaces that have limited access to fonts. (default to &quot;Arial&quot;).</param>
+        /// <param name="properties3d">A Legend3DParameters object to specify the dimensional properties of the legend when it is rendered in the 3D environment of the geometry scene..</param>
+        /// <param name="properties2d">A Legend2DParameters object to specify the dimensional properties of the legend when it is rendered in the 2D plane of a screen..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public LegendParameters
         (
             // Required parameters
-           AnyOf<Default, double> min= default, AnyOf<Default, double> max= default, AnyOf<Default, int> segmentCount= default, List<Color> colors= default, string title = "", Plane basePlane= default, bool continuousLegend = false, Object ordinalDictionary= default, int decimalCount = 2, bool includeLargerSmaller = false, bool vertical = true, AnyOf<Default, double> segmentHeight= default, AnyOf<Default, double> segmentWidth= default, AnyOf<Default, double> textHeight= default, string font = "Arial", Object userData= default// Optional parameters
+           AnyOf<Default, double> min= default, AnyOf<Default, double> max= default, AnyOf<Default, int> segmentCount= default, List<Color> colors= default, string title = "", bool continuousLegend = false, Object ordinalDictionary= default, int decimalCount = 2, bool includeLargerSmaller = false, bool vertical = true, string font = "Arial", Legend3DParameters properties3d= default, Legend2DParameters properties2d= default, Object userData= default// Optional parameters
         ) : base()// BaseClass
         {
             this.Min = min;
@@ -61,17 +59,15 @@ namespace LadybugDisplaySchema
             this.Colors = colors;
             // use default value if no "title" provided
             this.Title = title ?? "";
-            this.BasePlane = basePlane;
             this.ContinuousLegend = continuousLegend;
             this.OrdinalDictionary = ordinalDictionary;
             this.DecimalCount = decimalCount;
             this.IncludeLargerSmaller = includeLargerSmaller;
             this.Vertical = vertical;
-            this.SegmentHeight = segmentHeight;
-            this.SegmentWidth = segmentWidth;
-            this.TextHeight = textHeight;
             // use default value if no "font" provided
             this.Font = font ?? "Arial";
+            this.Properties3d = properties3d;
+            this.Properties2d = properties2d;
             this.UserData = userData;
 
             // Set non-required readonly properties with defaultValue
@@ -120,12 +116,6 @@ namespace LadybugDisplaySchema
         [DataMember(Name = "title")]
         public string Title { get; set; }  = "";
         /// <summary>
-        /// A Ladybug Plane object to note the starting point from where the legend will be generated. The default is the world XY plane at origin (0, 0, 0).
-        /// </summary>
-        /// <value>A Ladybug Plane object to note the starting point from where the legend will be generated. The default is the world XY plane at origin (0, 0, 0).</value>
-        [DataMember(Name = "base_plane")]
-        public Plane BasePlane { get; set; } 
-        /// <summary>
         /// Boolean noting whether legend is drawn as a gradient or discrete segments.
         /// </summary>
         /// <value>Boolean noting whether legend is drawn as a gradient or discrete segments.</value>
@@ -156,29 +146,23 @@ namespace LadybugDisplaySchema
         [DataMember(Name = "vertical")]
         public bool Vertical { get; set; }  = true;
         /// <summary>
-        /// A number to set the height for each of the legend segments.
-        /// </summary>
-        /// <value>A number to set the height for each of the legend segments.</value>
-        [DataMember(Name = "segment_height")]
-        public AnyOf<Default, double> SegmentHeight { get; set; } 
-        /// <summary>
-        /// A number to set the width for each of the legend segments.
-        /// </summary>
-        /// <value>A number to set the width for each of the legend segments.</value>
-        [DataMember(Name = "segment_width")]
-        public AnyOf<Default, double> SegmentWidth { get; set; } 
-        /// <summary>
-        /// A number to set the height for the legend text. Default is 1/3 of the segment_height.
-        /// </summary>
-        /// <value>A number to set the height for the legend text. Default is 1/3 of the segment_height.</value>
-        [DataMember(Name = "text_height")]
-        public AnyOf<Default, double> TextHeight { get; set; } 
-        /// <summary>
         /// Text string to set the font for the legend text. Examples include \&quot;Arial\&quot;, \&quot;Times New Roman\&quot;, \&quot;Courier\&quot;. Note that this parameter may not have an effect on certain interfaces that have limited access to fonts.
         /// </summary>
         /// <value>Text string to set the font for the legend text. Examples include \&quot;Arial\&quot;, \&quot;Times New Roman\&quot;, \&quot;Courier\&quot;. Note that this parameter may not have an effect on certain interfaces that have limited access to fonts.</value>
         [DataMember(Name = "font")]
         public string Font { get; set; }  = "Arial";
+        /// <summary>
+        /// A Legend3DParameters object to specify the dimensional properties of the legend when it is rendered in the 3D environment of the geometry scene.
+        /// </summary>
+        /// <value>A Legend3DParameters object to specify the dimensional properties of the legend when it is rendered in the 3D environment of the geometry scene.</value>
+        [DataMember(Name = "properties_3d")]
+        public Legend3DParameters Properties3d { get; set; } 
+        /// <summary>
+        /// A Legend2DParameters object to specify the dimensional properties of the legend when it is rendered in the 2D plane of a screen.
+        /// </summary>
+        /// <value>A Legend2DParameters object to specify the dimensional properties of the legend when it is rendered in the 2D plane of a screen.</value>
+        [DataMember(Name = "properties_2d")]
+        public Legend2DParameters Properties2d { get; set; } 
         /// <summary>
         /// Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).
         /// </summary>
@@ -212,16 +196,14 @@ namespace LadybugDisplaySchema
             sb.Append("  SegmentCount: ").Append(this.SegmentCount).Append("\n");
             sb.Append("  Colors: ").Append(this.Colors).Append("\n");
             sb.Append("  Title: ").Append(this.Title).Append("\n");
-            sb.Append("  BasePlane: ").Append(this.BasePlane).Append("\n");
             sb.Append("  ContinuousLegend: ").Append(this.ContinuousLegend).Append("\n");
             sb.Append("  OrdinalDictionary: ").Append(this.OrdinalDictionary).Append("\n");
             sb.Append("  DecimalCount: ").Append(this.DecimalCount).Append("\n");
             sb.Append("  IncludeLargerSmaller: ").Append(this.IncludeLargerSmaller).Append("\n");
             sb.Append("  Vertical: ").Append(this.Vertical).Append("\n");
-            sb.Append("  SegmentHeight: ").Append(this.SegmentHeight).Append("\n");
-            sb.Append("  SegmentWidth: ").Append(this.SegmentWidth).Append("\n");
-            sb.Append("  TextHeight: ").Append(this.TextHeight).Append("\n");
             sb.Append("  Font: ").Append(this.Font).Append("\n");
+            sb.Append("  Properties3d: ").Append(this.Properties3d).Append("\n");
+            sb.Append("  Properties2d: ").Append(this.Properties2d).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             return sb.ToString();
         }
@@ -295,16 +277,14 @@ namespace LadybugDisplaySchema
                     Extension.AllEquals(this.Colors, input.Colors)
                 ) && 
                     Extension.Equals(this.Title, input.Title) && 
-                    Extension.Equals(this.BasePlane, input.BasePlane) && 
                     Extension.Equals(this.ContinuousLegend, input.ContinuousLegend) && 
                     Extension.Equals(this.OrdinalDictionary, input.OrdinalDictionary) && 
                     Extension.Equals(this.DecimalCount, input.DecimalCount) && 
                     Extension.Equals(this.IncludeLargerSmaller, input.IncludeLargerSmaller) && 
                     Extension.Equals(this.Vertical, input.Vertical) && 
-                    Extension.Equals(this.SegmentHeight, input.SegmentHeight) && 
-                    Extension.Equals(this.SegmentWidth, input.SegmentWidth) && 
-                    Extension.Equals(this.TextHeight, input.TextHeight) && 
                     Extension.Equals(this.Font, input.Font) && 
+                    Extension.Equals(this.Properties3d, input.Properties3d) && 
+                    Extension.Equals(this.Properties2d, input.Properties2d) && 
                     Extension.Equals(this.UserData, input.UserData);
         }
 
@@ -329,8 +309,6 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.Colors.GetHashCode();
                 if (this.Title != null)
                     hashCode = hashCode * 59 + this.Title.GetHashCode();
-                if (this.BasePlane != null)
-                    hashCode = hashCode * 59 + this.BasePlane.GetHashCode();
                 if (this.ContinuousLegend != null)
                     hashCode = hashCode * 59 + this.ContinuousLegend.GetHashCode();
                 if (this.OrdinalDictionary != null)
@@ -341,14 +319,12 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.IncludeLargerSmaller.GetHashCode();
                 if (this.Vertical != null)
                     hashCode = hashCode * 59 + this.Vertical.GetHashCode();
-                if (this.SegmentHeight != null)
-                    hashCode = hashCode * 59 + this.SegmentHeight.GetHashCode();
-                if (this.SegmentWidth != null)
-                    hashCode = hashCode * 59 + this.SegmentWidth.GetHashCode();
-                if (this.TextHeight != null)
-                    hashCode = hashCode * 59 + this.TextHeight.GetHashCode();
                 if (this.Font != null)
                     hashCode = hashCode * 59 + this.Font.GetHashCode();
+                if (this.Properties3d != null)
+                    hashCode = hashCode * 59 + this.Properties3d.GetHashCode();
+                if (this.Properties2d != null)
+                    hashCode = hashCode * 59 + this.Properties2d.GetHashCode();
                 if (this.UserData != null)
                     hashCode = hashCode * 59 + this.UserData.GetHashCode();
                 return hashCode;

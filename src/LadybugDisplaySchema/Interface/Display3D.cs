@@ -20,5 +20,6 @@ namespace LadybugDisplaySchema
 	public partial class DisplayPolyline3D: LadybugDisplaySchema.IDisplay3D {}
 	public partial class DisplayRay3D: LadybugDisplaySchema.IDisplay3D {}
 	public partial class DisplaySphere: LadybugDisplaySchema.IDisplay3D {}
+	public partial class DisplayText3D: LadybugDisplaySchema.IDisplay3D {}
 	public partial class DisplayVector3D: LadybugDisplaySchema.IDisplay3D {}
 }

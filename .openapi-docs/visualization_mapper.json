@@ -29,10 +29,13 @@
         "DisplayRay2D": "ladybug_display_schema.display2d",
         "DisplayRay3D": "ladybug_display_schema.display3d",
         "DisplaySphere": "ladybug_display_schema.display3d",
+        "DisplayText3D": "ladybug_display_schema.display3d",
         "DisplayVector2D": "ladybug_display_schema.display2d",
         "DisplayVector3D": "ladybug_display_schema.display3d",
         "Face3D": "ladybug_display_schema.geometry3d",
         "GenericDataType": "ladybug_display_schema.visualization",
+        "Legend2DParameters": "ladybug_display_schema.visualization",
+        "Legend3DParameters": "ladybug_display_schema.visualization",
         "LegendParameters": "ladybug_display_schema.visualization",
         "LineCurveBase": "ladybug_display_schema.base",
         "LineSegment2D": "ladybug_display_schema.geometry2d",
@@ -60,6 +63,8 @@
     "enums": {
         "DataTypes": "ladybug_display_schema.visualization",
         "DisplayModes": "ladybug_display_schema.base",
-        "LineTypes": "ladybug_display_schema.base"
+        "HorizontalAlignments": "ladybug_display_schema.base",
+        "LineTypes": "ladybug_display_schema.base",
+        "VerticalAlignments": "ladybug_display_schema.base"
     }
 }

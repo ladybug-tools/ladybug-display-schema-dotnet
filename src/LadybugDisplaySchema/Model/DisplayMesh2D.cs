@@ -52,13 +52,12 @@ namespace LadybugDisplaySchema
         /// <param name="geometry">Mesh2D for the geometry. (required).</param>
         /// <param name="colors">A list of colors that correspond to either the faces of the mesh or the vertices of the mesh. It can also be a single color for the entire mesh. (required).</param>
         /// <param name="displayMode">Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types..</param>
-        /// <param name="layer">Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public DisplayMesh2D
         (
            Mesh2D geometry, List<Color> colors, // Required parameters
-            string layer= default, Object userData= default, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
-        ) : base(layer: layer, userData: userData )// BaseClass
+            Object userData= default, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
+        ) : base(userData: userData )// BaseClass
         {
             // to ensure "geometry" is required (not null)
             this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for DisplayMesh2D and cannot be null");
@@ -115,7 +114,6 @@ namespace LadybugDisplaySchema
             var sb = new StringBuilder();
             sb.Append("DisplayMesh2D:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
-            sb.Append("  Layer: ").Append(this.Layer).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
             sb.Append("  Colors: ").Append(this.Colors).Append("\n");

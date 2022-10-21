@@ -3,7 +3,7 @@
     "servers": [],
     "info": {
         "description": "Documentation for Ladybug geometry schema",
-        "version": "0.5.0",
+        "version": "0.7.0",
         "title": "Ladybug Geometry Schema",
         "contact": {
             "name": "Ladybug Tools",
@@ -179,7 +179,7 @@
     "paths": {},
     "components": {
         "schemas": {
-            "Point3D": {
+            "Arc2D": {
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
@@ -187,226 +187,9 @@
                     {
                         "type": "object",
                         "properties": {
-                            "x": {
-                                "title": "X",
-                                "description": "Number for X coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "y": {
-                                "title": "Y",
-                                "description": "Number for Y coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "z": {
-                                "title": "Z",
-                                "description": "Number for Z coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Point3D",
-                                "pattern": "^Point3D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "x",
-                            "y",
-                            "z"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Point3D",
-                "description": "A point object in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "PolyfaceEdgeInfo": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "edge_indices": {
-                                "title": "Edge Indices",
-                                "description": "An array objects that each contain two integers. These integers correspond to indices within the vertices list and each tuple represents a line segment for an edge of the polyface.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "format": "int32"
-                                    },
-                                    "minItems": 2,
-                                    "maxItems": 2
-                                }
-                            },
-                            "edge_types": {
-                                "title": "Edge Types",
-                                "description": "An array of integers for each edge that parallels the edge_indices list. An integer of 0 denotes a naked edge, an integer of 1 denotes an internal edge. Anything higher is a non-manifold edge.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "format": "int32"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "PolyfaceEdgeInfo",
-                                "type": "string",
-                                "pattern": "^PolyfaceEdgeInfo$",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "edge_indices",
-                            "edge_types"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "PolyfaceEdgeInfo",
-                "description": "Optional edge information for Polyface.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Polyface3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "vertices": {
-                                "title": "Vertices",
-                                "description": "A list of points representing the vertices of the polyface. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "number",
-                                        "format": "double"
-                                    },
-                                    "minItems": 3,
-                                    "maxItems": 3
-                                }
-                            },
-                            "face_indices": {
-                                "title": "Face Indices",
-                                "description": "A list of lists with one list for each face of the polyface. Each face list must contain at least one sub-list of integers corresponding to indices within the vertices list. Additional sub-lists of integers may follow this one such that the first sub-list denotes the boundary of the face while each subsequent sub-list denotes a hole in the face.",
-                                "minItems": 1,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "format": "int32"
-                                        },
-                                        "minItems": 3
-                                    },
-                                    "minItems": 1
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Polyface3D",
-                                "pattern": "^Polyface3D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "edge_information": {
-                                "title": "Edge Information",
-                                "description": "Optional edge information, which will speed up the creation of the Polyface object if it is available but should be left as None if it is unknown. If None, edge_information will be computed from the vertices and face_indices inputs.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/PolyfaceEdgeInfo"
-                                    }
-                                ]
-                            }
-                        },
-                        "required": [
-                            "vertices",
-                            "face_indices"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Polyface3D",
-                "description": "A Polyface in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Vector2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "x": {
-                                "title": "X",
-                                "description": "Number for X coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "y": {
-                                "title": "Y",
-                                "description": "Number for Y coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Vector2D",
-                                "pattern": "^Vector2D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "x",
-                            "y"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Vector2D",
-                "description": "A vector object in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "LineSegment2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "p": {
-                                "title": "P",
-                                "description": "Line segment base point as 2 (x, y) values.",
+                            "c": {
+                                "title": "C",
+                                "description": "Center of the arc as 2 (x, y) values.",
                                 "minItems": 2,
                                 "maxItems": 2,
                                 "type": "array",
@@ -415,148 +198,47 @@
                                     "format": "double"
                                 }
                             },
-                            "v": {
-                                "title": "V",
-                                "description": "Line segment direction vector as 2 (x, y) values.",
-                                "minItems": 2,
-                                "maxItems": 2,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "LineSegment2D",
-                                "pattern": "^LineSegment2D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "p",
-                            "v"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "LineSegment2D",
-                "description": "A single line segment face in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Color": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
                             "r": {
                                 "title": "R",
-                                "description": "Value for red channel.",
-                                "minimum": 0,
-                                "maximum": 255,
-                                "type": "integer",
-                                "format": "int32"
-                            },
-                            "g": {
-                                "title": "G",
-                                "description": "Value for green channel.",
-                                "minimum": 0,
-                                "maximum": 255,
-                                "type": "integer",
-                                "format": "int32"
-                            },
-                            "b": {
-                                "title": "B",
-                                "description": "Value for blue channel.",
-                                "minimum": 0,
-                                "maximum": 255,
-                                "type": "integer",
-                                "format": "int32"
+                                "description": "A number representing the radius of the arc.",
+                                "type": "number",
+                                "format": "double"
                             },
                             "type": {
                                 "title": "Type",
-                                "default": "Color",
-                                "pattern": "^Color$",
+                                "default": "Arc2D",
+                                "pattern": "^Arc2D$",
                                 "type": "string",
                                 "readOnly": true
                             },
-                            "a": {
-                                "title": "A",
-                                "description": "Value for the alpha channel, which defines the opacity as a number between 0 (fully transparent) and 255 (fully opaque).",
-                                "default": 255,
+                            "a1": {
+                                "title": "A1",
+                                "description": "A number between 0 and 2 * pi for the start angle of the arc.",
+                                "default": 0,
                                 "minimum": 0,
-                                "maximum": 255,
-                                "type": "integer",
-                                "format": "int32"
+                                "maximum": 6.283185307179586,
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "a2": {
+                                "title": "A2",
+                                "description": "A number between 0 and 2 * pi for the end angle of the arc.",
+                                "default": 6.283185307179586,
+                                "minimum": 0,
+                                "maximum": 6.283185307179586,
+                                "type": "number",
+                                "format": "double"
                             }
                         },
                         "required": [
-                            "r",
-                            "g",
-                            "b"
+                            "c",
+                            "r"
                         ],
                         "additionalProperties": false
                     }
                 ],
-                "title": "Color",
-                "description": "A RGB color.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "LineSegment3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "p": {
-                                "title": "P",
-                                "description": "Line segment base point as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "v": {
-                                "title": "V",
-                                "description": "Line segment direction vector as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "LineSegment3D",
-                                "pattern": "^LineSegment3D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "p",
-                            "v"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "LineSegment3D",
-                "description": "A single line segment face in 3D space.",
+                "title": "Arc2D",
+                "description": "A single arc or circle in 2D space.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -619,70 +301,6 @@
                 ],
                 "title": "Plane",
                 "description": "A plane object.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Arc2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "c": {
-                                "title": "C",
-                                "description": "Center of the arc as 2 (x, y) values.",
-                                "minItems": 2,
-                                "maxItems": 2,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "r": {
-                                "title": "R",
-                                "description": "A number representing the radius of the arc.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Arc2D",
-                                "pattern": "^Arc2D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "a1": {
-                                "title": "A1",
-                                "description": "A number between 0 and 2 * pi for the start angle of the arc.",
-                                "default": 0,
-                                "minimum": 0,
-                                "maximum": 6.283185307179586,
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "a2": {
-                                "title": "A2",
-                                "description": "A number between 0 and 2 * pi for the end angle of the arc.",
-                                "default": 6.283185307179586,
-                                "minimum": 0,
-                                "maximum": 6.283185307179586,
-                                "type": "number",
-                                "format": "double"
-                            }
-                        },
-                        "required": [
-                            "c",
-                            "r"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Arc2D",
-                "description": "A single arc or circle in 2D space.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -757,6 +375,69 @@
                     "propertyName": "type"
                 }
             },
+            "Color": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "r": {
+                                "title": "R",
+                                "description": "Value for red channel.",
+                                "minimum": 0,
+                                "maximum": 255,
+                                "type": "integer",
+                                "format": "int32"
+                            },
+                            "g": {
+                                "title": "G",
+                                "description": "Value for green channel.",
+                                "minimum": 0,
+                                "maximum": 255,
+                                "type": "integer",
+                                "format": "int32"
+                            },
+                            "b": {
+                                "title": "B",
+                                "description": "Value for blue channel.",
+                                "minimum": 0,
+                                "maximum": 255,
+                                "type": "integer",
+                                "format": "int32"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Color",
+                                "pattern": "^Color$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "a": {
+                                "title": "A",
+                                "description": "Value for the alpha channel, which defines the opacity as a number between 0 (fully transparent) and 255 (fully opaque).",
+                                "default": 255,
+                                "minimum": 0,
+                                "maximum": 255,
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        },
+                        "required": [
+                            "r",
+                            "g",
+                            "b"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Color",
+                "description": "A RGB color.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
             "Mesh2D": {
                 "allOf": [
                     {
@@ -821,6 +502,62 @@
                 ],
                 "title": "Mesh2D",
                 "description": "A mesh in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "PolyfaceEdgeInfo": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "edge_indices": {
+                                "title": "Edge Indices",
+                                "description": "An array objects that each contain two integers. These integers correspond to indices within the vertices list and each tuple represents a line segment for an edge of the polyface.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "format": "int32"
+                                    },
+                                    "minItems": 2,
+                                    "maxItems": 2
+                                }
+                            },
+                            "edge_types": {
+                                "title": "Edge Types",
+                                "description": "An array of integers for each edge that parallels the edge_indices list. An integer of 0 denotes a naked edge, an integer of 1 denotes an internal edge. Anything higher is a non-manifold edge.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "format": "int32"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "PolyfaceEdgeInfo",
+                                "type": "string",
+                                "pattern": "^PolyfaceEdgeInfo$",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "edge_indices",
+                            "edge_types"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "PolyfaceEdgeInfo",
+                "description": "Optional edge information for Polyface.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -1449,6 +1186,269 @@
                 ],
                 "title": "Ray3D",
                 "description": "A ray object in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Point3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "title": "X",
+                                "description": "Number for X coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "y": {
+                                "title": "Y",
+                                "description": "Number for Y coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "z": {
+                                "title": "Z",
+                                "description": "Number for Z coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Point3D",
+                                "pattern": "^Point3D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y",
+                            "z"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Point3D",
+                "description": "A point object in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Polyface3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "vertices": {
+                                "title": "Vertices",
+                                "description": "A list of points representing the vertices of the polyface. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                }
+                            },
+                            "face_indices": {
+                                "title": "Face Indices",
+                                "description": "A list of lists with one list for each face of the polyface. Each face list must contain at least one sub-list of integers corresponding to indices within the vertices list. Additional sub-lists of integers may follow this one such that the first sub-list denotes the boundary of the face while each subsequent sub-list denotes a hole in the face.",
+                                "minItems": 1,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "format": "int32"
+                                        },
+                                        "minItems": 3
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Polyface3D",
+                                "pattern": "^Polyface3D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "edge_information": {
+                                "title": "Edge Information",
+                                "description": "Optional edge information, which will speed up the creation of the Polyface object if it is available but should be left as None if it is unknown. If None, edge_information will be computed from the vertices and face_indices inputs.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/PolyfaceEdgeInfo"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "vertices",
+                            "face_indices"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Polyface3D",
+                "description": "A Polyface in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "LineSegment2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "p": {
+                                "title": "P",
+                                "description": "Line segment base point as 2 (x, y) values.",
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "v": {
+                                "title": "V",
+                                "description": "Line segment direction vector as 2 (x, y) values.",
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "LineSegment2D",
+                                "pattern": "^LineSegment2D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "p",
+                            "v"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "LineSegment2D",
+                "description": "A single line segment face in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Vector2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "title": "X",
+                                "description": "Number for X coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "y": {
+                                "title": "Y",
+                                "description": "Number for Y coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Vector2D",
+                                "pattern": "^Vector2D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Vector2D",
+                "description": "A vector object in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "LineSegment3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "p": {
+                                "title": "P",
+                                "description": "Line segment base point as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "v": {
+                                "title": "V",
+                                "description": "Line segment direction vector as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "LineSegment3D",
+                                "pattern": "^LineSegment3D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "p",
+                            "v"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "LineSegment3D",
+                "description": "A single line segment face in 3D space.",
                 "discriminator": {
                     "propertyName": "type"
                 }

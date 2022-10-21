@@ -45,13 +45,12 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <param name="color">Color for the geometry. (required).</param>
         /// <param name="geometry">Vector2D for the geometry. (required).</param>
-        /// <param name="layer">Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public DisplayVector2D
         (
            Color color, Vector2D geometry, // Required parameters
-            string layer= default, Object userData= default // Optional parameters
-        ) : base(layer: layer, userData: userData )// BaseClass
+            Object userData= default // Optional parameters
+        ) : base(userData: userData )// BaseClass
         {
             // to ensure "color" is required (not null)
             this.Color = color ?? throw new ArgumentNullException("color is a required property for DisplayVector2D and cannot be null");
@@ -107,7 +106,6 @@ namespace LadybugDisplaySchema
             var sb = new StringBuilder();
             sb.Append("DisplayVector2D:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
-            sb.Append("  Layer: ").Append(this.Layer).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             sb.Append("  Color: ").Append(this.Color).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");

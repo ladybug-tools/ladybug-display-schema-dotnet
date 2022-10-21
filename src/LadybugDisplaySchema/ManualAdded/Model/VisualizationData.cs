@@ -50,8 +50,7 @@ namespace LadybugDisplaySchema
                 var legendPar = this.LegendParameters ??
                     new LegendParameters(min, max, 10)
                     {
-                        ContinuousLegend = false,
-                        SegmentHeight = 30
+                        ContinuousLegend = false
                     };
                 legendPar = legendPar.DuplicateLegendParameters();
 

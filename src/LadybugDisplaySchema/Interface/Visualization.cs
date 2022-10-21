@@ -12,6 +12,8 @@ namespace LadybugDisplaySchema
 	public partial class ContextGeometry: LadybugDisplaySchema.IVisualization {}
 	public partial class DataType: LadybugDisplaySchema.IVisualization {}
 	public partial class GenericDataType: LadybugDisplaySchema.IVisualization {}
+	public partial class Legend2DParameters: LadybugDisplaySchema.IVisualization {}
+	public partial class Legend3DParameters: LadybugDisplaySchema.IVisualization {}
 	public partial class LegendParameters: LadybugDisplaySchema.IVisualization {}
 	public partial class VisualizationData: LadybugDisplaySchema.IVisualization {}
 	public partial class VisualizationSet: LadybugDisplaySchema.IVisualization {}

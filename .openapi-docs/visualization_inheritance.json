@@ -3,7 +3,7 @@
     "servers": [],
     "info": {
         "description": "Documentation for Ladybug visualization schema",
-        "version": "0.5.0",
+        "version": "0.7.0",
         "title": "Ladybug Visualization Schema",
         "contact": {
             "name": "Ladybug Tools",
@@ -180,6 +180,11 @@
             "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DisplaySphere\" />\n"
         },
         {
+            "name": "displaytext3d_model",
+            "x-displayName": "DisplayText3D",
+            "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DisplayText3D\" />\n"
+        },
+        {
             "name": "displayvector2d_model",
             "x-displayName": "DisplayVector2D",
             "description": "<SchemaDefinition schemaRef=\"#/components/schemas/DisplayVector2D\" />\n"
@@ -198,6 +203,21 @@
             "name": "genericdatatype_model",
             "x-displayName": "GenericDataType",
             "description": "<SchemaDefinition schemaRef=\"#/components/schemas/GenericDataType\" />\n"
+        },
+        {
+            "name": "horizontalalignments_model",
+            "x-displayName": "HorizontalAlignments",
+            "description": "<SchemaDefinition schemaRef=\"#/components/schemas/HorizontalAlignments\" />\n"
+        },
+        {
+            "name": "legend2dparameters_model",
+            "x-displayName": "Legend2DParameters",
+            "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Legend2DParameters\" />\n"
+        },
+        {
+            "name": "legend3dparameters_model",
+            "x-displayName": "Legend3DParameters",
+            "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Legend3DParameters\" />\n"
         },
         {
             "name": "legendparameters_model",
@@ -305,6 +325,11 @@
             "description": "<SchemaDefinition schemaRef=\"#/components/schemas/Vector3D\" />\n"
         },
         {
+            "name": "verticalalignments_model",
+            "x-displayName": "VerticalAlignments",
+            "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VerticalAlignments\" />\n"
+        },
+        {
             "name": "visualizationdata_model",
             "x-displayName": "VisualizationData",
             "description": "<SchemaDefinition schemaRef=\"#/components/schemas/VisualizationData\" />\n"
@@ -362,10 +387,14 @@
                 "displayray2d_model",
                 "displayray3d_model",
                 "displaysphere_model",
+                "displaytext3d_model",
                 "displayvector2d_model",
                 "displayvector3d_model",
                 "face3d_model",
                 "genericdatatype_model",
+                "horizontalalignments_model",
+                "legend2dparameters_model",
+                "legend3dparameters_model",
                 "legendparameters_model",
                 "linecurvebase_model",
                 "linesegment2d_model",
@@ -387,6 +416,7 @@
                 "sphere_model",
                 "vector2d_model",
                 "vector3d_model",
+                "verticalalignments_model",
                 "visualizationdata_model",
                 "visualizationset_model"
             ]
@@ -395,7 +425,7 @@
     "paths": {},
     "components": {
         "schemas": {
-            "Point3D": {
+            "Arc2D": {
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
@@ -403,42 +433,608 @@
                     {
                         "type": "object",
                         "properties": {
-                            "x": {
-                                "title": "X",
-                                "description": "Number for X coordinate.",
-                                "type": "number",
-                                "format": "double"
+                            "c": {
+                                "title": "C",
+                                "description": "Center of the arc as 2 (x, y) values.",
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
                             },
-                            "y": {
-                                "title": "Y",
-                                "description": "Number for Y coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "z": {
-                                "title": "Z",
-                                "description": "Number for Z coordinate.",
+                            "r": {
+                                "title": "R",
+                                "description": "A number representing the radius of the arc.",
                                 "type": "number",
                                 "format": "double"
                             },
                             "type": {
                                 "title": "Type",
-                                "default": "Point3D",
-                                "pattern": "^Point3D$",
+                                "default": "Arc2D",
+                                "pattern": "^Arc2D$",
                                 "type": "string",
                                 "readOnly": true
+                            },
+                            "a1": {
+                                "title": "A1",
+                                "description": "A number between 0 and 2 * pi for the start angle of the arc.",
+                                "default": 0,
+                                "minimum": 0,
+                                "maximum": 6.283185307179586,
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "a2": {
+                                "title": "A2",
+                                "description": "A number between 0 and 2 * pi for the end angle of the arc.",
+                                "default": 6.283185307179586,
+                                "minimum": 0,
+                                "maximum": 6.283185307179586,
+                                "type": "number",
+                                "format": "double"
                             }
                         },
                         "required": [
-                            "x",
-                            "y",
-                            "z"
+                            "c",
+                            "r"
                         ],
                         "additionalProperties": false
                     }
                 ],
-                "title": "Point3D",
-                "description": "A point object in 3D space.",
+                "title": "Arc2D",
+                "description": "A single arc or circle in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Plane": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "n": {
+                                "title": "N",
+                                "description": "Plane normal as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "o": {
+                                "title": "O",
+                                "description": "Plane origin as 3 (x, y, z) values",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Plane",
+                                "pattern": "^Plane$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "x": {
+                                "title": "X",
+                                "description": "Plane x-axis as 3 (x, y, z) values. If None, it is autocalculated.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            }
+                        },
+                        "required": [
+                            "n",
+                            "o"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Plane",
+                "description": "A plane object.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Face3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "boundary": {
+                                "title": "Boundary",
+                                "description": "A list of points representing the outer boundary vertices of the face. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Face3D",
+                                "pattern": "^Face3D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "holes": {
+                                "title": "Holes",
+                                "description": "Optional list of lists with one list for each hole in the face.Each hole should be a list of at least 3 points and each point a list of 3 (x, y, z) values. If None, it will be assumed that there are no holes in the face.",
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "number",
+                                            "format": "double"
+                                        },
+                                        "minItems": 3,
+                                        "maxItems": 3
+                                    },
+                                    "minItems": 3
+                                }
+                            },
+                            "plane": {
+                                "title": "Plane",
+                                "description": "Optional Plane indicating the plane in which the face exists.If None, the plane will usually be derived from the boundary points.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Plane"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "boundary"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Face3D",
+                "description": "A single planar face in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Default": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "title": "Type",
+                                "default": "Default",
+                                "pattern": "^Default$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Default",
+                "description": "Object to signify when the default value of a visual interface should be used.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Color": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "r": {
+                                "title": "R",
+                                "description": "Value for red channel.",
+                                "minimum": 0,
+                                "maximum": 255,
+                                "type": "integer",
+                                "format": "int32"
+                            },
+                            "g": {
+                                "title": "G",
+                                "description": "Value for green channel.",
+                                "minimum": 0,
+                                "maximum": 255,
+                                "type": "integer",
+                                "format": "int32"
+                            },
+                            "b": {
+                                "title": "B",
+                                "description": "Value for blue channel.",
+                                "minimum": 0,
+                                "maximum": 255,
+                                "type": "integer",
+                                "format": "int32"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Color",
+                                "pattern": "^Color$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "a": {
+                                "title": "A",
+                                "description": "Value for the alpha channel, which defines the opacity as a number between 0 (fully transparent) and 255 (fully opaque).",
+                                "default": 255,
+                                "minimum": 0,
+                                "maximum": 255,
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        },
+                        "required": [
+                            "r",
+                            "g",
+                            "b"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Color",
+                "description": "A RGB color.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Legend3DParameters": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "title": "Type",
+                                "default": "Legend3DParameters",
+                                "pattern": "^Legend3DParameters$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "base_plane": {
+                                "title": "Base Plane",
+                                "description": "A Ladybug Plane object to note the starting position from where the legend will be generated. The default is the world XY plane at origin (0, 0, 0) unless the legend is assigned to a specific geometry, in which case the origin is in the lower right corner of the geometry bounding box for vertical legends and the upper right corner for horizontal legends.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Plane"
+                                    }
+                                ]
+                            },
+                            "segment_height": {
+                                "title": "Segment Height",
+                                "description": "A number to set the height for each of the legend segments. The default is 1 unless the legend is assigned to a specific geometry, in which case it is automatically set to a value on an appropriate scale (some fraction of the bounding box around the geometry).",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number"
+                                    }
+                                ]
+                            },
+                            "segment_width": {
+                                "title": "Segment Width",
+                                "description": "A number to set the width for each of the legend segments. The default is 1 unless the legend is assigned to a specific geometry, in which case it is automatically set to a value on an appropriate scale (some fraction of the bounding box around the geometry).",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number"
+                                    }
+                                ]
+                            },
+                            "text_height": {
+                                "title": "Text Height",
+                                "description": "A number to set the height for the legend text. Default is 1/3 of the segment_height.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number"
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Legend3DParameters",
+                "description": "Base class for all objects that are not extensible with additional keys.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Legend2DParameters": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "title": "Type",
+                                "default": "Legend2DParameters",
+                                "pattern": "^Legend2DParameters$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "origin_x": {
+                                "title": "Origin X",
+                                "description": "A text string to note the X coordinate of the base point from where the legend will be generated (assuming an origin in the upper-left corner of the viewport with higher positive values of X moving to the right). Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport width). Examples include 10px, 5%. The default is set to make the legend clearly visible on the viewport (usually 10px).",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "pattern": "^\\d*px|\\d*%$"
+                                    }
+                                ]
+                            },
+                            "origin_y": {
+                                "title": "Origin Y",
+                                "description": "A text string to note the Y coordinate of the base point from where the legend will be generated (assuming an origin in the upper-left corner of the viewport with higher positive values of Y moving downward). Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport height). Examples include 10px, 5%. The default is set to make the legend clearly visible on the viewport (usually 50px).",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "pattern": "^\\d*px|\\d*%$"
+                                    }
+                                ]
+                            },
+                            "segment_height": {
+                                "title": "Segment Height",
+                                "description": "A text string to note the height for each of the legend segments. Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport height). Examples include 10px, 5%. The default is set to make most legends readable (25px for horizontal legends and 36px for vertical legends).",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "pattern": "^\\d*px|\\d*%$"
+                                    }
+                                ]
+                            },
+                            "segment_width": {
+                                "title": "Segment Width",
+                                "description": "A text string to set the width for each of the legend segments. Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport width). Examples include 10px, 5%. The default is set to make most legends readable (36px for horizontal legends and 25px for vertical legends).",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "pattern": "^\\d*px|\\d*%$"
+                                    }
+                                ]
+                            },
+                            "text_height": {
+                                "title": "Text Height",
+                                "description": "A text string to set the height for the legend text. Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport height). Examples include 10px, 5%. Default is 1/3 of the segment_height. Default is 12px.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "string",
+                                        "pattern": "^\\d*px|\\d*%$"
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Legend2DParameters",
+                "description": "Base class for all objects that are not extensible with additional keys.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "LegendParameters": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "title": "Type",
+                                "default": "LegendParameters",
+                                "pattern": "^LegendParameters$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "min": {
+                                "title": "Min",
+                                "description": "A number to set the lower boundary of the legend. If Default, the minimum of the values associated with the legend will be used.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number"
+                                    }
+                                ]
+                            },
+                            "max": {
+                                "title": "Max",
+                                "description": "A number to set the upper boundary of the legend. If Default, the maximum of the values associated with the legend will be used.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number"
+                                    }
+                                ]
+                            },
+                            "segment_count": {
+                                "title": "Segment Count",
+                                "description": "An integer representing the number of steps between the high and low boundary of the legend. The default is set to 11 or it will be equal to the number of items in the ordinal_dictionary. Any custom values input in here should always be greater than or equal to 2.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "integer",
+                                        "minimum": 2
+                                    }
+                                ]
+                            },
+                            "colors": {
+                                "title": "Colors",
+                                "description": "An list of color objects. Default is the Ladybug original colorset.",
+                                "minItems": 2,
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Color"
+                                }
+                            },
+                            "title": {
+                                "title": "Title",
+                                "description": "Text string for Legend title. Typically, the units of the data are used here but the type of data might also be used.",
+                                "default": "",
+                                "type": "string"
+                            },
+                            "continuous_legend": {
+                                "title": "Continuous Legend",
+                                "description": "Boolean noting whether legend is drawn as a gradient or discrete segments.",
+                                "default": false,
+                                "type": "boolean"
+                            },
+                            "ordinal_dictionary": {
+                                "title": "Ordinal Dictionary",
+                                "description": "Optional dictionary that maps values to text categories. If None, numerical values will be used for the legend segments. If not, text categories will be used and the legend will be ordinal. Note that, if the number of items in the dictionary are less than the segment_count, some segments will not receive any label. Examples for possible dictionaries include: {-1: \"Cold\", 0: \"Neutral\", 1: \"Hot\"}, {0: \"False\", 1: \"True\"}",
+                                "type": "object"
+                            },
+                            "decimal_count": {
+                                "title": "Decimal Count",
+                                "description": "An an integer for the number of decimal places in the legend text. Note that this input has no bearing on the resulting legend text when an ordinal_dictionary is present.",
+                                "default": 2,
+                                "minimum": 0,
+                                "type": "integer",
+                                "format": "int32"
+                            },
+                            "include_larger_smaller": {
+                                "title": "Include Larger Smaller",
+                                "description": "Boolean noting whether > and < should be included in legend segment text.",
+                                "default": false,
+                                "type": "boolean"
+                            },
+                            "vertical": {
+                                "title": "Vertical",
+                                "description": "Boolean noting whether legend is vertical (True) or horizontal (False).",
+                                "default": true,
+                                "type": "boolean"
+                            },
+                            "font": {
+                                "title": "Font",
+                                "description": "Text string to set the font for the legend text. Examples include \"Arial\", \"Times New Roman\", \"Courier\". Note that this parameter may not have an effect on certain interfaces that have limited access to fonts.",
+                                "default": "Arial",
+                                "type": "string"
+                            },
+                            "properties_3d": {
+                                "title": "Properties 3D",
+                                "description": "A Legend3DParameters object to specify the dimensional properties of the legend when it is rendered in the 3D environment of the geometry scene.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Legend3DParameters"
+                                    }
+                                ]
+                            },
+                            "properties_2d": {
+                                "title": "Properties 2D",
+                                "description": "A Legend2DParameters object to specify the dimensional properties of the legend when it is rendered in the 2D plane of a screen.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Legend2DParameters"
+                                    }
+                                ]
+                            },
+                            "user_data": {
+                                "title": "User Data",
+                                "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+                                "type": "object"
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "LegendParameters",
+                "description": "Legend parameters used to customize legends.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -676,70 +1272,6 @@
                     "propertyName": "type"
                 }
             },
-            "Arc2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "c": {
-                                "title": "C",
-                                "description": "Center of the arc as 2 (x, y) values.",
-                                "minItems": 2,
-                                "maxItems": 2,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "r": {
-                                "title": "R",
-                                "description": "A number representing the radius of the arc.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Arc2D",
-                                "pattern": "^Arc2D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "a1": {
-                                "title": "A1",
-                                "description": "A number between 0 and 2 * pi for the start angle of the arc.",
-                                "default": 0,
-                                "minimum": 0,
-                                "maximum": 6.283185307179586,
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "a2": {
-                                "title": "A2",
-                                "description": "A number between 0 and 2 * pi for the end angle of the arc.",
-                                "default": 6.283185307179586,
-                                "minimum": 0,
-                                "maximum": 6.283185307179586,
-                                "type": "number",
-                                "format": "double"
-                            }
-                        },
-                        "required": [
-                            "c",
-                            "r"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Arc2D",
-                "description": "A single arc or circle in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
             "Polygon2D": {
                 "allOf": [
                     {
@@ -779,69 +1311,6 @@
                 ],
                 "title": "Polygon2D",
                 "description": "A polygon in 2D space (without holes).",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Color": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "r": {
-                                "title": "R",
-                                "description": "Value for red channel.",
-                                "minimum": 0,
-                                "maximum": 255,
-                                "type": "integer",
-                                "format": "int32"
-                            },
-                            "g": {
-                                "title": "G",
-                                "description": "Value for green channel.",
-                                "minimum": 0,
-                                "maximum": 255,
-                                "type": "integer",
-                                "format": "int32"
-                            },
-                            "b": {
-                                "title": "B",
-                                "description": "Value for blue channel.",
-                                "minimum": 0,
-                                "maximum": 255,
-                                "type": "integer",
-                                "format": "int32"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Color",
-                                "pattern": "^Color$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "a": {
-                                "title": "A",
-                                "description": "Value for the alpha channel, which defines the opacity as a number between 0 (fully transparent) and 255 (fully opaque).",
-                                "default": 255,
-                                "minimum": 0,
-                                "maximum": 255,
-                                "type": "integer",
-                                "format": "int32"
-                            }
-                        },
-                        "required": [
-                            "r",
-                            "g",
-                            "b"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Color",
-                "description": "A RGB color.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -962,6 +1431,54 @@
                     "propertyName": "type"
                 }
             },
+            "Point3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "title": "X",
+                                "description": "Number for X coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "y": {
+                                "title": "Y",
+                                "description": "Number for Y coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "z": {
+                                "title": "Z",
+                                "description": "Number for Z coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Point3D",
+                                "pattern": "^Point3D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y",
+                            "z"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Point3D",
+                "description": "A point object in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
             "Ray3D": {
                 "allOf": [
                     {
@@ -1009,68 +1526,6 @@
                 ],
                 "title": "Ray3D",
                 "description": "A ray object in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Plane": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "n": {
-                                "title": "N",
-                                "description": "Plane normal as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "o": {
-                                "title": "O",
-                                "description": "Plane origin as 3 (x, y, z) values",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Plane",
-                                "pattern": "^Plane$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "x": {
-                                "title": "X",
-                                "description": "Plane x-axis as 3 (x, y, z) values. If None, it is autocalculated.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            }
-                        },
-                        "required": [
-                            "n",
-                            "o"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Plane",
-                "description": "A plane object.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -1233,76 +1688,6 @@
                 ],
                 "title": "Arc3D",
                 "description": "A single arc or circle in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Face3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "boundary": {
-                                "title": "Boundary",
-                                "description": "A list of points representing the outer boundary vertices of the face. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "number",
-                                        "format": "double"
-                                    },
-                                    "minItems": 3,
-                                    "maxItems": 3
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Face3D",
-                                "pattern": "^Face3D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "holes": {
-                                "title": "Holes",
-                                "description": "Optional list of lists with one list for each hole in the face.Each hole should be a list of at least 3 points and each point a list of 3 (x, y, z) values. If None, it will be assumed that there are no holes in the face.",
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "number",
-                                            "format": "double"
-                                        },
-                                        "minItems": 3,
-                                        "maxItems": 3
-                                    },
-                                    "minItems": 3
-                                }
-                            },
-                            "plane": {
-                                "title": "Plane",
-                                "description": "Optional Plane indicating the plane in which the face exists.If None, the plane will usually be derived from the boundary points.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Plane"
-                                    }
-                                ]
-                            }
-                        },
-                        "required": [
-                            "boundary"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Face3D",
-                "description": "A single planar face in 3D space.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -1669,213 +2054,6 @@
                     "propertyName": "type"
                 }
             },
-            "Default": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "type": {
-                                "title": "Type",
-                                "default": "Default",
-                                "pattern": "^Default$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Default",
-                "description": "Object to signify when the default value of a visual interface should be used.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "LegendParameters": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "type": {
-                                "title": "Type",
-                                "default": "LegendParameters",
-                                "pattern": "^LegendParameters$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "min": {
-                                "title": "Min",
-                                "description": "A number to set the lower boundary of the legend. If Default, the minimum of the values associated with the legend will be used.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "number"
-                                    }
-                                ]
-                            },
-                            "max": {
-                                "title": "Max",
-                                "description": "A number to set the upper boundary of the legend. If Default, the maximum of the values associated with the legend will be used.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "number"
-                                    }
-                                ]
-                            },
-                            "segment_count": {
-                                "title": "Segment Count",
-                                "description": "An integer representing the number of steps between the high and low boundary of the legend. The default is set to 11 or it will be equal to the number of items in the ordinal_dictionary. Any custom values input in here should always be greater than or equal to 2.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "integer",
-                                        "minimum": 2
-                                    }
-                                ]
-                            },
-                            "colors": {
-                                "title": "Colors",
-                                "description": "An list of color objects. Default is the Ladybug original colorset.",
-                                "minItems": 2,
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/Color"
-                                }
-                            },
-                            "title": {
-                                "title": "Title",
-                                "description": "Text string for Legend title. Typically, the units of the data are used here but the type of data might also be used.",
-                                "default": "",
-                                "type": "string"
-                            },
-                            "base_plane": {
-                                "title": "Base Plane",
-                                "description": "A Ladybug Plane object to note the starting point from where the legend will be generated. The default is the world XY plane at origin (0, 0, 0).",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Plane"
-                                    }
-                                ]
-                            },
-                            "continuous_legend": {
-                                "title": "Continuous Legend",
-                                "description": "Boolean noting whether legend is drawn as a gradient or discrete segments.",
-                                "default": false,
-                                "type": "boolean"
-                            },
-                            "ordinal_dictionary": {
-                                "title": "Ordinal Dictionary",
-                                "description": "Optional dictionary that maps values to text categories. If None, numerical values will be used for the legend segments. If not, text categories will be used and the legend will be ordinal. Note that, if the number of items in the dictionary are less than the segment_count, some segments will not receive any label. Examples for possible dictionaries include: {-1: \"Cold\", 0: \"Neutral\", 1: \"Hot\"}, {0: \"False\", 1: \"True\"}",
-                                "type": "object"
-                            },
-                            "decimal_count": {
-                                "title": "Decimal Count",
-                                "description": "An an integer for the number of decimal places in the legend text. Note that this input has no bearing on the resulting legend text when an ordinal_dictionary is present.",
-                                "default": 2,
-                                "minimum": 0,
-                                "type": "integer",
-                                "format": "int32"
-                            },
-                            "include_larger_smaller": {
-                                "title": "Include Larger Smaller",
-                                "description": "Boolean noting whether > and < should be included in legend segment text.",
-                                "default": false,
-                                "type": "boolean"
-                            },
-                            "vertical": {
-                                "title": "Vertical",
-                                "description": "Boolean noting whether legend is vertical (True) or horizontal (False).",
-                                "default": true,
-                                "type": "boolean"
-                            },
-                            "segment_height": {
-                                "title": "Segment Height",
-                                "description": "A number to set the height for each of the legend segments.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "number"
-                                    }
-                                ]
-                            },
-                            "segment_width": {
-                                "title": "Segment Width",
-                                "description": "A number to set the width for each of the legend segments.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "number"
-                                    }
-                                ]
-                            },
-                            "text_height": {
-                                "title": "Text Height",
-                                "description": "A number to set the height for the legend text. Default is 1/3 of the segment_height.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "number"
-                                    }
-                                ]
-                            },
-                            "font": {
-                                "title": "Font",
-                                "description": "Text string to set the font for the legend text. Examples include \"Arial\", \"Times New Roman\", \"Courier\". Note that this parameter may not have an effect on certain interfaces that have limited access to fonts.",
-                                "default": "Arial",
-                                "type": "string"
-                            },
-                            "user_data": {
-                                "title": "User Data",
-                                "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
-                                "type": "object"
-                            }
-                        },
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "LegendParameters",
-                "description": "Legend parameters used to customize legends.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
             "DataTypes": {
                 "title": "DataTypes",
                 "description": "An enumeration.",
@@ -2101,8 +2279,8 @@
                             },
                             "type": {
                                 "title": "Type",
-                                "default": "DataType",
-                                "pattern": "^DataType$",
+                                "default": "GenericDataType",
+                                "pattern": "^GenericDataType$",
                                 "type": "string",
                                 "readOnly": true
                             }
@@ -3587,6 +3765,111 @@
                     "propertyName": "type"
                 }
             },
+            "HorizontalAlignments": {
+                "title": "HorizontalAlignments",
+                "description": "An enumeration.",
+                "enum": [
+                    "Left",
+                    "Center",
+                    "Right"
+                ],
+                "type": "string"
+            },
+            "VerticalAlignments": {
+                "title": "VerticalAlignments",
+                "description": "An enumeration.",
+                "enum": [
+                    "Top",
+                    "Middle",
+                    "Bottom"
+                ],
+                "type": "string"
+            },
+            "DisplayText3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/DisplayBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "color",
+                            "text",
+                            "plane",
+                            "height"
+                        ],
+                        "properties": {
+                            "color": {
+                                "title": "Color",
+                                "description": "Color for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Color"
+                                    }
+                                ]
+                            },
+                            "text": {
+                                "title": "Text",
+                                "description": "A text string to be displayed in the 3D scene.",
+                                "type": "string"
+                            },
+                            "plane": {
+                                "title": "Plane",
+                                "description": "A ladybug-geometry Plane object to locate and orient the text in the 3D scene.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Plane"
+                                    }
+                                ]
+                            },
+                            "height": {
+                                "title": "Height",
+                                "description": "A number for the height of the text in the 3D scene.",
+                                "exclusiveMinimum": 0,
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "DisplayText3D",
+                                "pattern": "^DisplayText3D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "font": {
+                                "title": "Font",
+                                "description": "A text string for the font in which to draw the text. Note that this field may not be interpreted the same on all machines and in all interfaces, particularly when a machine lacks a given font.",
+                                "default": "Arial",
+                                "type": "string"
+                            },
+                            "horizontal_alignment": {
+                                "description": "String to specify the horizontal alignment of the text.",
+                                "default": "Left",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/HorizontalAlignments"
+                                    }
+                                ]
+                            },
+                            "vertical_alignment": {
+                                "description": "String to specify the vertical alignment of the text.",
+                                "default": "Bottom",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/VerticalAlignments"
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "DisplayText3D",
+                "description": "A text object in 3D space with display properties.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
             "ContextGeometry": {
                 "allOf": [
                     {
@@ -3666,6 +3949,9 @@
                                         },
                                         {
                                             "$ref": "#/components/schemas/DisplayCylinder"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/DisplayText3D"
                                         }
                                     ]
                                 }
@@ -3773,6 +4059,43 @@
                     "propertyName": "type"
                 }
             },
+            "SingleColorBase": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/DisplayBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "color"
+                        ],
+                        "properties": {
+                            "color": {
+                                "title": "Color",
+                                "description": "Color for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Color"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "SingleColorBase",
+                                "type": "string",
+                                "pattern": "^SingleColorBase$",
+                                "readOnly": true
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "SingleColorBase",
+                "description": "Base class for all Geometric Display objects with a single color.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
             "DisplayBaseModel": {
                 "allOf": [
                     {
@@ -3781,11 +4104,6 @@
                     {
                         "type": "object",
                         "properties": {
-                            "layer": {
-                                "title": "Layer",
-                                "description": "Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such.",
-                                "type": "string"
-                            },
                             "user_data": {
                                 "title": "User Data",
                                 "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
@@ -3866,43 +4184,6 @@
                 ],
                 "title": "LineCurveBase",
                 "description": "Base class for all Geometric Display objects with a line like properties.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "SingleColorBase": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/DisplayBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "required": [
-                            "color"
-                        ],
-                        "properties": {
-                            "color": {
-                                "title": "Color",
-                                "description": "Color for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Color"
-                                    }
-                                ]
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "SingleColorBase",
-                                "type": "string",
-                                "pattern": "^SingleColorBase$",
-                                "readOnly": true
-                            }
-                        },
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "SingleColorBase",
-                "description": "Base class for all Geometric Display objects with a single color.",
                 "discriminator": {
                     "propertyName": "type"
                 }
