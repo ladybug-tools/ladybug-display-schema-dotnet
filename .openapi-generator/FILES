@@ -59,6 +59,8 @@ docs/DisplayRay3D.md
 docs/DisplayRay3DAllOf.md
 docs/DisplaySphere.md
 docs/DisplaySphereAllOf.md
+docs/DisplayText3D.md
+docs/DisplayText3DAllOf.md
 docs/DisplayVector2D.md
 docs/DisplayVector2DAllOf.md
 docs/DisplayVector3D.md
@@ -67,6 +69,11 @@ docs/Face3D.md
 docs/Face3DAllOf.md
 docs/GenericDataType.md
 docs/GenericDataTypeAllOf.md
+docs/HorizontalAlignments.md
+docs/Legend2DParameters.md
+docs/Legend2DParametersAllOf.md
+docs/Legend3DParameters.md
+docs/Legend3DParametersAllOf.md
 docs/LegendParameters.md
 docs/LegendParametersAllOf.md
 docs/LineCurveBase.md
@@ -109,6 +116,7 @@ docs/Vector2D.md
 docs/Vector2DAllOf.md
 docs/Vector3D.md
 docs/Vector3DAllOf.md
+docs/VerticalAlignments.md
 docs/VisualizationBase.md
 docs/VisualizationBaseAllOf.md
 docs/VisualizationData.md
@@ -122,10 +130,18 @@ src/LadybugDisplaySchema.Test/Model/ContextGeometryTests.cs
 src/LadybugDisplaySchema.Test/Model/DataTypeAllOfTests.cs
 src/LadybugDisplaySchema.Test/Model/DataTypeTests.cs
 src/LadybugDisplaySchema.Test/Model/DataTypesTests.cs
+src/LadybugDisplaySchema.Test/Model/DisplayText3DAllOfTests.cs
+src/LadybugDisplaySchema.Test/Model/DisplayText3DTests.cs
 src/LadybugDisplaySchema.Test/Model/GenericDataTypeAllOfTests.cs
 src/LadybugDisplaySchema.Test/Model/GenericDataTypeTests.cs
+src/LadybugDisplaySchema.Test/Model/HorizontalAlignmentsTests.cs
+src/LadybugDisplaySchema.Test/Model/Legend2DParametersAllOfTests.cs
+src/LadybugDisplaySchema.Test/Model/Legend2DParametersTests.cs
+src/LadybugDisplaySchema.Test/Model/Legend3DParametersAllOfTests.cs
+src/LadybugDisplaySchema.Test/Model/Legend3DParametersTests.cs
 src/LadybugDisplaySchema.Test/Model/LegendParametersAllOfTests.cs
 src/LadybugDisplaySchema.Test/Model/LegendParametersTests.cs
+src/LadybugDisplaySchema.Test/Model/VerticalAlignmentsTests.cs
 src/LadybugDisplaySchema.Test/Model/VisualizationBaseAllOfTests.cs
 src/LadybugDisplaySchema.Test/Model/VisualizationBaseTests.cs
 src/LadybugDisplaySchema.Test/Model/VisualizationDataAllOfTests.cs
@@ -201,6 +217,8 @@ src/LadybugDisplaySchema/Model/DisplayRay3D.cs
 src/LadybugDisplaySchema/Model/DisplayRay3DAllOf.cs
 src/LadybugDisplaySchema/Model/DisplaySphere.cs
 src/LadybugDisplaySchema/Model/DisplaySphereAllOf.cs
+src/LadybugDisplaySchema/Model/DisplayText3D.cs
+src/LadybugDisplaySchema/Model/DisplayText3DAllOf.cs
 src/LadybugDisplaySchema/Model/DisplayVector2D.cs
 src/LadybugDisplaySchema/Model/DisplayVector2DAllOf.cs
 src/LadybugDisplaySchema/Model/DisplayVector3D.cs
@@ -209,6 +227,11 @@ src/LadybugDisplaySchema/Model/Face3D.cs
 src/LadybugDisplaySchema/Model/Face3DAllOf.cs
 src/LadybugDisplaySchema/Model/GenericDataType.cs
 src/LadybugDisplaySchema/Model/GenericDataTypeAllOf.cs
+src/LadybugDisplaySchema/Model/HorizontalAlignments.cs
+src/LadybugDisplaySchema/Model/Legend2DParameters.cs
+src/LadybugDisplaySchema/Model/Legend2DParametersAllOf.cs
+src/LadybugDisplaySchema/Model/Legend3DParameters.cs
+src/LadybugDisplaySchema/Model/Legend3DParametersAllOf.cs
 src/LadybugDisplaySchema/Model/LegendParameters.cs
 src/LadybugDisplaySchema/Model/LegendParametersAllOf.cs
 src/LadybugDisplaySchema/Model/LineCurveBase.cs
@@ -251,6 +274,7 @@ src/LadybugDisplaySchema/Model/Vector2D.cs
 src/LadybugDisplaySchema/Model/Vector2DAllOf.cs
 src/LadybugDisplaySchema/Model/Vector3D.cs
 src/LadybugDisplaySchema/Model/Vector3DAllOf.cs
+src/LadybugDisplaySchema/Model/VerticalAlignments.cs
 src/LadybugDisplaySchema/Model/VisualizationBase.cs
 src/LadybugDisplaySchema/Model/VisualizationBaseAllOf.cs
 src/LadybugDisplaySchema/Model/VisualizationData.cs

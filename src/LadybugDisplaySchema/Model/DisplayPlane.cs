@@ -47,13 +47,12 @@ namespace LadybugDisplaySchema
         /// <param name="geometry">Plane for the geometry. (required).</param>
         /// <param name="showAxes">A boolean to note whether the plane should be displayed with XY axes instead of just an origin point and a normal vector. (default to false).</param>
         /// <param name="showGrid">A boolean to note whether the plane should be displayed with a grid. (default to false).</param>
-        /// <param name="layer">Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public DisplayPlane
         (
            Color color, Plane geometry, // Required parameters
-            string layer= default, Object userData= default, bool showAxes = false, bool showGrid = false// Optional parameters
-        ) : base(layer: layer, userData: userData )// BaseClass
+            Object userData= default, bool showAxes = false, bool showGrid = false// Optional parameters
+        ) : base(userData: userData )// BaseClass
         {
             // to ensure "color" is required (not null)
             this.Color = color ?? throw new ArgumentNullException("color is a required property for DisplayPlane and cannot be null");
@@ -123,7 +122,6 @@ namespace LadybugDisplaySchema
             var sb = new StringBuilder();
             sb.Append("DisplayPlane:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
-            sb.Append("  Layer: ").Append(this.Layer).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             sb.Append("  Color: ").Append(this.Color).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");

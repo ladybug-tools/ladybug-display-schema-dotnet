@@ -12,19 +12,19 @@ namespace LadybugDisplaySchema
             this.Type = "LegendParameters";
         }
 
-        public double X => (this.BasePlane?.O?.GetElementByIndex(0)).GetValueOrDefault();
-        public double Y => (this.BasePlane?.O?.GetElementByIndex(1)).GetValueOrDefault();
-        public double Z => (this.BasePlane?.O?.GetElementByIndex(2)).GetValueOrDefault();
+        //public double X => (this.Properties2d..BasePlane?.O?.GetElementByIndex(0)).GetValueOrDefault();
+        //public double Y => (this.BasePlane?.O?.GetElementByIndex(1)).GetValueOrDefault();
+        //public double Z => (this.BasePlane?.O?.GetElementByIndex(2)).GetValueOrDefault();
 
         public double MinValue => this.Min != null && this.Min.Obj is double d ? d : 0;
         public double MaxValue => this.Max != null && this.Max.Obj is double d ? d : 100;
-        public double TextHeightValue => this.TextHeight != null && this.TextHeight.Obj is double d ? d : 12;
+        //public double TextHeightValue => this.TextHeight != null && this.TextHeight.Obj is double d ? d : 12;
         public int SegmentCountValue => this.SegmentCount != null && this.SegmentCount.Obj is int d ? d : 11;
-        public double SegmentWidthValue => this.SegmentWidth != null && this.SegmentWidth.Obj is double d ? d : 25;
-        public double SegmentHeightValue => this.SegmentHeight != null && this.SegmentHeight.Obj is double d ? d : 36;
+        //public double SegmentWidthValue => this.SegmentWidth != null && this.SegmentWidth.Obj is double d ? d : 25;
+        //public double SegmentHeightValue => this.SegmentHeight != null && this.SegmentHeight.Obj is double d ? d : 36;
 
-        public double Width => this.Vertical ? this.SegmentWidthValue : this.SegmentWidthValue * this.SegmentCountValue;
-        public double Height => this.Vertical ? this.SegmentHeightValue * this.SegmentCountValue : this.SegmentHeightValue;
+        //public double Width => this.Vertical ? this.SegmentWidthValue : this.SegmentWidthValue * this.SegmentCountValue;
+        //public double Height => this.Vertical ? this.SegmentHeightValue * this.SegmentCountValue : this.SegmentHeightValue;
 
         public bool HasOrdinalDictionary => this.OrdinalDictionary != null && this.GetOrdinalDictionary().Count > 0;
 
@@ -32,14 +32,14 @@ namespace LadybugDisplaySchema
 
         public LegendParameters(int x = 50, int y = 100): this()
         {
-            initDefault();
-            this.BasePlane.O = new List<double>() { X, Y, 0 };
+            init2DDefault();
+            Reset2DBaseLocation(x, y);
             Colors = LegendColorSet.Presets.First().Value.ToList();
         }
 
         public LegendParameters(double min, double max, int numSegs, List<Color> colors = default) : this()
         {
-            initDefault();
+            init2DDefault();
             Min = min;
             Max = max;
             SegmentCount = numSegs;
@@ -48,14 +48,13 @@ namespace LadybugDisplaySchema
             Colors = numSegs > 1 ? c : new List<Color>() { c[0], c[0] };
         }
 
-        private void initDefault()
+        private void init2DDefault()
         {
-            this.ResetBaseLocation();
-            this.BasePlane.O = new List<double>() { 10, 100, 0 };
-            this.SegmentWidth = 25;
-            this.SegmentHeight = 36;
+            this.Reset2DBaseLocation(10,100);
+            this.Properties2d.SegmentWidth = $"{25}px";
+            this.Properties2d.SegmentHeight = $"{36}px";
 
-            TextHeight = 12;
+            this.Properties2d.TextHeight = $"{12}px";
             Min = 0;
             Max = 100;
             SegmentCount = 11;
@@ -170,14 +169,42 @@ namespace LadybugDisplaySchema
 
         }
 
-        public void ResetBaseLocation(double X = default, double Y = default, double Z = default)
+        public void Reset2DBaseLocation(double X = default, double Y = default, double Z = default)
         {
-            if (this.BasePlane == null)
-                this.BasePlane = new Plane(new Vector3D(0,0,1), new Point3D(X,Y,Z));
+            if (this.Properties2d == null) 
+                this.Properties2d = new Legend2DParameters(originX: $"{X}px", originY: $"{Y}px");
 
-            var basePt = new Point3D(X, Y, Z);
-            this.BasePlane.O = basePt.ToDecimalList();
+            //if (this.Properties3d == null) 
+            //    this.Properties3d = new Legend3DParameters(new Plane(new Vector3D(0, 0, 1), new Point3D(X, Y, Z)));
+
+            //if (this.Properties3d.BasePlane == null)
+            //    this.Properties3d.BasePlane = new Plane(new Vector3D(0, 0, 1), new Point3D(X, Y, Z));
+
+            this.Properties2d.OriginX = $"{X}px";
+            this.Properties2d.OriginY = $"{Y}px";
+            
+            //var basePt = new Point3D(X, Y, Z);
+            //this.Properties3d.BasePlane.O = basePt.ToDecimalList();
         }
 
+
+        //private double GetValue(AnyOf<Default, string> input, double defaultValue, out Unit unit)
+        //{
+
+        //    if (input.Obj is Default)
+        //        return defaultValue;
+        //    else if (input.Obj is string ss)
+        //    {
+
+        //    }
+
+
+        //}
+
+        //enum Unit
+        //{
+        //    px,
+        //    percent
+        //}
     }
 }

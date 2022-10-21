@@ -33,15 +33,13 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayBaseModel" /> class.
         /// </summary>
-        /// <param name="layer">Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public DisplayBaseModel
         (
             // Required parameters
-           string layer= default, Object userData= default// Optional parameters
+           Object userData= default// Optional parameters
         ) : base()// BaseClass
         {
-            this.Layer = layer;
             this.UserData = userData;
 
             // Set non-required readonly properties with defaultValue
@@ -59,12 +57,6 @@ namespace LadybugDisplaySchema
         [DataMember(Name = "type")]
         public override string Type { get; protected set; }  = "DisplayBaseModel";
 
-        /// <summary>
-        /// Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such.
-        /// </summary>
-        /// <value>Optional text for the layer on which the geometry exists. Sub-layers should be separated from parent layers by means of a :: and platforms that support sub-layers will interpret the layer as such.</value>
-        [DataMember(Name = "layer")]
-        public string Layer { get; set; } 
         /// <summary>
         /// Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).
         /// </summary>
@@ -93,7 +85,6 @@ namespace LadybugDisplaySchema
             var sb = new StringBuilder();
             sb.Append("DisplayBaseModel:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
-            sb.Append("  Layer: ").Append(this.Layer).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             return sb.ToString();
         }
@@ -158,7 +149,6 @@ namespace LadybugDisplaySchema
             if (input == null)
                 return false;
             return base.Equals(input) && 
-                    Extension.Equals(this.Layer, input.Layer) && 
                     Extension.Equals(this.UserData, input.UserData) && 
                     Extension.Equals(this.Type, input.Type);
         }
@@ -172,8 +162,6 @@ namespace LadybugDisplaySchema
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
-                if (this.Layer != null)
-                    hashCode = hashCode * 59 + this.Layer.GetHashCode();
                 if (this.UserData != null)
                     hashCode = hashCode * 59 + this.UserData.GetHashCode();
                 if (this.Type != null)
