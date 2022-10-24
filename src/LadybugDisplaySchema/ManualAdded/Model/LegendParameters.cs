@@ -12,38 +12,108 @@ namespace LadybugDisplaySchema
             this.Type = "LegendParameters";
         }
 
-        //public double X => (this.Properties2d.BasePlane?.O?.GetElementByIndex(0)).GetValueOrDefault();
-        //public double Y => (this.BasePlane?.O?.GetElementByIndex(1)).GetValueOrDefault();
-        //public double Z => (this.BasePlane?.O?.GetElementByIndex(2)).GetValueOrDefault();
         public double MinValue => GetValue(this.Min, 0);
         public double MaxValue => GetValue(this.Max, 100);
 
-        //public double TextHeightValue => this.TextHeight != null && this.TextHeight.Obj is double d ? d : 12;
         public int SegmentCountValue => this.SegmentCount != null && this.SegmentCount.Obj is int d ? d : 11;
-        public double SegmentWidth2DValue {
-            get {
-                if (this.Properties2d == null)
-                    this.init2DDefault();
-                else
-                    this.Map2DLegendTo1080p();
-                return GetPxValue(this.Properties2d.SegmentWidth);
-            }
-        }
-        public double SegmentHeight2DValue
+
+
+        #region 2D Helpers
+        public double X2D
         {
             get
             {
-                if (this.Properties2d == null)
-                    this.init2DDefault();
-                else
-                    this.Map2DLegendTo1080p();
+                Check2DLegend();
+                return GetPxValue(this.Properties2d.OriginX);
+            }
+        }
+        public double Y2D
+        {
+            get
+            {
+                Check2DLegend();
+                return GetPxValue(this.Properties2d.OriginY);
+            }
+        }
+
+        public double SegmentWidth2D {
+            get {
+                Check2DLegend();
+                return GetPxValue(this.Properties2d.SegmentWidth);
+            }
+        }
+        public double SegmentHeight2D
+        {
+            get
+            {
+                Check2DLegend();
                 return GetPxValue(this.Properties2d.SegmentHeight);
             }
         }
 
-        public double Width2D => this.Vertical ? this.SegmentWidth2DValue : this.SegmentWidth2DValue * this.SegmentCountValue;
-        public double Height2D => this.Vertical ? this.SegmentHeight2DValue * this.SegmentCountValue : this.SegmentHeight2DValue;
+        public double Width2D => this.Vertical ? this.SegmentWidth2D : this.SegmentWidth2D * this.SegmentCountValue;
+        public double Height2D => this.Vertical ? this.SegmentHeight2D * this.SegmentCountValue : this.SegmentHeight2D;
+        public double TextHeight2D
+        {
+            get
+            {
+                Check2DLegend();
+                return GetPxValue(this.Properties2d.TextHeight);
+            }
+        }
 
+        #endregion
+
+        #region 3D helpers
+        public double SegmentHeight3D
+        {
+            get
+            {
+                Check3DLegend();
+                return GetValue(this.Properties3d.SegmentHeight);
+            }
+        }
+        public double SegmentWidth3D
+        {
+            get
+            {
+                Check3DLegend();
+                return GetValue(this.Properties3d.SegmentWidth);
+            }
+        }
+        public double TextHeight3D
+        {
+            get
+            {
+                Check3DLegend();
+                return GetValue(this.Properties3d.TextHeight);
+            }
+        }
+        public double X3D
+        {
+            get
+            {
+                Check3DLegend();
+                return GetValue(this.Properties3d.BasePlane?.O[0]);
+            }
+        }
+        public double Y3D
+        {
+            get
+            {
+                Check3DLegend();
+                return GetValue(this.Properties3d.BasePlane?.O[1]);
+            }
+        }
+        public double Z3D
+        {
+            get
+            {
+                Check3DLegend();
+                return GetValue(this.Properties3d.BasePlane?.O[2]);
+            }
+        }
+        #endregion
 
         public bool HasOrdinalDictionary => this.OrdinalDictionary != null && this.GetOrdinalDictionary().Count > 0;
 
@@ -52,13 +122,20 @@ namespace LadybugDisplaySchema
         public LegendParameters(int x = 50, int y = 100): this()
         {
             init2DDefault();
+            Min = 0;
+            Max = 100;
+            SegmentCount = 11;
+            DecimalCount = 2;
+
             Reset2DBaseLocation(x, y);
-            Colors = LegendColorSet.Presets.First().Value.ToList();
+            Colors = _defaultColorSet.ToList();
         }
 
         public LegendParameters(double min, double max, int numSegs, List<Color> colors = default) : this()
         {
             init2DDefault();
+            DecimalCount = 2;
+
             Min = min;
             Max = max;
             SegmentCount = numSegs;
@@ -71,13 +148,13 @@ namespace LadybugDisplaySchema
         {
             this.Reset2DBaseLocation(10,100);
             this.Map2DLegendTo1080p();
-            Min = 0;
-            Max = 100;
-            SegmentCount = 11;
-            DecimalCount = 2;
-
-            Colors = _defaultColorSet.ToList();
             return this.Properties2d;
+        }
+
+        private Legend3DParameters init3DDefault()
+        {
+            this.Reset3DBaseLocation(0, 0);
+            return this.Properties3d;
         }
 
         private List<Color> _defaultColorSet = LegendColorSet.Presets.First().Value.ToList();
@@ -208,6 +285,15 @@ namespace LadybugDisplaySchema
             this.Properties3d.BasePlane.O = basePt.ToDecimalList();
         }
 
+        private void Check2DLegend()
+        {
+            if (this.Properties2d == null)
+                this.init2DDefault();
+            else
+                this.Map2DLegendTo1080p(); // get or assign default values
+        }
+
+
         public Legend2DParameters Map2DLegendTo1080p() => Map2DLegendToPixel();
         public Legend2DParameters Map2DLegendTo2160p() => Map2DLegendToPixel(2160, 3840);
         public Legend2DParameters Map2DLegendToPixel(int viewWidth = 1080, int viewHeight = 1920)
@@ -220,6 +306,22 @@ namespace LadybugDisplaySchema
             l.OriginY = ToPxValue(l.OriginY, 100, viewHeight);
             this.Properties2d = l;
             return this.Properties2d;
+        }
+
+        private void Check3DLegend()
+        {
+            if (this.Properties3d == null)
+                this.init3DDefault();
+            else
+            {
+                // get or assign default values
+                var l = this.Properties3d;
+                l.BasePlane = l.BasePlane ?? new Plane(new Vector3D(0, 0, 1), new Point3D(0, 0, 0));
+                l.TextHeight = GetValue(l.TextHeight, 12);
+                l.SegmentWidth = GetValue(l.SegmentWidth, 25);
+                l.SegmentHeight = GetValue(l.SegmentHeight, 36);
+                this.Properties3d = l;
+            }
         }
 
         private const string _pxUnit = "px";
