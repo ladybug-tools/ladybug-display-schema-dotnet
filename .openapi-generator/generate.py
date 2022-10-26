@@ -16,7 +16,7 @@ json3 = os.path.join(doc_folder, 'visualization_inheritance.json')
 # python .openapi-generator/pre_gen_script.py ".openapi-docs/display_inheritance.json"
 subprocess.call(f"python {generator_folder}/pre_gen_script.py {json1}", shell=True)
 
-
+ 
 # run openapi tool to generate schema
 template = f"{generator_folder}/templates/csharp"
 config = f"{generator_folder}/.openapi-config.json"

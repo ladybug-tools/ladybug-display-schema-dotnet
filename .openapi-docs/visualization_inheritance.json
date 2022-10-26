@@ -3,7 +3,7 @@
     "servers": [],
     "info": {
         "description": "Documentation for Ladybug visualization schema",
-        "version": "0.7.0",
+        "version": "0.7.1",
         "title": "Ladybug Visualization Schema",
         "contact": {
             "name": "Ladybug Tools",
@@ -1039,1021 +1039,6 @@
                     "propertyName": "type"
                 }
             },
-            "Vector2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "x": {
-                                "title": "X",
-                                "description": "Number for X coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "y": {
-                                "title": "Y",
-                                "description": "Number for Y coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Vector2D",
-                                "pattern": "^Vector2D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "x",
-                            "y"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Vector2D",
-                "description": "A vector object in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Point2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "x": {
-                                "title": "X",
-                                "description": "Number for X coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "y": {
-                                "title": "Y",
-                                "description": "Number for Y coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Point2D",
-                                "pattern": "^Point2D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "x",
-                            "y"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Point2D",
-                "description": "A point object in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Ray2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "p": {
-                                "title": "P",
-                                "description": "Ray base point as 2 (x, y) values.",
-                                "minItems": 2,
-                                "maxItems": 2,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "v": {
-                                "title": "V",
-                                "description": "Ray direction vector as 2 (x, y) values.",
-                                "minItems": 2,
-                                "maxItems": 2,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Ray2D",
-                                "pattern": "^Ray2D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "p",
-                            "v"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Ray2D",
-                "description": "A ray object in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "LineSegment2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "p": {
-                                "title": "P",
-                                "description": "Line segment base point as 2 (x, y) values.",
-                                "minItems": 2,
-                                "maxItems": 2,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "v": {
-                                "title": "V",
-                                "description": "Line segment direction vector as 2 (x, y) values.",
-                                "minItems": 2,
-                                "maxItems": 2,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "LineSegment2D",
-                                "pattern": "^LineSegment2D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "p",
-                            "v"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "LineSegment2D",
-                "description": "A single line segment face in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Polyline2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "vertices": {
-                                "title": "Vertices",
-                                "description": "A list of points representing the the vertices of the polyline. The list should include at least 3 points and each point should be a list of 2 (x, y) values.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "number",
-                                        "format": "double"
-                                    },
-                                    "minItems": 2,
-                                    "maxItems": 2
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Polyline2D",
-                                "pattern": "^Polyline2D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "interpolated": {
-                                "title": "Interpolated",
-                                "description": "A boolean to note whether the polyline should be interpolated between the input vertices when it is translated to other interfaces.",
-                                "default": false,
-                                "type": "boolean"
-                            }
-                        },
-                        "required": [
-                            "vertices"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Polyline2D",
-                "description": "A polyline in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Polygon2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "vertices": {
-                                "title": "Vertices",
-                                "description": "A list of points representing the vertices of the polygon. The list should include at least 3 points and each point should be a list of 2 (x, y) values.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "number",
-                                        "format": "double"
-                                    },
-                                    "minItems": 2,
-                                    "maxItems": 2
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Polygon2D",
-                                "pattern": "^Polygon2D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "vertices"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Polygon2D",
-                "description": "A polygon in 2D space (without holes).",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Mesh2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "vertices": {
-                                "title": "Vertices",
-                                "description": "A list of points representing the vertices of the mesh. The list should include at least 3 points and each point should be a list of 2 (x, y) values.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "number",
-                                        "format": "double"
-                                    },
-                                    "minItems": 2,
-                                    "maxItems": 2
-                                }
-                            },
-                            "faces": {
-                                "title": "Faces",
-                                "description": "A list of lists with each sub-list having either 3 or 4 integers. These integers correspond to indices within the list of vertices.",
-                                "minItems": 1,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "format": "int32"
-                                    },
-                                    "minItems": 3,
-                                    "maxItems": 4
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Mesh2D",
-                                "pattern": "^Mesh2D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "colors": {
-                                "title": "Colors",
-                                "description": "An optional list of colors that correspond to either the faces of the mesh or the vertices of the mesh.",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/Color"
-                                }
-                            }
-                        },
-                        "required": [
-                            "vertices",
-                            "faces"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Mesh2D",
-                "description": "A mesh in 2D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Vector3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "x": {
-                                "title": "X",
-                                "description": "Number for X coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "y": {
-                                "title": "Y",
-                                "description": "Number for Y coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "z": {
-                                "title": "Z",
-                                "description": "Number for Z coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Vector3D",
-                                "pattern": "^Vector3D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "x",
-                            "y",
-                            "z"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Vector3D",
-                "description": "A vector object in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Point3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "x": {
-                                "title": "X",
-                                "description": "Number for X coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "y": {
-                                "title": "Y",
-                                "description": "Number for Y coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "z": {
-                                "title": "Z",
-                                "description": "Number for Z coordinate.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Point3D",
-                                "pattern": "^Point3D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "x",
-                            "y",
-                            "z"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Point3D",
-                "description": "A point object in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Ray3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "p": {
-                                "title": "P",
-                                "description": "Ray base point as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "v": {
-                                "title": "V",
-                                "description": "Ray direction vector as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Ray3D",
-                                "pattern": "^Ray3D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "p",
-                            "v"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Ray3D",
-                "description": "A ray object in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "LineSegment3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "p": {
-                                "title": "P",
-                                "description": "Line segment base point as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "v": {
-                                "title": "V",
-                                "description": "Line segment direction vector as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "LineSegment3D",
-                                "pattern": "^LineSegment3D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "p",
-                            "v"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "LineSegment3D",
-                "description": "A single line segment face in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Polyline3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "vertices": {
-                                "title": "Vertices",
-                                "description": "A list of points representing the the vertices of the polyline. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "number",
-                                        "format": "double"
-                                    },
-                                    "minItems": 3,
-                                    "maxItems": 3
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Polyline3D",
-                                "pattern": "^Polyline3D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "interpolated": {
-                                "title": "Interpolated",
-                                "description": "A boolean to note whether the polyline should be interpolated between the input vertices when it is translated to other interfaces.",
-                                "default": false,
-                                "type": "boolean"
-                            }
-                        },
-                        "required": [
-                            "vertices"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Polyline3D",
-                "description": "A polyline in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Arc3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "plane": {
-                                "title": "Plane",
-                                "description": "A Plane in which the arc lies with an origin representing the center of the circle for the arc.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Plane"
-                                    }
-                                ]
-                            },
-                            "radius": {
-                                "title": "Radius",
-                                "description": "A number representing the radius of the arc.",
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Arc3D",
-                                "pattern": "^Arc3D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "a1": {
-                                "title": "A1",
-                                "description": "A number between 0 and 2 * pi for the start angle of the arc.",
-                                "default": 0,
-                                "minimum": 0,
-                                "maximum": 6.283185307179586,
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "a2": {
-                                "title": "A2",
-                                "description": "A number between 0 and 2 * pi for the end angle of the arc.",
-                                "default": 6.283185307179586,
-                                "minimum": 0,
-                                "maximum": 6.283185307179586,
-                                "type": "number",
-                                "format": "double"
-                            }
-                        },
-                        "required": [
-                            "plane",
-                            "radius"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Arc3D",
-                "description": "A single arc or circle in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Mesh3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "vertices": {
-                                "title": "Vertices",
-                                "description": "A list of points representing the vertices of the mesh. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "number",
-                                        "format": "double"
-                                    },
-                                    "minItems": 3,
-                                    "maxItems": 3
-                                }
-                            },
-                            "faces": {
-                                "title": "Faces",
-                                "description": "A list of lists with each sub-list having either 3 or 4 integers. These integers correspond to indices within the list of vertices.",
-                                "minItems": 1,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "format": "int32"
-                                    },
-                                    "minItems": 3,
-                                    "maxItems": 4
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Mesh3D",
-                                "pattern": "^Mesh3D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "colors": {
-                                "title": "Colors",
-                                "description": "An optional list of colors that correspond to either the faces of the mesh or the vertices of the mesh.",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/Color"
-                                }
-                            }
-                        },
-                        "required": [
-                            "vertices",
-                            "faces"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Mesh3D",
-                "description": "A mesh in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "PolyfaceEdgeInfo": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "edge_indices": {
-                                "title": "Edge Indices",
-                                "description": "An array objects that each contain two integers. These integers correspond to indices within the vertices list and each tuple represents a line segment for an edge of the polyface.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "format": "int32"
-                                    },
-                                    "minItems": 2,
-                                    "maxItems": 2
-                                }
-                            },
-                            "edge_types": {
-                                "title": "Edge Types",
-                                "description": "An array of integers for each edge that parallels the edge_indices list. An integer of 0 denotes a naked edge, an integer of 1 denotes an internal edge. Anything higher is a non-manifold edge.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "format": "int32"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "PolyfaceEdgeInfo",
-                                "type": "string",
-                                "pattern": "^PolyfaceEdgeInfo$",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "edge_indices",
-                            "edge_types"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "PolyfaceEdgeInfo",
-                "description": "Optional edge information for Polyface.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Polyface3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "vertices": {
-                                "title": "Vertices",
-                                "description": "A list of points representing the vertices of the polyface. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "number",
-                                        "format": "double"
-                                    },
-                                    "minItems": 3,
-                                    "maxItems": 3
-                                }
-                            },
-                            "face_indices": {
-                                "title": "Face Indices",
-                                "description": "A list of lists with one list for each face of the polyface. Each face list must contain at least one sub-list of integers corresponding to indices within the vertices list. Additional sub-lists of integers may follow this one such that the first sub-list denotes the boundary of the face while each subsequent sub-list denotes a hole in the face.",
-                                "minItems": 1,
-                                "type": "array",
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "format": "int32"
-                                        },
-                                        "minItems": 3
-                                    },
-                                    "minItems": 1
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Polyface3D",
-                                "pattern": "^Polyface3D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "edge_information": {
-                                "title": "Edge Information",
-                                "description": "Optional edge information, which will speed up the creation of the Polyface object if it is available but should be left as None if it is unknown. If None, edge_information will be computed from the vertices and face_indices inputs.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/PolyfaceEdgeInfo"
-                                    }
-                                ]
-                            }
-                        },
-                        "required": [
-                            "vertices",
-                            "face_indices"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Polyface3D",
-                "description": "A Polyface in 3D space.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Sphere": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "center": {
-                                "title": "Center",
-                                "description": "The center of the sphere as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "radius": {
-                                "title": "Radius",
-                                "description": "A number representing the radius of the sphere.",
-                                "exclusiveMinimum": 0,
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Sphere",
-                                "pattern": "^Sphere$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "center",
-                            "radius"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Sphere",
-                "description": "A sphere object.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Cone": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "vertex": {
-                                "title": "Vertex",
-                                "description": "The point at the tip of the cone as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "axis": {
-                                "title": "Axis",
-                                "description": "The vector representing the direction of the cone as 3 (x, y, z) values. The vector extends from the vertex to the center of the base.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "angle": {
-                                "title": "Angle",
-                                "description": "An angle in radians representing the half angle between the axis and the surface.",
-                                "exclusiveMinimum": 0,
-                                "exclusiveMaximum": 1.5707963267948966,
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Cone",
-                                "pattern": "^Cone$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "vertex",
-                            "axis",
-                            "angle"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Cone",
-                "description": "A cone object.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "Cylinder": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "center": {
-                                "title": "Center",
-                                "description": "The center of the bottom base of the cylinder as 3 (x, y, z) values.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "axis": {
-                                "title": "Axis",
-                                "description": "The vector representing the direction of the cylinder as 3 (x, y, z) values. The vector extends from the bottom base center to the top base center.",
-                                "minItems": 3,
-                                "maxItems": 3,
-                                "type": "array",
-                                "items": {
-                                    "type": "number",
-                                    "format": "double"
-                                }
-                            },
-                            "radius": {
-                                "title": "Radius",
-                                "description": "A number representing the radius of the cylinder.",
-                                "exclusiveMinimum": 0,
-                                "type": "number",
-                                "format": "double"
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "Cylinder",
-                                "pattern": "^Cylinder$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "required": [
-                            "center",
-                            "axis",
-                            "radius"
-                        ],
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "Cylinder",
-                "description": "A cylinder object.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
             "DataTypes": {
                 "title": "DataTypes",
                 "description": "An enumeration.",
@@ -2364,6 +1349,138 @@
                     "propertyName": "type"
                 }
             },
+            "LineTypes": {
+                "title": "LineTypes",
+                "description": "An enumeration.",
+                "enum": [
+                    "Continuous",
+                    "Dashed",
+                    "Dotted",
+                    "DashDot"
+                ],
+                "type": "string"
+            },
+            "Polyline3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "vertices": {
+                                "title": "Vertices",
+                                "description": "A list of points representing the the vertices of the polyline. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Polyline3D",
+                                "pattern": "^Polyline3D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "interpolated": {
+                                "title": "Interpolated",
+                                "description": "A boolean to note whether the polyline should be interpolated between the input vertices when it is translated to other interfaces.",
+                                "default": false,
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "vertices"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Polyline3D",
+                "description": "A polyline in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "DisplayPolyline3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/DisplayBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "color",
+                            "geometry"
+                        ],
+                        "properties": {
+                            "color": {
+                                "title": "Color",
+                                "description": "Color for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Color"
+                                    }
+                                ]
+                            },
+                            "geometry": {
+                                "title": "Geometry",
+                                "description": "Polyline3D for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Polyline3D"
+                                    }
+                                ]
+                            },
+                            "line_width": {
+                                "title": "Line Width",
+                                "description": "Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number",
+                                        "minimum": 0
+                                    }
+                                ]
+                            },
+                            "line_type": {
+                                "description": "Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.",
+                                "default": "Continuous",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/LineTypes"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "DisplayPolyline3D",
+                                "pattern": "^DisplayPolyline3D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "DisplayPolyline3D",
+                "description": "A polyline in 3D space with display properties.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
             "DisplayModes": {
                 "title": "DisplayModes",
                 "description": "An enumeration.",
@@ -2374,6 +1491,1211 @@
                     "Points"
                 ],
                 "type": "string"
+            },
+            "DisplayFace3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/DisplayBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "color",
+                            "geometry"
+                        ],
+                        "properties": {
+                            "color": {
+                                "title": "Color",
+                                "description": "Color for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Color"
+                                    }
+                                ]
+                            },
+                            "geometry": {
+                                "title": "Geometry",
+                                "description": "Face3D for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Face3D"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "DisplayFace3D",
+                                "pattern": "^DisplayFace3D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "display_mode": {
+                                "description": "Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.",
+                                "default": "Surface",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/DisplayModes"
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "DisplayFace3D",
+                "description": "A single planar face in 3D space with display properties.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Sphere": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "center": {
+                                "title": "Center",
+                                "description": "The center of the sphere as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "radius": {
+                                "title": "Radius",
+                                "description": "A number representing the radius of the sphere.",
+                                "exclusiveMinimum": 0,
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Sphere",
+                                "pattern": "^Sphere$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "center",
+                            "radius"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Sphere",
+                "description": "A sphere object.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Cone": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "vertex": {
+                                "title": "Vertex",
+                                "description": "The point at the tip of the cone as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "axis": {
+                                "title": "Axis",
+                                "description": "The vector representing the direction of the cone as 3 (x, y, z) values. The vector extends from the vertex to the center of the base.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "angle": {
+                                "title": "Angle",
+                                "description": "An angle in radians representing the half angle between the axis and the surface.",
+                                "exclusiveMinimum": 0,
+                                "exclusiveMaximum": 1.5707963267948966,
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Cone",
+                                "pattern": "^Cone$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "vertex",
+                            "axis",
+                            "angle"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Cone",
+                "description": "A cone object.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "DisplayCone": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/DisplayBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "color",
+                            "geometry"
+                        ],
+                        "properties": {
+                            "color": {
+                                "title": "Color",
+                                "description": "Color for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Color"
+                                    }
+                                ]
+                            },
+                            "geometry": {
+                                "title": "Geometry",
+                                "description": "Cone for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Cone"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "DisplayCone",
+                                "pattern": "^DisplayCone$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "display_mode": {
+                                "description": "Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.",
+                                "default": "Surface",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/DisplayModes"
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "DisplayCone",
+                "description": "A cone object with display properties.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Mesh2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "vertices": {
+                                "title": "Vertices",
+                                "description": "A list of points representing the vertices of the mesh. The list should include at least 3 points and each point should be a list of 2 (x, y) values.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "minItems": 2,
+                                    "maxItems": 2
+                                }
+                            },
+                            "faces": {
+                                "title": "Faces",
+                                "description": "A list of lists with each sub-list having either 3 or 4 integers. These integers correspond to indices within the list of vertices.",
+                                "minItems": 1,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "format": "int32"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 4
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Mesh2D",
+                                "pattern": "^Mesh2D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "colors": {
+                                "title": "Colors",
+                                "description": "An optional list of colors that correspond to either the faces of the mesh or the vertices of the mesh.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Color"
+                                }
+                            }
+                        },
+                        "required": [
+                            "vertices",
+                            "faces"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Mesh2D",
+                "description": "A mesh in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "DisplayMesh2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/DisplayBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "geometry",
+                            "colors"
+                        ],
+                        "properties": {
+                            "geometry": {
+                                "title": "Geometry",
+                                "description": "Mesh2D for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Mesh2D"
+                                    }
+                                ]
+                            },
+                            "colors": {
+                                "title": "Colors",
+                                "description": "A list of colors that correspond to either the faces of the mesh or the vertices of the mesh. It can also be a single color for the entire mesh.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Color"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "DisplayMesh2D",
+                                "pattern": "^DisplayMesh2D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "display_mode": {
+                                "description": "Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.",
+                                "default": "Surface",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/DisplayModes"
+                                    }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "DisplayMesh2D",
+                "description": "A mesh in 2D space with display properties.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "PolyfaceEdgeInfo": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "edge_indices": {
+                                "title": "Edge Indices",
+                                "description": "An array objects that each contain two integers. These integers correspond to indices within the vertices list and each tuple represents a line segment for an edge of the polyface.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "format": "int32"
+                                    },
+                                    "minItems": 2,
+                                    "maxItems": 2
+                                }
+                            },
+                            "edge_types": {
+                                "title": "Edge Types",
+                                "description": "An array of integers for each edge that parallels the edge_indices list. An integer of 0 denotes a naked edge, an integer of 1 denotes an internal edge. Anything higher is a non-manifold edge.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "format": "int32"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "PolyfaceEdgeInfo",
+                                "type": "string",
+                                "pattern": "^PolyfaceEdgeInfo$",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "edge_indices",
+                            "edge_types"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "PolyfaceEdgeInfo",
+                "description": "Optional edge information for Polyface.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Vector3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "title": "X",
+                                "description": "Number for X coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "y": {
+                                "title": "Y",
+                                "description": "Number for Y coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "z": {
+                                "title": "Z",
+                                "description": "Number for Z coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Vector3D",
+                                "pattern": "^Vector3D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y",
+                            "z"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Vector3D",
+                "description": "A vector object in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Polyline2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "vertices": {
+                                "title": "Vertices",
+                                "description": "A list of points representing the the vertices of the polyline. The list should include at least 3 points and each point should be a list of 2 (x, y) values.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "minItems": 2,
+                                    "maxItems": 2
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Polyline2D",
+                                "pattern": "^Polyline2D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "interpolated": {
+                                "title": "Interpolated",
+                                "description": "A boolean to note whether the polyline should be interpolated between the input vertices when it is translated to other interfaces.",
+                                "default": false,
+                                "type": "boolean"
+                            }
+                        },
+                        "required": [
+                            "vertices"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Polyline2D",
+                "description": "A polyline in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "DisplayArc2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/DisplayBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "color",
+                            "geometry"
+                        ],
+                        "properties": {
+                            "color": {
+                                "title": "Color",
+                                "description": "Color for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Color"
+                                    }
+                                ]
+                            },
+                            "geometry": {
+                                "title": "Geometry",
+                                "description": "Arc2D for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Arc2D"
+                                    }
+                                ]
+                            },
+                            "line_width": {
+                                "title": "Line Width",
+                                "description": "Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number",
+                                        "minimum": 0
+                                    }
+                                ]
+                            },
+                            "line_type": {
+                                "description": "Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.",
+                                "default": "Continuous",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/LineTypes"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "DisplayArc2D",
+                                "pattern": "^DisplayArc2D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "DisplayArc2D",
+                "description": "A single arc or circle in 2D space with display properties.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Vector2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "title": "X",
+                                "description": "Number for X coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "y": {
+                                "title": "Y",
+                                "description": "Number for Y coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Vector2D",
+                                "pattern": "^Vector2D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Vector2D",
+                "description": "A vector object in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Point2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "title": "X",
+                                "description": "Number for X coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "y": {
+                                "title": "Y",
+                                "description": "Number for Y coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Point2D",
+                                "pattern": "^Point2D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Point2D",
+                "description": "A point object in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Ray2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "p": {
+                                "title": "P",
+                                "description": "Ray base point as 2 (x, y) values.",
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "v": {
+                                "title": "V",
+                                "description": "Ray direction vector as 2 (x, y) values.",
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Ray2D",
+                                "pattern": "^Ray2D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "p",
+                            "v"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Ray2D",
+                "description": "A ray object in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "LineSegment2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "p": {
+                                "title": "P",
+                                "description": "Line segment base point as 2 (x, y) values.",
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "v": {
+                                "title": "V",
+                                "description": "Line segment direction vector as 2 (x, y) values.",
+                                "minItems": 2,
+                                "maxItems": 2,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "LineSegment2D",
+                                "pattern": "^LineSegment2D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "p",
+                            "v"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "LineSegment2D",
+                "description": "A single line segment face in 2D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Polygon2D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "vertices": {
+                                "title": "Vertices",
+                                "description": "A list of points representing the vertices of the polygon. The list should include at least 3 points and each point should be a list of 2 (x, y) values.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "minItems": 2,
+                                    "maxItems": 2
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Polygon2D",
+                                "pattern": "^Polygon2D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "vertices"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Polygon2D",
+                "description": "A polygon in 2D space (without holes).",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Point3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "x": {
+                                "title": "X",
+                                "description": "Number for X coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "y": {
+                                "title": "Y",
+                                "description": "Number for Y coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "z": {
+                                "title": "Z",
+                                "description": "Number for Z coordinate.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Point3D",
+                                "pattern": "^Point3D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "x",
+                            "y",
+                            "z"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Point3D",
+                "description": "A point object in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Ray3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "p": {
+                                "title": "P",
+                                "description": "Ray base point as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "v": {
+                                "title": "V",
+                                "description": "Ray direction vector as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Ray3D",
+                                "pattern": "^Ray3D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "p",
+                            "v"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Ray3D",
+                "description": "A ray object in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "LineSegment3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "p": {
+                                "title": "P",
+                                "description": "Line segment base point as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "v": {
+                                "title": "V",
+                                "description": "Line segment direction vector as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "LineSegment3D",
+                                "pattern": "^LineSegment3D$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "p",
+                            "v"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "LineSegment3D",
+                "description": "A single line segment face in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Arc3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "plane": {
+                                "title": "Plane",
+                                "description": "A Plane in which the arc lies with an origin representing the center of the circle for the arc.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Plane"
+                                    }
+                                ]
+                            },
+                            "radius": {
+                                "title": "Radius",
+                                "description": "A number representing the radius of the arc.",
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Arc3D",
+                                "pattern": "^Arc3D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "a1": {
+                                "title": "A1",
+                                "description": "A number between 0 and 2 * pi for the start angle of the arc.",
+                                "default": 0,
+                                "minimum": 0,
+                                "maximum": 6.283185307179586,
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "a2": {
+                                "title": "A2",
+                                "description": "A number between 0 and 2 * pi for the end angle of the arc.",
+                                "default": 6.283185307179586,
+                                "minimum": 0,
+                                "maximum": 6.283185307179586,
+                                "type": "number",
+                                "format": "double"
+                            }
+                        },
+                        "required": [
+                            "plane",
+                            "radius"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Arc3D",
+                "description": "A single arc or circle in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Mesh3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "vertices": {
+                                "title": "Vertices",
+                                "description": "A list of points representing the vertices of the mesh. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                }
+                            },
+                            "faces": {
+                                "title": "Faces",
+                                "description": "A list of lists with each sub-list having either 3 or 4 integers. These integers correspond to indices within the list of vertices.",
+                                "minItems": 1,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "format": "int32"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 4
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Mesh3D",
+                                "pattern": "^Mesh3D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "colors": {
+                                "title": "Colors",
+                                "description": "An optional list of colors that correspond to either the faces of the mesh or the vertices of the mesh.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Color"
+                                }
+                            }
+                        },
+                        "required": [
+                            "vertices",
+                            "faces"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Mesh3D",
+                "description": "A mesh in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Polyface3D": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "vertices": {
+                                "title": "Vertices",
+                                "description": "A list of points representing the vertices of the polyface. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number",
+                                        "format": "double"
+                                    },
+                                    "minItems": 3,
+                                    "maxItems": 3
+                                }
+                            },
+                            "face_indices": {
+                                "title": "Face Indices",
+                                "description": "A list of lists with one list for each face of the polyface. Each face list must contain at least one sub-list of integers corresponding to indices within the vertices list. Additional sub-lists of integers may follow this one such that the first sub-list denotes the boundary of the face while each subsequent sub-list denotes a hole in the face.",
+                                "minItems": 1,
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "format": "int32"
+                                        },
+                                        "minItems": 3
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Polyface3D",
+                                "pattern": "^Polyface3D$",
+                                "type": "string",
+                                "readOnly": true
+                            },
+                            "edge_information": {
+                                "title": "Edge Information",
+                                "description": "Optional edge information, which will speed up the creation of the Polyface object if it is available but should be left as None if it is unknown. If None, edge_information will be computed from the vertices and face_indices inputs.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/PolyfaceEdgeInfo"
+                                    }
+                                ]
+                            }
+                        },
+                        "required": [
+                            "vertices",
+                            "face_indices"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Polyface3D",
+                "description": "A Polyface in 3D space.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Cylinder": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "center": {
+                                "title": "Center",
+                                "description": "The center of the bottom base of the cylinder as 3 (x, y, z) values.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "axis": {
+                                "title": "Axis",
+                                "description": "The vector representing the direction of the cylinder as 3 (x, y, z) values. The vector extends from the bottom base center to the top base center.",
+                                "minItems": 3,
+                                "maxItems": 3,
+                                "type": "array",
+                                "items": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "radius": {
+                                "title": "Radius",
+                                "description": "A number representing the radius of the cylinder.",
+                                "exclusiveMinimum": 0,
+                                "type": "number",
+                                "format": "double"
+                            },
+                            "type": {
+                                "title": "Type",
+                                "default": "Cylinder",
+                                "pattern": "^Cylinder$",
+                                "type": "string",
+                                "readOnly": true
+                            }
+                        },
+                        "required": [
+                            "center",
+                            "axis",
+                            "radius"
+                        ],
+                        "additionalProperties": false
+                    }
+                ],
+                "title": "Cylinder",
+                "description": "A cylinder object.",
+                "discriminator": {
+                    "propertyName": "type"
+                }
             },
             "AnalysisGeometry": {
                 "allOf": [
@@ -2658,20 +2980,6 @@
                     "propertyName": "type"
                 }
             },
-            "LineTypes": {
-                "title": "LineTypes",
-                "description": "An enumeration.",
-                "enum": [
-                    "Continuous",
-                    "Dashed",
-                    "Dotted",
-                    "DashDot",
-                    "Center",
-                    "Border",
-                    "Hidden"
-                ],
-                "type": "string"
-            },
             "DisplayLineSegment2D": {
                 "allOf": [
                     {
@@ -2816,78 +3124,6 @@
                     "propertyName": "type"
                 }
             },
-            "DisplayArc2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/DisplayBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "required": [
-                            "color",
-                            "geometry"
-                        ],
-                        "properties": {
-                            "color": {
-                                "title": "Color",
-                                "description": "Color for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Color"
-                                    }
-                                ]
-                            },
-                            "geometry": {
-                                "title": "Geometry",
-                                "description": "Arc2D for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Arc2D"
-                                    }
-                                ]
-                            },
-                            "line_width": {
-                                "title": "Line Width",
-                                "description": "Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "number",
-                                        "minimum": 0
-                                    }
-                                ]
-                            },
-                            "line_type": {
-                                "description": "Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.",
-                                "default": "Continuous",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/LineTypes"
-                                    }
-                                ]
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "DisplayArc2D",
-                                "pattern": "^DisplayArc2D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "DisplayArc2D",
-                "description": "A single arc or circle in 2D space with display properties.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
             "DisplayPolygon2D": {
                 "allOf": [
                     {
@@ -2918,21 +3154,37 @@
                                     }
                                 ]
                             },
+                            "line_width": {
+                                "title": "Line Width",
+                                "description": "Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number",
+                                        "minimum": 0
+                                    }
+                                ]
+                            },
+                            "line_type": {
+                                "description": "Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.",
+                                "default": "Continuous",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/LineTypes"
+                                    }
+                                ]
+                            },
                             "type": {
                                 "title": "Type",
                                 "default": "DisplayPolygon2D",
                                 "pattern": "^DisplayPolygon2D$",
                                 "type": "string",
                                 "readOnly": true
-                            },
-                            "display_mode": {
-                                "description": "Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.",
-                                "default": "Surface",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/DisplayModes"
-                                    }
-                                ]
                             }
                         },
                         "additionalProperties": false
@@ -2940,61 +3192,6 @@
                 ],
                 "title": "DisplayPolygon2D",
                 "description": "A single polygon in 2D space with display properties.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "DisplayMesh2D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/DisplayBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "required": [
-                            "geometry",
-                            "colors"
-                        ],
-                        "properties": {
-                            "geometry": {
-                                "title": "Geometry",
-                                "description": "Mesh2D for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Mesh2D"
-                                    }
-                                ]
-                            },
-                            "colors": {
-                                "title": "Colors",
-                                "description": "A list of colors that correspond to either the faces of the mesh or the vertices of the mesh. It can also be a single color for the entire mesh.",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/Color"
-                                }
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "DisplayMesh2D",
-                                "pattern": "^DisplayMesh2D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "display_mode": {
-                                "description": "Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.",
-                                "default": "Surface",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/DisplayModes"
-                                    }
-                                ]
-                            }
-                        },
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "DisplayMesh2D",
-                "description": "A mesh in 2D space with display properties.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -3287,78 +3484,6 @@
                     "propertyName": "type"
                 }
             },
-            "DisplayPolyline3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/DisplayBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "required": [
-                            "color",
-                            "geometry"
-                        ],
-                        "properties": {
-                            "color": {
-                                "title": "Color",
-                                "description": "Color for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Color"
-                                    }
-                                ]
-                            },
-                            "geometry": {
-                                "title": "Geometry",
-                                "description": "Polyline3D for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Polyline3D"
-                                    }
-                                ]
-                            },
-                            "line_width": {
-                                "title": "Line Width",
-                                "description": "Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "number",
-                                        "minimum": 0
-                                    }
-                                ]
-                            },
-                            "line_type": {
-                                "description": "Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.",
-                                "default": "Continuous",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/LineTypes"
-                                    }
-                                ]
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "DisplayPolyline3D",
-                                "pattern": "^DisplayPolyline3D$",
-                                "type": "string",
-                                "readOnly": true
-                            }
-                        },
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "DisplayPolyline3D",
-                "description": "A polyline in 3D space with display properties.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
             "DisplayArc3D": {
                 "allOf": [
                     {
@@ -3427,62 +3552,6 @@
                 ],
                 "title": "DisplayArc3D",
                 "description": "A single arc or circle in 3D space with display properties.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "DisplayFace3D": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/DisplayBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "required": [
-                            "color",
-                            "geometry"
-                        ],
-                        "properties": {
-                            "color": {
-                                "title": "Color",
-                                "description": "Color for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Color"
-                                    }
-                                ]
-                            },
-                            "geometry": {
-                                "title": "Geometry",
-                                "description": "Face3D for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Face3D"
-                                    }
-                                ]
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "DisplayFace3D",
-                                "pattern": "^DisplayFace3D$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "display_mode": {
-                                "description": "Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.",
-                                "default": "Surface",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/DisplayModes"
-                                    }
-                                ]
-                            }
-                        },
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "DisplayFace3D",
-                "description": "A single planar face in 3D space with display properties.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -3649,62 +3718,6 @@
                 ],
                 "title": "DisplaySphere",
                 "description": "A sphere object with display properties.",
-                "discriminator": {
-                    "propertyName": "type"
-                }
-            },
-            "DisplayCone": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/DisplayBaseModel"
-                    },
-                    {
-                        "type": "object",
-                        "required": [
-                            "color",
-                            "geometry"
-                        ],
-                        "properties": {
-                            "color": {
-                                "title": "Color",
-                                "description": "Color for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Color"
-                                    }
-                                ]
-                            },
-                            "geometry": {
-                                "title": "Geometry",
-                                "description": "Cone for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Cone"
-                                    }
-                                ]
-                            },
-                            "type": {
-                                "title": "Type",
-                                "default": "DisplayCone",
-                                "pattern": "^DisplayCone$",
-                                "type": "string",
-                                "readOnly": true
-                            },
-                            "display_mode": {
-                                "description": "Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.",
-                                "default": "Surface",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/DisplayModes"
-                                    }
-                                ]
-                            }
-                        },
-                        "additionalProperties": false
-                    }
-                ],
-                "title": "DisplayCone",
-                "description": "A cone object with display properties.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -4013,48 +4026,64 @@
                     "propertyName": "type"
                 }
             },
-            "_VisualizationBase": {
+            "LineCurveBase": {
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+                        "$ref": "#/components/schemas/DisplayBaseModel"
                     },
                     {
                         "type": "object",
+                        "required": [
+                            "color"
+                        ],
                         "properties": {
-                            "identifier": {
-                                "title": "Identifier",
-                                "description": "Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters.",
-                                "maxLength": 100,
-                                "minLength": 1,
-                                "pattern": "^[.A-Za-z0-9_-]+$",
-                                "type": "string"
+                            "color": {
+                                "title": "Color",
+                                "description": "Color for the geometry.",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Color"
+                                    }
+                                ]
                             },
-                            "display_name": {
-                                "title": "Display Name",
-                                "description": "Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier.",
-                                "type": "string"
+                            "line_width": {
+                                "title": "Line Width",
+                                "description": "Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.",
+                                "default": {
+                                    "type": "Default"
+                                },
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/components/schemas/Default"
+                                    },
+                                    {
+                                        "type": "number",
+                                        "minimum": 0
+                                    }
+                                ]
                             },
-                            "user_data": {
-                                "title": "User Data",
-                                "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
-                                "type": "object"
+                            "line_type": {
+                                "description": "Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.",
+                                "default": "Continuous",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/LineTypes"
+                                    }
+                                ]
                             },
                             "type": {
                                 "title": "Type",
-                                "default": "_VisualizationBase",
+                                "default": "LineCurveBase",
                                 "type": "string",
-                                "pattern": "^_VisualizationBase$",
+                                "pattern": "^LineCurveBase$",
                                 "readOnly": true
                             }
                         },
-                        "required": [
-                            "identifier"
-                        ],
                         "additionalProperties": false
                     }
                 ],
-                "title": "_VisualizationBase",
-                "description": "Base class for visualization objects.",
+                "title": "LineCurveBase",
+                "description": "Base class for all Geometric Display objects with a line like properties.",
                 "discriminator": {
                     "propertyName": "type"
                 }
@@ -4126,64 +4155,48 @@
                     "propertyName": "type"
                 }
             },
-            "LineCurveBase": {
+            "_VisualizationBase": {
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/DisplayBaseModel"
+                        "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
                     },
                     {
                         "type": "object",
-                        "required": [
-                            "color"
-                        ],
                         "properties": {
-                            "color": {
-                                "title": "Color",
-                                "description": "Color for the geometry.",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Color"
-                                    }
-                                ]
+                            "identifier": {
+                                "title": "Identifier",
+                                "description": "Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters.",
+                                "maxLength": 100,
+                                "minLength": 1,
+                                "pattern": "^[.A-Za-z0-9_-]+$",
+                                "type": "string"
                             },
-                            "line_width": {
-                                "title": "Line Width",
-                                "description": "Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.",
-                                "default": {
-                                    "type": "Default"
-                                },
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/components/schemas/Default"
-                                    },
-                                    {
-                                        "type": "number",
-                                        "minimum": 0
-                                    }
-                                ]
+                            "display_name": {
+                                "title": "Display Name",
+                                "description": "Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier.",
+                                "type": "string"
                             },
-                            "line_type": {
-                                "description": "Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.",
-                                "default": "Continuous",
-                                "allOf": [
-                                    {
-                                        "$ref": "#/components/schemas/LineTypes"
-                                    }
-                                ]
+                            "user_data": {
+                                "title": "User Data",
+                                "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+                                "type": "object"
                             },
                             "type": {
                                 "title": "Type",
-                                "default": "LineCurveBase",
+                                "default": "_VisualizationBase",
                                 "type": "string",
-                                "pattern": "^LineCurveBase$",
+                                "pattern": "^_VisualizationBase$",
                                 "readOnly": true
                             }
                         },
+                        "required": [
+                            "identifier"
+                        ],
                         "additionalProperties": false
                     }
                 ],
-                "title": "LineCurveBase",
-                "description": "Base class for all Geometric Display objects with a line like properties.",
+                "title": "_VisualizationBase",
+                "description": "Base class for visualization objects.",
                 "discriminator": {
                     "propertyName": "type"
                 }
