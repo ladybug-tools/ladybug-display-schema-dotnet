@@ -54,25 +54,7 @@ namespace LadybugDisplaySchema
         /// Enum DashDot for value: DashDot
         /// </summary>
         [EnumMember(Value = "DashDot")]
-        DashDot = 4,
-
-        /// <summary>
-        /// Enum Center for value: Center
-        /// </summary>
-        [EnumMember(Value = "Center")]
-        Center = 5,
-
-        /// <summary>
-        /// Enum Border for value: Border
-        /// </summary>
-        [EnumMember(Value = "Border")]
-        Border = 6,
-
-        /// <summary>
-        /// Enum Hidden for value: Hidden
-        /// </summary>
-        [EnumMember(Value = "Hidden")]
-        Hidden = 7
+        DashDot = 4
 
     }
 

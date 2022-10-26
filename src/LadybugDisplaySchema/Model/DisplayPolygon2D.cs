@@ -31,11 +31,11 @@ namespace LadybugDisplaySchema
     public partial class DisplayPolygon2D : DisplayBaseModel, IEquatable<DisplayPolygon2D>, IValidatableObject
     {
         /// <summary>
-        /// Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.
+        /// Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.
         /// </summary>
-        /// <value>Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.</value>
-        [DataMember(Name="display_mode")]
-        public DisplayModes DisplayMode { get; set; } = DisplayModes.Surface;
+        /// <value>Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.</value>
+        [DataMember(Name="line_type")]
+        public LineTypes LineType { get; set; } = LineTypes.Continuous;
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayPolygon2D" /> class.
         /// </summary>
@@ -51,19 +51,21 @@ namespace LadybugDisplaySchema
         /// </summary>
         /// <param name="color">Color for the geometry. (required).</param>
         /// <param name="geometry">Polygon2D for the geometry. (required).</param>
-        /// <param name="displayMode">Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types..</param>
+        /// <param name="lineWidth">Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry..</param>
+        /// <param name="lineType">Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public DisplayPolygon2D
         (
            Color color, Polygon2D geometry, // Required parameters
-            Object userData= default, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
+            Object userData= default, AnyOf<Default, double> lineWidth= default, LineTypes lineType= LineTypes.Continuous// Optional parameters
         ) : base(userData: userData )// BaseClass
         {
             // to ensure "color" is required (not null)
             this.Color = color ?? throw new ArgumentNullException("color is a required property for DisplayPolygon2D and cannot be null");
             // to ensure "geometry" is required (not null)
             this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for DisplayPolygon2D and cannot be null");
-            this.DisplayMode = displayMode;
+            this.LineWidth = lineWidth;
+            this.LineType = lineType;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "DisplayPolygon2D";
@@ -92,6 +94,12 @@ namespace LadybugDisplaySchema
         /// <value>Polygon2D for the geometry.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
         public Polygon2D Geometry { get; set; } 
+        /// <summary>
+        /// Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.
+        /// </summary>
+        /// <value>Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.</value>
+        [DataMember(Name = "line_width")]
+        public AnyOf<Default, double> LineWidth { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -117,7 +125,8 @@ namespace LadybugDisplaySchema
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             sb.Append("  Color: ").Append(this.Color).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
-            sb.Append("  DisplayMode: ").Append(this.DisplayMode).Append("\n");
+            sb.Append("  LineWidth: ").Append(this.LineWidth).Append("\n");
+            sb.Append("  LineType: ").Append(this.LineType).Append("\n");
             return sb.ToString();
         }
   
@@ -183,8 +192,9 @@ namespace LadybugDisplaySchema
             return base.Equals(input) && 
                     Extension.Equals(this.Color, input.Color) && 
                     Extension.Equals(this.Geometry, input.Geometry) && 
-                    Extension.Equals(this.Type, input.Type) && 
-                    Extension.Equals(this.DisplayMode, input.DisplayMode);
+                    Extension.Equals(this.LineWidth, input.LineWidth) && 
+                    Extension.Equals(this.LineType, input.LineType) && 
+                    Extension.Equals(this.Type, input.Type);
         }
 
         /// <summary>
@@ -200,10 +210,12 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.Color.GetHashCode();
                 if (this.Geometry != null)
                     hashCode = hashCode * 59 + this.Geometry.GetHashCode();
+                if (this.LineWidth != null)
+                    hashCode = hashCode * 59 + this.LineWidth.GetHashCode();
+                if (this.LineType != null)
+                    hashCode = hashCode * 59 + this.LineType.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
-                if (this.DisplayMode != null)
-                    hashCode = hashCode * 59 + this.DisplayMode.GetHashCode();
                 return hashCode;
             }
         }

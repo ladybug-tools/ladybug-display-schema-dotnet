@@ -3,7 +3,7 @@
     "servers": [],
     "info": {
         "description": "Documentation for Ladybug geometry schema",
-        "version": "0.7.0",
+        "version": "0.7.1",
         "title": "Ladybug Geometry Schema",
         "contact": {
             "name": "Ladybug Tools",
