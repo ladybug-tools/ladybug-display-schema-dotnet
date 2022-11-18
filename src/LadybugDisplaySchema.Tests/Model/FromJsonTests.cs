@@ -78,6 +78,7 @@ namespace LadybugDisplaySchema.Test
             var vData = new VisualizationData(data, null);
             var legend = vData.LegendParameters;
             Assert.IsTrue(legend.OrdinalDictionary != null);
+            Assert.AreEqual(legend.GetOrdinalDictionary().Count, 7);
         }
 
         [Test]

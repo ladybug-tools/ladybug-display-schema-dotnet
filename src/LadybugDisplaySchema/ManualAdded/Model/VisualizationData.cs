@@ -26,6 +26,7 @@ namespace LadybugDisplaySchema
             }
             else
             {
+                values = Enumerable.Repeat(-99.0, results.Count).ToList();
                 var keyMapper = new Dictionary<double, string>();
                 var gps = results.Select((_, i) => new { _, i }).GroupBy(_ => _._).ToList();
 
@@ -41,8 +42,8 @@ namespace LadybugDisplaySchema
                      
                     foreach (var item in gp)
                     {
-                        values.Insert(item.i, i);
-                        //values[item.i] = i;
+                        //values.Insert(item.i, i);
+                        values[item.i] = i;
                     }
                 }
                 this.Values = values;
