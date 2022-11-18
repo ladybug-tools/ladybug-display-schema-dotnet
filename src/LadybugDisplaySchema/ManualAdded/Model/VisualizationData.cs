@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace LadybugDisplaySchema
 {
@@ -30,12 +28,17 @@ namespace LadybugDisplaySchema
             {
                 var keyMapper = new Dictionary<double, string>();
                 var gps = results.Select((_, i) => new { _, i }).GroupBy(_ => _._).ToList();
+
+                // sort keys
+                var comparer = new StringComparer();
+                gps = gps.OrderByDescending(_ => _.Key, comparer).ToList();
+
                 for (int i = 0; i < gps.Count; i++)
                 {
                     var gp = gps[i];
                     var key = gp.Key ?? "None";
                     keyMapper.Add(i, key);
-
+                     
                     foreach (var item in gp)
                     {
                         values.Insert(item.i, i);

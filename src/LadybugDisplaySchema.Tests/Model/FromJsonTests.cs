@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace LadybugDisplaySchema.Test
 {
@@ -56,6 +57,27 @@ namespace LadybugDisplaySchema.Test
             var cGeo = contexts.First().Geometry.FirstOrDefault().Obj as DisplayFace3D;
             Assert.IsTrue(cGeo.DisplayMode == DisplayModes.Wireframe);
 
+        }
+
+        [Test]
+        public void VisualizationDataWithStringValuesTest()
+        {
+            var data = new List<string>()
+            {
+                "0.6",
+                "1.2",
+                "0.6",
+                "None",
+                "13",
+                "2.6",
+                "0.6",
+                "-4",
+                "21"
+            };
+
+            var vData = new VisualizationData(data, null);
+            var legend = vData.LegendParameters;
+            Assert.IsTrue(legend.OrdinalDictionary != null);
         }
 
         [Test]
