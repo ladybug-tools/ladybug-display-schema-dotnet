@@ -49,20 +49,20 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayPolyface3D" /> class.
         /// </summary>
+        /// <param name="color">Color for the geometry. (required).</param>
         /// <param name="geometry">Polyface3D for the geometry. (required).</param>
-        /// <param name="colors">A list of colors that correspond to either the faces of the polyface or the vertices of the polyface. It can also be a single color for the entire polyface. (required).</param>
         /// <param name="displayMode">Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public DisplayPolyface3D
         (
-           Polyface3D geometry, List<Color> colors, // Required parameters
+           Color color, Polyface3D geometry, // Required parameters
             Object userData= default, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
         ) : base(userData: userData )// BaseClass
         {
+            // to ensure "color" is required (not null)
+            this.Color = color ?? throw new ArgumentNullException("color is a required property for DisplayPolyface3D and cannot be null");
             // to ensure "geometry" is required (not null)
             this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for DisplayPolyface3D and cannot be null");
-            // to ensure "colors" is required (not null)
-            this.Colors = colors ?? throw new ArgumentNullException("colors is a required property for DisplayPolyface3D and cannot be null");
             this.DisplayMode = displayMode;
 
             // Set non-required readonly properties with defaultValue
@@ -81,17 +81,17 @@ namespace LadybugDisplaySchema
         public override string Type { get; protected set; }  = "DisplayPolyface3D";
 
         /// <summary>
+        /// Color for the geometry.
+        /// </summary>
+        /// <value>Color for the geometry.</value>
+        [DataMember(Name = "color", IsRequired = true)]
+        public Color Color { get; set; } 
+        /// <summary>
         /// Polyface3D for the geometry.
         /// </summary>
         /// <value>Polyface3D for the geometry.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
         public Polyface3D Geometry { get; set; } 
-        /// <summary>
-        /// A list of colors that correspond to either the faces of the polyface or the vertices of the polyface. It can also be a single color for the entire polyface.
-        /// </summary>
-        /// <value>A list of colors that correspond to either the faces of the polyface or the vertices of the polyface. It can also be a single color for the entire polyface.</value>
-        [DataMember(Name = "colors", IsRequired = true)]
-        public List<Color> Colors { get; set; } 
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -115,8 +115,8 @@ namespace LadybugDisplaySchema
             sb.Append("DisplayPolyface3D:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
+            sb.Append("  Color: ").Append(this.Color).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
-            sb.Append("  Colors: ").Append(this.Colors).Append("\n");
             sb.Append("  DisplayMode: ").Append(this.DisplayMode).Append("\n");
             return sb.ToString();
         }
@@ -181,11 +181,8 @@ namespace LadybugDisplaySchema
             if (input == null)
                 return false;
             return base.Equals(input) && 
+                    Extension.Equals(this.Color, input.Color) && 
                     Extension.Equals(this.Geometry, input.Geometry) && 
-                (
-                    this.Colors == input.Colors ||
-                    Extension.AllEquals(this.Colors, input.Colors)
-                ) && 
                     Extension.Equals(this.Type, input.Type) && 
                     Extension.Equals(this.DisplayMode, input.DisplayMode);
         }
@@ -199,10 +196,10 @@ namespace LadybugDisplaySchema
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
+                if (this.Color != null)
+                    hashCode = hashCode * 59 + this.Color.GetHashCode();
                 if (this.Geometry != null)
                     hashCode = hashCode * 59 + this.Geometry.GetHashCode();
-                if (this.Colors != null)
-                    hashCode = hashCode * 59 + this.Colors.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.DisplayMode != null)
