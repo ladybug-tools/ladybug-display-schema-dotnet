@@ -8,7 +8,7 @@ namespace LadybugDisplaySchema
     public partial class Polygon2D
     {
         private bool _isClockwise;
-        private double _area;
+        private double? _area = null;
 
 
         /// <summary>
@@ -21,7 +21,16 @@ namespace LadybugDisplaySchema
         /// The area of the polygon.
         /// </summary>
 
-        public double Area => Math.Abs(_area);
+        public double Area 
+        { 
+            get 
+            {
+                if (!_area.HasValue)
+                    CalculateArea();
+                return Math.Abs(_area.GetValueOrDefault());
+
+            }
+        }
 
         /// <summary>
         /// Calculate the area.
@@ -114,15 +123,15 @@ namespace LadybugDisplaySchema
                 }
             }
 
-            Polygon2D pol = null;
             while (holes.Count > 0)
             {
                 var result = MergeBoundaryAndClosestHole(boundary.ToArray(),
                     holes.ToArray());
                 holes = result.Item2;
                 boundary = result.Item1;
-                pol = new Polygon2D(boundary.ToArray());
             }
+
+            var pol = new Polygon2D(boundary.ToArray());
             pol.IsClockwise = boundDirection;
             return pol;
         }

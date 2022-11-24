@@ -8,7 +8,14 @@ namespace LadybugDisplaySchema
 
         public Point3D Origin => new Point3D(O[0], O[1], O[2]);
 
-        public Vector3D XAxis => new Vector3D(X[0], X[1], X[2]);
+        public Vector3D XAxis 
+        {
+            get 
+            {
+                if (X == null) ValidateX();
+                return new Vector3D(X[0], X[1], X[2]);
+            }
+        }
 
         /// <summary>
         /// Scalar constant relating origin point to normal vector.
@@ -31,6 +38,19 @@ namespace LadybugDisplaySchema
         {
         }
 
+        private void ValidateX()
+        {
+            var n = this.Normal;
+            if (n.X == 0 && n.Y == 0)
+                X = new System.Collections.Generic.List<double> { 1, 0, 0 };
+            else
+            {
+                X = new System.Collections.Generic.List<double> { n.Y, -n.X, 0 };
+                X = XAxis.Normalize().ToDecimalList();
+            }
+        }
+
+
         /// <summary>
         /// Get a Point3D from a Point2D in the coordinate system of this plane
         /// </summary>
@@ -43,7 +63,8 @@ namespace LadybugDisplaySchema
 
             var u = new double[] { X.X * point.X, X.Y * point.X, X.Z * point.X };
             var v = new double[] { YAxis.X * point.Y, YAxis.Y * point.Y, YAxis.Z * point.Y };
-            return new Point3D(O.X + u[0] + v[0], 
+            return new Point3D(
+                O.X + u[0] + v[0], 
                 O.Y + u[1] + v[1], 
                 O.Z + u[2] + v[2]);
         }

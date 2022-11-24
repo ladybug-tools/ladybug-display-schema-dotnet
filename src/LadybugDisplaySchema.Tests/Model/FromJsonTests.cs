@@ -57,6 +57,52 @@ namespace LadybugDisplaySchema.Test
             var cGeo = contexts.First().Geometry.FirstOrDefault().Obj as DisplayFace3D;
             Assert.IsTrue(cGeo.DisplayMode == DisplayModes.Wireframe);
 
+            // check areas
+            var face3Ds = contexts.SelectMany(_ => _.Geometry).OfType<DisplayFace3D>().Select(_ => _.Geometry).ToList();
+            foreach (var f in face3Ds)
+            {
+                var p = f.Plane;
+                var p2 = Face3D.PlaneFromVertices(f.BoundaryPoints.ToList());
+                // test plane
+                //Assert.AreEqual(p.Normal.ToString(true), p2.Normal.ToString(true));
+                //Assert.AreEqual(p.Origin.ToString(true), p2.Origin.ToString(true));
+                var pt = new Point3D(1, 10, 0);
+                var pt2D = p.XYZtoXY(pt);
+                var pt2D2 = p2.XYZtoXY(pt);
+                Assert.AreEqual(Math.Abs(pt2D.X), Math.Abs(pt2D2.X));
+
+
+                // test Polygon2D
+                var polygon = f.ToPolygon2D();
+                Assert.IsTrue(polygon.Vertices.Count == 4);
+
+                var boundaryPts = f.BoundaryPoints.Select(_ => p2.XYZtoXY(_)).ToList();
+                var polygon2 = Polygon2D.FromShapeWithHoles(boundaryPts, new List<Point2D[]>());
+                Assert.AreEqual(polygon.ToString(true), polygon2.ToString(true));
+
+                var area1 = Math.Round(polygon.Area, 2);
+                var area2 = Math.Round(polygon2.Area, 2);
+
+                Assert.IsTrue(area1 == area2);
+                Assert.AreEqual(area1 , 15);
+                Assert.IsTrue(f.Area > 14.9);
+            }
+          
+        }
+
+        [Test]
+        public void Face3DAreaTest()
+        {
+            var boundary = new List<Point3D>() { 
+                new Point3D(0,0,0 ),
+                new Point3D(0,1.5,0 ),
+                new Point3D(1,1.5,0 ),
+                new Point3D(1,0,0 )
+                };
+
+            var face = new Face3D(boundary.ToArray());
+            Assert.AreEqual(face.Area, 1.5);
+
         }
 
         [Test]
