@@ -84,7 +84,9 @@ namespace LadybugDisplaySchema
                 var values = this.Values;
                 var min = values.Min();
                 var max = values.Max();
-                legend = new LegendParameters(min, max, 10) { ContinuousLegend = true};
+                var distinctCounts = values.Distinct().Count();
+                var steps = distinctCounts > 10 ? 10 : distinctCounts;
+                legend = new LegendParameters(min, max, steps) { ContinuousLegend = true};
             }
             //legend = legend.DuplicateLegendParameters();
 
