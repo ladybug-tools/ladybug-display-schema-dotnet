@@ -7,14 +7,15 @@ namespace LadybugDisplaySchema
 
     public partial class VisualizationData
     {
-        public VisualizationData(List<double> results, LegendParameters legend)
+        public VisualizationData(List<double> results, LegendParameters legend = default)
         {
             this.Values = results;
             this.LegendParameters = legend;
             UpdateLegendWithValues();
         }
 
-        public VisualizationData(List<string> results, LegendParameters legend)
+
+        public VisualizationData(List<string> results, LegendParameters legend = default)
         {
             this.LegendParameters = legend;
             var isNumber = results.All(_ => double.TryParse(_, out var n));
@@ -24,9 +25,11 @@ namespace LadybugDisplaySchema
                 values = results.Select(_ => double.Parse(_)).ToList();
                 this.Values = values;
                 UpdateLegendWithValues();
+
             }
             else
             {
+
                 values = Enumerable.Repeat(-99.0, results.Count).ToList();
                 var keyMapper = new Dictionary<double, string>();
                 var gps = results.Select((_, i) => new { _, i }).GroupBy(_ => _._).ToList();
@@ -34,8 +37,8 @@ namespace LadybugDisplaySchema
                 // sort keys
                 var comparer = new StringComparer();
                 gps = gps.OrderByDescending(_ => _.Key, comparer).ToList();
-
-                for (int i = 0; i < gps.Count; i++)
+                var steps = gps.Count;
+                for (int i = 0; i < steps; i++)
                 {
                     var gp = gps[i];
                     var key = gp.Key ?? "None";
@@ -43,7 +46,6 @@ namespace LadybugDisplaySchema
                      
                     foreach (var item in gp)
                     {
-                        //values.Insert(item.i, i);
                         values[item.i] = i;
                     }
                 }
@@ -52,16 +54,12 @@ namespace LadybugDisplaySchema
                 var min = keyMapper.First().Key;
                 var max = keyMapper.Last().Key;
                 var count = keyMapper.Count;
-                var legendPar = this.LegendParameters ??
-                    new LegendParameters(min, max, 10)
-                    {
-                        ContinuousLegend = false
-                    };
+                var legendPar = this.LegendParameters ?? new LegendParameters(min, max, steps);
                 legendPar = legendPar.DuplicateLegendParameters();
 
                 legendPar.Min = legendPar.Min == null || legendPar.Min.Obj is Default ? min : legendPar.Min;
                 legendPar.Max = legendPar.Max == null || legendPar.Max.Obj is Default ? max : legendPar.Max;
-                legendPar.SegmentCount = legendPar.SegmentCount == null || legendPar.SegmentCount.Obj is Default ? 10 : legendPar.SegmentCount;
+                legendPar.SegmentCount = legendPar.SegmentCount == null || legendPar.SegmentCount.Obj is Default ? steps : legendPar.SegmentCount;
                 legendPar.OrdinalDictionary = keyMapper;
                 legendPar.ContinuousLegend = false;
 
@@ -88,22 +86,37 @@ namespace LadybugDisplaySchema
                 var max = values.Max();
                 legend = new LegendParameters(min, max, 10) { ContinuousLegend = true};
             }
-            legend = legend.DuplicateLegendParameters();
+            //legend = legend.DuplicateLegendParameters();
 
             var isNumber = !legend.HasOrdinalDictionary;
             if (isNumber)
             {
                 var values = this.Values;
+
                 legend.Min = legend.Min == null || legend.Min.Obj is Default ? values.Min() : legend.Min;
                 legend.Max = legend.Max == null || legend.Max.Obj is Default ? values.Max() : legend.Max;
-                legend.SegmentCount = legend.SegmentCount == null || legend.SegmentCount.Obj is Default ? 10 : legend.SegmentCount;
+
+                if (legend.SegmentCount == null || legend.SegmentCount.Obj is Default)
+                {
+                    var distinctCounts = values.Distinct().Count();
+                    var steps = distinctCounts > 10 ? 10 : distinctCounts;
+                    legend.SegmentCount = steps;
+                }
 
                 legend.OrdinalDictionary = null;
             }
             else
             {
+
+                legend.Min = legend.Min == null || legend.Min.Obj is Default ? this.Values.Min() : legend.Min;
+                legend.Max = legend.Max == null || legend.Max.Obj is Default ? this.Values.Max() : legend.Max;
                 // it has ordinal dictionary
-                legend.SegmentCount = legend.GetOrdinalDictionary().Count;
+                if (legend.SegmentCount == null || legend.SegmentCount.Obj is Default)
+                {
+                    legend.SegmentCount = legend.GetOrdinalDictionary().Count;
+                }
+            
+                legend.ContinuousLegend = false;
             }
 
             this.LegendParameters = legend;
