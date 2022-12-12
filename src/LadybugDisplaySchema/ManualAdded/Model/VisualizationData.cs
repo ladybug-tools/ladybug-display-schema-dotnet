@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LadybugDisplaySchema
@@ -69,28 +70,43 @@ namespace LadybugDisplaySchema
 
         }
 
+        public LegendParameters ValidLegendParameters 
+        { 
+            get
+            {
+                UpdateLegendWithValues();
+                return this.LegendParameters;
+            } 
+        }
         public void UpdateLegendWithValues()
         {
-            var isNumber = !LegendParameters.HasOrdinalDictionary;
-            if (isNumber)
+            var legend = this.LegendParameters;
+            if (legend == null)
             {
                 var values = this.Values;
                 var min = values.Min();
                 var max = values.Max();
-                var legendPar = this.LegendParameters ?? new LegendParameters(min, max, 10) { ContinuousLegend = true };
-                legendPar = legendPar.DuplicateLegendParameters();
+                legend = new LegendParameters(min, max, 10) { ContinuousLegend = true};
+            }
+            legend = legend.DuplicateLegendParameters();
 
-                legendPar.Min = legendPar.Min == null || legendPar.Min.Obj is Default ? min : legendPar.Min;
-                legendPar.Max = legendPar.Max == null || legendPar.Max.Obj is Default ? max : legendPar.Max;
-                legendPar.SegmentCount = legendPar.SegmentCount == null || legendPar.SegmentCount.Obj is Default ? 10 : legendPar.SegmentCount;
+            var isNumber = !legend.HasOrdinalDictionary;
+            if (isNumber)
+            {
+                var values = this.Values;
+                legend.Min = legend.Min == null || legend.Min.Obj is Default ? values.Min() : legend.Min;
+                legend.Max = legend.Max == null || legend.Max.Obj is Default ? values.Max() : legend.Max;
+                legend.SegmentCount = legend.SegmentCount == null || legend.SegmentCount.Obj is Default ? 10 : legend.SegmentCount;
 
-                legendPar.OrdinalDictionary = null;
-                this.LegendParameters = legendPar;
+                legend.OrdinalDictionary = null;
             }
             else
             {
-                // do nothing if it has ordinal dictionary
+                // it has ordinal dictionary
+                legend.SegmentCount = legend.GetOrdinalDictionary().Count;
             }
+
+            this.LegendParameters = legend;
 
         }
 
