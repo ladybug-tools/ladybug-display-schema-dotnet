@@ -65,6 +65,7 @@
         "DisplayModes": "ladybug_display_schema.base",
         "HorizontalAlignments": "ladybug_display_schema.base",
         "LineTypes": "ladybug_display_schema.base",
+        "Units": "ladybug_display_schema.visualization",
         "VerticalAlignments": "ladybug_display_schema.base"
     }
 }

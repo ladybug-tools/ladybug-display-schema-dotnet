@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **Type** | **string** |  | [optional] [readonly] [default to "AnalysisGeometry"]
 **ActiveData** | **int** | An integer to denote which of the input data_sets should be displayed by default. | [optional] [default to 0]
 **DisplayMode** | **DisplayModes** | Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types. | [optional] 
+**Hidden** | **bool** | A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene. | [optional] [default to false]
 
 [[Back to Model list]](../README.md#documentation-for-models)
 [[Back to API list]](../README.md#documentation-for-api-endpoints)

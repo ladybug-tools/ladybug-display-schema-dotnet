@@ -31,6 +31,12 @@ namespace LadybugDisplaySchema
     public partial class VisualizationSet : VisualizationBase, IEquatable<VisualizationSet>, IValidatableObject
     {
         /// <summary>
+        /// Text indicating the units in which the model geometry exists. If None, the geometry will always be assumed to be in the current units system of the display interface.
+        /// </summary>
+        /// <value>Text indicating the units in which the model geometry exists. If None, the geometry will always be assumed to be in the current units system of the display interface.</value>
+        [DataMember(Name="units")]
+        public Units Units { get; set; }   
+        /// <summary>
         /// Initializes a new instance of the <see cref="VisualizationSet" /> class.
         /// </summary>
         [JsonConstructorAttribute]
@@ -44,16 +50,18 @@ namespace LadybugDisplaySchema
         /// Initializes a new instance of the <see cref="VisualizationSet" /> class.
         /// </summary>
         /// <param name="geometry">A list of AnalysisGeometry and ContextGeometry objects to display in the visualization. Each geometry object will typically be translated to its own layer within the interface that renders the VisualizationSet..</param>
+        /// <param name="units">Text indicating the units in which the model geometry exists. If None, the geometry will always be assumed to be in the current units system of the display interface..</param>
         /// <param name="identifier">Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters. (required).</param>
         /// <param name="displayName">Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public VisualizationSet
         (
             string identifier, // Required parameters
-            string displayName= default, Object userData= default, List<AnyOf<AnalysisGeometry, ContextGeometry>> geometry= default// Optional parameters
+            string displayName= default, Object userData= default, List<AnyOf<AnalysisGeometry, ContextGeometry>> geometry= default, Units units= default// Optional parameters
         ) : base(identifier: identifier, displayName: displayName, userData: userData )// BaseClass
         {
             this.Geometry = geometry;
+            this.Units = units;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "VisualizationSet";
@@ -102,6 +110,7 @@ namespace LadybugDisplaySchema
             sb.Append("  DisplayName: ").Append(this.DisplayName).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
+            sb.Append("  Units: ").Append(this.Units).Append("\n");
             return sb.ToString();
         }
   
@@ -169,7 +178,8 @@ namespace LadybugDisplaySchema
                 (
                     this.Geometry == input.Geometry ||
                     Extension.AllEquals(this.Geometry, input.Geometry)
-                );
+                ) && 
+                    Extension.Equals(this.Units, input.Units);
         }
 
         /// <summary>
@@ -185,6 +195,8 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.Geometry != null)
                     hashCode = hashCode * 59 + this.Geometry.GetHashCode();
+                if (this.Units != null)
+                    hashCode = hashCode * 59 + this.Units.GetHashCode();
                 return hashCode;
             }
         }
