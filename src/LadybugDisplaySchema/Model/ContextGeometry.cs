@@ -44,17 +44,19 @@ namespace LadybugDisplaySchema
         /// Initializes a new instance of the <see cref="ContextGeometry" /> class.
         /// </summary>
         /// <param name="geometry">A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization. (required).</param>
+        /// <param name="hidden">A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene. (default to false).</param>
         /// <param name="identifier">Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters. (required).</param>
         /// <param name="displayName">Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public ContextGeometry
         (
             string identifier, List<AnyOf<IDisplay>> geometry, // Required parameters
-            string displayName= default, Object userData= default // Optional parameters
+            string displayName= default, Object userData= default, bool hidden = false// Optional parameters
         ) : base(identifier: identifier, displayName: displayName, userData: userData )// BaseClass
         {
             // to ensure "geometry" is required (not null)
             this.Geometry = geometry ?? throw new ArgumentNullException("geometry is a required property for ContextGeometry and cannot be null");
+            this.Hidden = hidden;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "ContextGeometry";
@@ -77,6 +79,12 @@ namespace LadybugDisplaySchema
         /// <value>A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.</value>
         [DataMember(Name = "geometry", IsRequired = true)]
         public List<AnyOf<IDisplay>> Geometry { get; set; } 
+        /// <summary>
+        /// A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.
+        /// </summary>
+        /// <value>A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.</value>
+        [DataMember(Name = "hidden")]
+        public bool Hidden { get; set; }  = false;
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -103,6 +111,7 @@ namespace LadybugDisplaySchema
             sb.Append("  DisplayName: ").Append(this.DisplayName).Append("\n");
             sb.Append("  UserData: ").Append(this.UserData).Append("\n");
             sb.Append("  Geometry: ").Append(this.Geometry).Append("\n");
+            sb.Append("  Hidden: ").Append(this.Hidden).Append("\n");
             return sb.ToString();
         }
   
@@ -170,7 +179,8 @@ namespace LadybugDisplaySchema
                     this.Geometry == input.Geometry ||
                     Extension.AllEquals(this.Geometry, input.Geometry)
                 ) && 
-                    Extension.Equals(this.Type, input.Type);
+                    Extension.Equals(this.Type, input.Type) && 
+                    Extension.Equals(this.Hidden, input.Hidden);
         }
 
         /// <summary>
@@ -186,6 +196,8 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.Geometry.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
+                if (this.Hidden != null)
+                    hashCode = hashCode * 59 + this.Hidden.GetHashCode();
                 return hashCode;
             }
         }

@@ -53,13 +53,14 @@ namespace LadybugDisplaySchema
         /// <param name="dataSets">An list of VisualizationData objects representing the data sets that are associated with the input geometry. (required).</param>
         /// <param name="activeData">An integer to denote which of the input data_sets should be displayed by default. (default to 0).</param>
         /// <param name="displayMode">Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types..</param>
+        /// <param name="hidden">A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene. (default to false).</param>
         /// <param name="identifier">Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters. (required).</param>
         /// <param name="displayName">Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier..</param>
         /// <param name="userData">Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list)..</param>
         public AnalysisGeometry
         (
             string identifier, List<AnyOf<IGeometry>> geometry, List<VisualizationData> dataSets, // Required parameters
-            string displayName= default, Object userData= default, int activeData = 0, DisplayModes displayMode= DisplayModes.Surface// Optional parameters
+            string displayName= default, Object userData= default, int activeData = 0, DisplayModes displayMode= DisplayModes.Surface, bool hidden = false// Optional parameters
         ) : base(identifier: identifier, displayName: displayName, userData: userData )// BaseClass
         {
             // to ensure "geometry" is required (not null)
@@ -68,6 +69,7 @@ namespace LadybugDisplaySchema
             this.DataSets = dataSets ?? throw new ArgumentNullException("dataSets is a required property for AnalysisGeometry and cannot be null");
             this.ActiveData = activeData;
             this.DisplayMode = displayMode;
+            this.Hidden = hidden;
 
             // Set non-required readonly properties with defaultValue
             this.Type = "AnalysisGeometry";
@@ -102,6 +104,12 @@ namespace LadybugDisplaySchema
         /// <value>An integer to denote which of the input data_sets should be displayed by default.</value>
         [DataMember(Name = "active_data")]
         public int ActiveData { get; set; }  = 0;
+        /// <summary>
+        /// A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.
+        /// </summary>
+        /// <value>A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.</value>
+        [DataMember(Name = "hidden")]
+        public bool Hidden { get; set; }  = false;
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -131,6 +139,7 @@ namespace LadybugDisplaySchema
             sb.Append("  DataSets: ").Append(this.DataSets).Append("\n");
             sb.Append("  ActiveData: ").Append(this.ActiveData).Append("\n");
             sb.Append("  DisplayMode: ").Append(this.DisplayMode).Append("\n");
+            sb.Append("  Hidden: ").Append(this.Hidden).Append("\n");
             return sb.ToString();
         }
   
@@ -204,7 +213,8 @@ namespace LadybugDisplaySchema
                 ) && 
                     Extension.Equals(this.Type, input.Type) && 
                     Extension.Equals(this.ActiveData, input.ActiveData) && 
-                    Extension.Equals(this.DisplayMode, input.DisplayMode);
+                    Extension.Equals(this.DisplayMode, input.DisplayMode) && 
+                    Extension.Equals(this.Hidden, input.Hidden);
         }
 
         /// <summary>
@@ -226,6 +236,8 @@ namespace LadybugDisplaySchema
                     hashCode = hashCode * 59 + this.ActiveData.GetHashCode();
                 if (this.DisplayMode != null)
                     hashCode = hashCode * 59 + this.DisplayMode.GetHashCode();
+                if (this.Hidden != null)
+                    hashCode = hashCode * 59 + this.Hidden.GetHashCode();
                 return hashCode;
             }
         }
