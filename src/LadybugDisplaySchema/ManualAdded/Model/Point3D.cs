@@ -32,7 +32,7 @@ namespace LadybugDisplaySchema
             double angle, 
             Point3D origin)
         {
-            var vec = (this - origin).ToVector3D().Rotate(axis, angle);
+            var vec = (this - origin).Rotate(axis, angle);
             var sum = vec + origin;
 
             return new Point3D(sum.X, sum.Y, sum.Z);
@@ -48,7 +48,7 @@ namespace LadybugDisplaySchema
             double angle,
             Point3D origin)
         {
-            var vec = (this - origin).ToVector3D().Rotate(angle);
+            var vec = (this - origin).Rotate(angle);
             var sum = vec + origin;
 
             return new Point3D(sum.X, sum.Y, sum.Z);
@@ -63,7 +63,7 @@ namespace LadybugDisplaySchema
         /// <returns>Point3D object.</returns>
         public Point3D Reflect(Vector3D normal, Point3D origin)
         {
-            var vec = (this - origin).ToVector3D().Reflect(normal);
+            var vec = (this - origin).Reflect(normal);
             var sum = (vec + origin);
 
             return new Point3D(sum.X, sum.Y, sum.Z);
@@ -84,7 +84,7 @@ namespace LadybugDisplaySchema
             }
             else
             {
-                var res = ((this - origin).ToVector3D() * factor) + origin;
+                var res = ((this - origin) * factor) + origin;
                 return new Point3D(Math.Round(res.X, APPROX),
                     Math.Round(res.Y, APPROX),
                     Math.Round(res.Z, APPROX));
@@ -97,12 +97,17 @@ namespace LadybugDisplaySchema
         /// <param name="other">A Point2D representing the second point from which 
         /// to calculate the distance.</param>
         /// <returns>Value.</returns>
-        public double DistanceToPoint(Point3D other)
+        public double DistanceTo(Point3D other)
+        {
+            return Math.Sqrt(DistanceToSquared(other));
+        }
+
+        public double DistanceToSquared(Point3D other)
         {
             var vec = new Vector3D(X - other.X, Y - other.Y, Z - other.Z);
-            return Math.Sqrt(Math.Pow(vec.X, 2)
+            return Math.Pow(vec.X, 2)
                 + Math.Pow(vec.Y, 2)
-                + Math.Pow(vec.Z, 2));
+                + Math.Pow(vec.Z, 2);
         }
 
         /// <summary>
@@ -115,8 +120,8 @@ namespace LadybugDisplaySchema
         /// <returns>Point3D object.</returns>
         public Point3D Project(Vector3D normal, Point3D origin)
         {
-            var tranSelf = (this - origin).ToVector3D();
-            var point = (this.ToVector3D() - normal * tranSelf.Dot(normal)).ToPoint3D();
+            var tranSelf = (this - origin);
+            var point = this - normal * tranSelf.Dot(normal);
             return point;
         }
 
@@ -127,19 +132,37 @@ namespace LadybugDisplaySchema
                 pt.Z + other.Z);
         }
 
+        public static Point3D operator +(Point3D pt, Vector3D vector)
+        {
+            return new Point3D(pt.X + vector.X, pt.Y + vector.Y, pt.Z + vector.Z);
+        }
+        public static Point3D operator /(Point3D point, double t)
+        {
+            return new Point3D(point.X / t, point.Y / t, point.Z / t);
+        }
+        public static Point3D operator *(Point3D point, double t)
+        {
+            return new Point3D(point.X * t, point.Y * t, point.Z * t);
+        }
+
         public static Point3D operator -(Point3D pt)
         {
             return pt.ToVector3D().Reverse().ToPoint3D();
         }
 
-        public static Point3D operator -(Point3D pt, Point3D other)
+        public static Vector3D operator -(Point3D pt, Point3D other)
         {
-            return new Point3D(pt.X - other.X, 
+            return new Vector3D(pt.X - other.X, 
                 pt.Y - other.Y, 
                 pt.Z - other.Z);
         }
 
-  
+        public static Point3D operator -(Point3D pt, Vector3D vector)
+        {
+            return new Point3D(pt.X - vector.X, pt.Y - vector.Y, pt.Z - vector.Z);
+        }
+
+
         public bool IsEquivalent(Point3D other, double tolerance = 0.001)
         {
             return ((Math.Abs(X - other.X) <= tolerance) &&
