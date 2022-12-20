@@ -368,6 +368,57 @@ namespace LadybugDisplaySchema
         }
 
 
+        public static Point3D Average(this IEnumerable<Point3D> pts)
+        {
+            var x = pts.Select(_ => _.X).Average();
+            var y = pts.Select(_ => _.Y).Average();
+            var z = pts.Select(_ => _.Z).Average();
+
+            return new Point3D(x, y, z);
+        }
+
+        public static List<AlignGrid> CullDuplicates(this IEnumerable<AlignGrid> grid, double tolerance)
+        {
+            if (grid == null)
+            {
+                return null;
+            }
+
+            var sqlTol = tolerance * tolerance;
+            var point3dList = grid.Where(_ => _.WeightPoints.Count > 0).ToList();
+            int count = point3dList.Count;
+            if (count == 0)
+            {
+                return null;
+            }
+
+            bool[] array = new bool[count];
+            var point3dList2 = new List<AlignGrid>(count);
+            for (int i = 0; i < count; i++)
+            {
+                if (array[i])
+                {
+                    continue;
+                }
+
+                point3dList2.Add(point3dList[i]);
+                for (int j = i + 1; j < count; j++)
+                {
+                    var dis = point3dList[i].Plane.Origin.DistanceToSquared(point3dList[j].Plane.Origin);
+                    if (dis <= sqlTol)
+                    {
+                        point3dList2.Last().WeightPoints.AddRange(point3dList[j].WeightPoints);
+                        array[j] = true;
+                    }
+                }
+            }
+
+            var averaged = point3dList2.Select(_ => _.Weight()).Where(_ => _.WeightPoints.Count > 0).ToList();
+
+            return averaged;
+        }
+
+
 
     }
 }
