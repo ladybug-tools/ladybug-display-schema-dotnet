@@ -20,21 +20,22 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Scalar constant relating origin point to normal vector.
         /// </summary>
-        
-        public double K => Normal.Dot(Origin.ToVector3D());
+        public double K => Normal.Dot(Origin);
 
         /// <summary>
         /// Plane Y-Axis. This vector will always be normalized (magnitude = 1).
         /// </summary>
-        
+
         public Vector3D YAxis => Normal.Cross(XAxis);
 
+        public Vector3D ZAxis => Normal;
+        public double Size { get; set; }
 
         public Plane(Vector3D n, Point3D o, Vector3D x = null): 
             this(
-                n.ToDecimalList(), 
+                n.Normalize().ToDecimalList(), 
                 o.ToDecimalList(), 
-                x?.ToDecimalList())
+                x?.Normalize()?.ToDecimalList())
         {
         }
 
@@ -94,5 +95,50 @@ namespace LadybugDisplaySchema
             return new Plane(Normal.Reverse(), Origin, XAxis);
         }
 
+        public Point3D ClosestPoint(Point3D testPoint)
+        {
+            ClosestParameter(testPoint, out var s, out var t);
+            return PointAt(s, t);
+        }
+
+        public bool ClosestParameter(Point3D testPoint, out double s, out double t)
+        {
+            var vector3d = testPoint - Origin;
+            s = vector3d * XAxis;
+            t = vector3d * YAxis;
+            return true;
+        }
+
+        public bool Translate(Vector3D delta)
+        {
+            if (delta == null || !delta.IsValid())
+            {
+                return false;
+            }
+
+            this.O = (Origin + delta).ToDecimalList();
+            return true;
+        }
+
+        public Point3D PointAt(double u, double v)
+        {
+            return Origin + XAxis * u + YAxis * v;
+        }
+
+        public Point3D PointAt(double u, double v, double w)
+        {
+            return Origin + XAxis * u + YAxis * v + ZAxis * w;
+        }
+
+        public double DistanceTo(Point3D testPoint)
+        {
+            var cP = ClosestPoint(testPoint);
+            return cP.DistanceTo(testPoint);
+        }
+        public double DistanceToSquared(Point3D testPoint)
+        {
+            var cP = ClosestPoint(testPoint);
+            return cP.DistanceToSquared(testPoint);
+        }
     }
 }

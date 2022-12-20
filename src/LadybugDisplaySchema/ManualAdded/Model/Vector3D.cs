@@ -5,7 +5,12 @@ namespace LadybugDisplaySchema
 {
     public partial class Vector3D 
     {
-      
+        public static Vector3D XAxis = new Vector3D(1, 0, 0);
+        public static Vector3D YAxis = new Vector3D(0, 1, 0);
+        public static Vector3D ZAxis = new Vector3D(0, 0, 1);
+        public double Length => Magnitude;
+
+        public double SquareLength => MagnitudeSquared;
 
         /// <summary>
         /// Get the magnitude of the vector.
@@ -71,7 +76,7 @@ namespace LadybugDisplaySchema
         /// <param name="tolerance">The tolerance below which the vector is considered to
         /// be a zero vector.</param>
         /// <returns>True o false.</returns>
-        public bool IsZero(double tolerance)
+        public bool IsZero(double tolerance = TOL)
         {
             return (Math.Abs(X) <= tolerance) &&
                 (Math.Abs(Y) <= tolerance) && 
@@ -140,6 +145,10 @@ namespace LadybugDisplaySchema
         {
             return (X * other.X + Y * other.Y + Z * other.Z);
         }
+        public double Dot(Point3D other)
+        {
+            return (X * other.X + Y * other.Y + Z * other.Z);
+        }
 
         /// <summary>
         /// Get the smallest angle between this vector and another.
@@ -160,6 +169,7 @@ namespace LadybugDisplaySchema
                 return Math.Acos(1);
             }
         }
+
 
         /// <summary>
         /// Get a vector rotated around an axis through an angle
@@ -273,6 +283,16 @@ namespace LadybugDisplaySchema
         {
             return new Vector3D(vec.X * other, vec.Y * other,
                 vec.Z * other);
+        }
+
+        public static Vector3D operator *( double other, Vector3D vec)
+        {
+            return vec * other;
+        }
+
+        public static double operator *(Vector3D vector1, Vector3D vector2)
+        {
+            return vector1.X * vector2.X + vector1.Y * vector2.Y + vector1.Z * vector2.Z;
         }
 
         public static Vector3D operator /(Vector3D vec, double other)

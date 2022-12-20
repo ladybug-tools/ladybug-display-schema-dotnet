@@ -109,8 +109,8 @@ namespace LadybugDisplaySchema
             Point3D pt2,
             Point3D pt3)
         {
-            var v1 = (pt2 - pt1).ToVector3D();
-            var v2 = (pt3 - pt1).ToVector3D();
+            var v1 = (pt2 - pt1);
+            var v2 = (pt3 - pt1);
             return v1.Cross(v2).Normalize();
         }
 
