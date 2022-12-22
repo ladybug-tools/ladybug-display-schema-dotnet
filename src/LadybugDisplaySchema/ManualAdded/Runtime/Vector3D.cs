@@ -1,10 +1,19 @@
 ﻿using System;
 
-
-namespace LadybugDisplaySchema
+namespace LadybugDisplaySchema.Runtime
 {
-    public partial class Vector3D 
+    public struct Vector3D 
     {
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+        public Vector3D(double x, double y, double z)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+        }
+
         public static Vector3D XAxis = new Vector3D(1, 0, 0);
         public static Vector3D YAxis = new Vector3D(0, 1, 0);
         public static Vector3D ZAxis = new Vector3D(0, 0, 1);
@@ -27,7 +36,7 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Get the magnitude squared of the vector.
         /// </summary>
-        
+
         public double MagnitudeSquared
         {
             get
@@ -39,7 +48,7 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Boolean to note whether the vector is zero.
         /// </summary>
-        
+
         public bool IsNotZero
         {
             get
@@ -74,10 +83,10 @@ namespace LadybugDisplaySchema
         /// <param name="tolerance">The tolerance below which the vector is considered to
         /// be a zero vector.</param>
         /// <returns>True o false.</returns>
-        public bool IsZero(double tolerance = TOL)
+        public bool IsZero(double tolerance = LadybugObject.TOL)
         {
             return (Math.Abs(X) <= tolerance) &&
-                (Math.Abs(Y) <= tolerance) && 
+                (Math.Abs(Y) <= tolerance) &&
                 (Math.Abs(Z) <= tolerance);
         }
 
@@ -88,7 +97,7 @@ namespace LadybugDisplaySchema
         /// <param name="tolerance">The minimum difference between the coordinate values of two
         /// objects at which they can be considered geometrically equivalent.</param>
         /// <returns>True o false.</returns>
-        public bool IsEquivalent(Vector3D other, double tolerance = TOL)
+        public bool IsEquivalent(Vector3D other, double tolerance = LadybugObject.TOL)
         {
             return (Math.Abs(X - other.X) <= tolerance) &&
                 (Math.Abs(Y - other.Y) <= tolerance) &&
@@ -210,7 +219,7 @@ namespace LadybugDisplaySchema
         /// Rotation method used by both Point3D and Vector3D.
         /// </summary>
         /// <returns>Vector3D object.</returns>
-        protected static Vector3D Rotate(Vector3D vec, 
+        public static Vector3D Rotate(Vector3D vec,
             Vector3D axis,
             double angle)
         {
@@ -231,17 +240,19 @@ namespace LadybugDisplaySchema
             var yC = (v * dt + y * ct + (w * x - u * z) * st);
             var zC = (w * dt + z * ct + (-v * x + u * y) * st);
 
+            var APPROX = LadybugObject.APPROX;
             return new Vector3D(Math.Round(xC, APPROX),
-                Math.Round(yC, APPROX), 
+                Math.Round(yC, APPROX),
                 Math.Round(zC, APPROX));
         }
 
         /// <summary>
         /// Reflection method used by both Point3D and Vector3D
         /// </summary>
-        protected static Vector3D Reflect(Vector3D vec,
+        public Vector3D Reflect(Vector3D vec,
            Vector3D normal)
         {
+            var APPROX = LadybugObject.APPROX;
             var d = 2 * (vec.X * normal.X + vec.Y * normal.Y + vec.Z * normal.Z);
             return new Vector3D(Math.Round(vec.X - d * normal.X, APPROX),
                         Math.Round(vec.Y - d * normal.Y, APPROX),
@@ -250,11 +261,11 @@ namespace LadybugDisplaySchema
 
         public static Vector3D operator +(Vector3D vec, Vector3D other)
         {
-            return new Vector3D(vec.X + other.X, vec.Y + 
+            return new Vector3D(vec.X + other.X, vec.Y +
                 other.Y, vec.Z + other.Z);
         }
 
-        public static Vector3D operator + (Vector3D vec, Point3D other)
+        public static Vector3D operator +(Vector3D vec, Point3D other)
         {
             return new Vector3D(vec.X + other.X, vec.Y +
                 other.Y, vec.Z + other.Z);
@@ -283,7 +294,7 @@ namespace LadybugDisplaySchema
                 vec.Z * other);
         }
 
-        public static Vector3D operator *( double other, Vector3D vec)
+        public static Vector3D operator *(double other, Vector3D vec)
         {
             return vec * other;
         }
@@ -306,15 +317,37 @@ namespace LadybugDisplaySchema
                         Math.Floor(Z / other));
         }
 
-        public Point3D ToPoint3D()
+        public static bool operator ==(Vector3D a, Vector3D b)
         {
-            return new Point3D(X, Y, Z);
+            if (a.X == b.X && a.Y == b.Y)
+            {
+                return a.Z == b.Z;
+            }
+
+            return false;
+        }
+        public static bool operator !=(Vector3D a, Vector3D b)
+        {
+            if (a.X == b.X && a.Y == b.Y)
+            {
+                return a.Z == b.Z;
+            }
+
+            return true;
+        }
+        public bool Equals(Vector3D other)
+        {
+            return this == other;
         }
 
-        public Runtime.Vector3D ToStruct()
+        public override int GetHashCode()
         {
-            return new Runtime.Vector3D(X, Y, Z);
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
         }
 
+        public LadybugDisplaySchema.Vector3D ToLB()
+        {
+            return new LadybugDisplaySchema.Vector3D(X, Y, Z);
+        }
     }
 }

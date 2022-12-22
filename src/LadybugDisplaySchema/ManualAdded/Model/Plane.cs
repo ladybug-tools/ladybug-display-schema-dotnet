@@ -4,9 +4,17 @@ namespace LadybugDisplaySchema
 {
     public partial class Plane 
     {
-        public Vector3D Normal => new Vector3D(N[0], N[1], N[2]);
 
-        public Point3D Origin => new Point3D(O[0], O[1], O[2]);
+        //private Struct.Plane _plane= 
+        public double NormalX => N[0];
+        public double NormalY => N[1];
+        public double NormalZ => N[2];
+        public Vector3D Normal => new Vector3D(NormalX, NormalY, NormalZ);
+
+        public double OriginX => O[0]; 
+        public double OriginY => O[1];
+        public double OriginZ => O[2];
+        public Point3D Origin => new Point3D(OriginX, OriginY, OriginZ);
 
         public Vector3D XAxis 
         {
@@ -29,7 +37,7 @@ namespace LadybugDisplaySchema
         public Vector3D YAxis => Normal.Cross(XAxis);
 
         public Vector3D ZAxis => Normal;
-        public double Size { get; set; }
+        //public double Size { get; set; }
 
         public Plane(Vector3D n, Point3D o, Vector3D x = null): 
             this(
@@ -41,12 +49,12 @@ namespace LadybugDisplaySchema
 
         private void ValidateX()
         {
-            var n = this.Normal;
-            if (n.X == 0 && n.Y == 0)
+            //var n = this.Normal;
+            if (NormalX == 0 && NormalY == 0)
                 X = new System.Collections.Generic.List<double> { 1, 0, 0 };
             else
             {
-                X = new System.Collections.Generic.List<double> { n.Y, -n.X, 0 };
+                X = new System.Collections.Generic.List<double> { NormalY, -NormalX, 0 };
                 X = XAxis.Normalize().ToDecimalList();
             }
         }
@@ -103,9 +111,11 @@ namespace LadybugDisplaySchema
 
         public bool ClosestParameter(Point3D testPoint, out double s, out double t)
         {
+            var pt = testPoint;
             var vector3d = testPoint - Origin;
             s = vector3d * XAxis;
             t = vector3d * YAxis;
+
             return true;
         }
 
@@ -140,5 +150,19 @@ namespace LadybugDisplaySchema
             var cP = ClosestPoint(testPoint);
             return cP.DistanceToSquared(testPoint);
         }
+
+        public Runtime.Plane ToStruct()
+        {
+            var p = new Runtime.Plane();
+            p.Normal = this.Normal.ToStruct();
+            p.Origin= this.Origin.ToStruct();
+            p.XAxis = this.XAxis.ToStruct();
+            p.YAxis = this.YAxis.ToStruct();
+            p.ZAxis = this.ZAxis.ToStruct();
+            p.K= this.K;
+            return p;
+        }
+
+
     }
 }
