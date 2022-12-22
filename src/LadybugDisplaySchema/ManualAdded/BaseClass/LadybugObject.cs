@@ -10,11 +10,11 @@ namespace LadybugDisplaySchema
         /// <summary>
         /// Number of decimals to use for calculation.
         /// </summary>
-        protected const int APPROX = 6;
+        internal const int APPROX = 6;
         /// <summary>
         /// Default tolerance to for calculation.
         /// </summary>
-        protected const double TOL = 0.000001;
+        internal const double TOL = 0.000001;
 
         /// <summary>
         /// Gets or Sets Type

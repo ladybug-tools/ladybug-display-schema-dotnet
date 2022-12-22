@@ -1,11 +1,24 @@
 ﻿using System;
+using System.Drawing;
 
-
-namespace LadybugDisplaySchema
+namespace LadybugDisplaySchema.Runtime
 {
-    public partial class Point3D
+
+
+    public struct Point3D: IEquatable<Point3D>
     {
-  
+     
+        public static Point3D Unset = new Point3D(-1.23432101234321E+308, -1.23432101234321E+308, -1.23432101234321E+308);
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+        public Point3D(double x, double y, double z)
+        {
+            this.X= x;
+            this.Y= y;  
+            this.Z= z;
+        }
+
         /// <summary>
         /// Get a point that has been moved along a vector.
         /// </summary>
@@ -28,8 +41,8 @@ namespace LadybugDisplaySchema
         /// <param name="angle">An angle for rotation in radians.</param>
         /// <param name="origin">A Point3D for the origin around which the point will be rotated.</param>
         /// <returns>Point3D object.</returns>
-        public Point3D Rotate(Vector3D axis, 
-            double angle, 
+        public Point3D Rotate(Vector3D axis,
+            double angle,
             Point3D origin)
         {
             var vec = (this - origin).Rotate(axis, angle);
@@ -76,14 +89,15 @@ namespace LadybugDisplaySchema
         /// <param name="origin">A Point3D representing the origin from which to scale.
         /// If None, it will be scaled from the World origin (0, 0, 0).</param>
         /// <returns>Point3D object.</returns>
-        public Point3D Scale(double factor, Point3D origin = null)
+        public Point3D Scale(double factor, Point3D origin = default)
         {
-            if (origin is null)
+            if (origin == default(Point3D))
             {
                 return new Point3D(X * factor, Y * factor, Z * factor);
             }
             else
             {
+                var APPROX = LadybugObject.APPROX;
                 var res = ((this - origin) * factor) + origin;
                 return new Point3D(Math.Round(res.X, APPROX),
                     Math.Round(res.Y, APPROX),
@@ -124,11 +138,15 @@ namespace LadybugDisplaySchema
             var point = this - normal * tranSelf.Dot(normal);
             return point;
         }
+        public Point3D Reverse()
+        {
+            return new Point3D(-X, -Y, -Z);
+        }
 
         public static Point3D operator +(Point3D pt, Point3D other)
         {
-            return new Point3D(pt.X + other.X, 
-                pt.Y + other.Y, 
+            return new Point3D(pt.X + other.X,
+                pt.Y + other.Y,
                 pt.Z + other.Z);
         }
 
@@ -147,13 +165,13 @@ namespace LadybugDisplaySchema
 
         public static Point3D operator -(Point3D pt)
         {
-            return pt.ToVector3D().Reverse().ToPoint3D();
+            return pt.Reverse();
         }
 
         public static Vector3D operator -(Point3D pt, Point3D other)
         {
-            return new Vector3D(pt.X - other.X, 
-                pt.Y - other.Y, 
+            return new Vector3D(pt.X - other.X,
+                pt.Y - other.Y,
                 pt.Z - other.Z);
         }
 
@@ -180,15 +198,37 @@ namespace LadybugDisplaySchema
             else if (X > otherPt.X) return -1;
             return 0;
         }
-
-        public Vector3D ToVector3D()
+        public static bool operator ==(Point3D a, Point3D b)
         {
-            return new Vector3D(X, Y, Z);
+            if (a.X == b.X && a.Y == b.Y)
+            {
+                return a.Z == b.Z;
+            }
+
+            return false;
+        }
+        public static bool operator !=(Point3D a, Point3D b)
+        {
+            if (a.X == b.X && a.Y == b.Y)
+            {
+                return a.Z == b.Z;
+            }
+
+            return true;
+        }
+        public bool Equals(Point3D other)
+        {
+            return this == other;
         }
 
-        public Runtime.Point3D ToStruct()
+        public override int GetHashCode()
         {
-            return new Runtime.Point3D(X, Y, Z);
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
+        }
+
+        public LadybugDisplaySchema.Point3D ToLB()
+        {
+            return new LadybugDisplaySchema.Point3D(X, Y, Z);
         }
     }
 }
