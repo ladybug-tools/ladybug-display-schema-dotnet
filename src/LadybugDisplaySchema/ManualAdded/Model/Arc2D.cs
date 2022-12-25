@@ -5,7 +5,7 @@ namespace LadybugDisplaySchema
     public partial class Arc2D 
     {
        
-        public Point2D Center => new Point2D(C[0], C[1]);
+        public Point2D Center => Point2D.FromXY(C[0], C[1]);
 
         /// <summary>
         /// Start point.
@@ -15,7 +15,7 @@ namespace LadybugDisplaySchema
         {
             get
             {
-                return new Point2D(Center.X + Math.Cos(A1) * R, 
+                return Point2D.FromXY(Center.X + Math.Cos(A1) * R, 
                     Center.Y + Math.Sin(A1) * R);
             }
         }
@@ -28,7 +28,7 @@ namespace LadybugDisplaySchema
         {
             get
             {
-                return new Point2D(Center.X + Math.Cos(A2) * R,
+                return Point2D.FromXY(Center.X + Math.Cos(A2) * R,
                     Center.Y + Math.Sin(A2) * R);
             }
         }
@@ -76,7 +76,7 @@ namespace LadybugDisplaySchema
         {
             var _ang = A1 + Angle * parameter;
             _ang = (_ang <= Math.PI) ? _ang : _ang - Math.PI * 2;
-            return new Point2D(Center.X + Math.Cos(_ang) * R,
+            return Point2D.FromXY(Center.X + Math.Cos(_ang) * R,
                 Center.Y + Math.Sin(_ang) * R);
         }
 

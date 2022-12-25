@@ -368,13 +368,13 @@ namespace LadybugDisplaySchema
         }
 
 
-        public static Runtime.Point3D Average(this IEnumerable<Runtime.Point3D> pts)
+        public static Point3D Average(this IEnumerable<Point3D> pts)
         {
             var x = pts.Select(_ => _.X).Average();
             var y = pts.Select(_ => _.Y).Average();
             var z = pts.Select(_ => _.Z).Average();
 
-            return new Runtime.Point3D(x, y, z);
+            return new Point3D(x, y, z);
         }
 
         public static List<AlignGrid> CullDuplicates(this IEnumerable<AlignGrid> grid, double tolerance)

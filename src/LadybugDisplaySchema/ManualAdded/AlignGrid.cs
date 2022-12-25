@@ -9,20 +9,17 @@ namespace LadybugDisplaySchema
 
     public class AlignGrid
     {
-        public Runtime.Plane Plane { get; }
-        public Runtime.Plane WeightPlane { get; private set; }
+        public Plane Plane { get; }
+        public Plane WeightPlane { get; private set; }
         public LineSegment3D GridLine { get; }
         public LineSegment3D WeightedGridLine { get; }
 
         // all points close to plane within distance tolerance
-        public List<Runtime.Point3D> WeightPoints { get; private set; }
+        public List<Point3D> WeightPoints { get; private set; }
 
 
-        public AlignGrid(Plane plane, IEnumerable<Point3D> weightPoints): this(plane.ToStruct(), weightPoints?.Select(_=>_.ToStruct()))
-        {
-        }
 
-        public AlignGrid(Runtime.Plane plane, IEnumerable<Runtime.Point3D> weightPoints)
+        public AlignGrid(Plane plane, IEnumerable<Point3D> weightPoints)
         {
             Plane = plane;
             WeightPlane = RefitPlane(ref weightPoints, plane);
@@ -40,7 +37,7 @@ namespace LadybugDisplaySchema
             return newGrid;
         }
 
-        public static LineSegment3D GenGridLine(Runtime.Plane plane)
+        public static LineSegment3D GenGridLine(Plane plane)
         {
             var size = Math.Max(plane.Size, 1);
             var halfVec = plane.XAxis * size;
@@ -48,13 +45,13 @@ namespace LadybugDisplaySchema
 
             var from = plane.Origin;
             from.Z = 0;
-            var p1 = (from - halfVec).ToLB();
-            var v = (halfVec * 2).ToLB();
+            var p1 = (from - halfVec);
+            var v = (halfVec * 2);
             var line = new LineSegment3D(p1, v);
             return line;
         }
 
-        private static Runtime.Plane RefitPlane(ref IEnumerable<Runtime.Point3D> weightPoints, Runtime.Plane plane)
+        private static Plane RefitPlane(ref IEnumerable<Point3D> weightPoints, Plane plane)
         {
             var weightPlane = plane;
             if (weightPoints != null && weightPoints.Any())
@@ -75,12 +72,12 @@ namespace LadybugDisplaySchema
             return $"Grid line ({this.WeightPoints?.Count} points)";
         }
 
-        public static List<Runtime.Plane> GenGlobalPlanes(List<LineSegment3D> geos, Vector3D vec, double gridSize)
+        public static List<Plane> GenGlobalPlanes(List<LineSegment3D> geos, Vector3D vec, double gridSize)
         {
-            var pts = geos.SelectMany(_ => new[] { _.Point1.ToStruct(), _.Point2.ToStruct() });
-            var bbox = new Runtime.Boundingbox(pts);
+            var pts = geos.SelectMany(_ => new[] { _.Point1, _.Point2 });
+            var bbox = new Boundingbox(pts);
 
-            var rVec = vec.ToStruct();
+            var rVec = vec;
             // generate guid planes
             var moveDir = rVec.Rotate(Math.PI / 2);// rotate 90 degrees
             moveDir = moveDir.Normalize();
@@ -92,12 +89,12 @@ namespace LadybugDisplaySchema
             var planeCounts = (int)(distance / gridSize);
 
             var baseOri = bbox.Center.Move(-halfDiagonal * moveDir);
-            var basePlane = new Plane(moveDir.ToLB(), baseOri.ToLB(), vec).ToStruct();
+            var basePlane = new Plane(moveDir, baseOri, vec);
          
-            var gridPlanes = new List<Runtime.Plane>();
+            var gridPlanes = new List<Plane>();
             for (int i = 0; i < planeCounts; i++)
             {
-                var gd = basePlane;
+                var gd = basePlane.DuplicatePlane();
                 gd.Size = halfDiagonal;
                 gd.Translate(i * moveVec);
                 gridPlanes.Add(gd);
@@ -108,11 +105,11 @@ namespace LadybugDisplaySchema
 
         }
 
-        public static List<AlignGrid> GenGrids(List<LineSegment3D> geos, List<Runtime.Plane> globalGridPlanes, double gridSize, double angleRadTol, double distanceThreshold )
+        public static List<AlignGrid> GenGrids(List<LineSegment3D> geos, List<Plane> globalGridPlanes, double gridSize, double angleRadTol, double distanceThreshold )
         {
 
             var gridPlanes = globalGridPlanes;
-            var vec = gridPlanes.FirstOrDefault().XAxis.ToLB();
+            var vec = gridPlanes.FirstOrDefault().XAxis;
 
             // get points from segments that are aligned with input vector
             var lines = geos
@@ -124,27 +121,17 @@ namespace LadybugDisplaySchema
                     return (Math.PI - a) <= angleRadTol;
                 });
 
-            var alignPts = lines.SelectMany(_ => new[] { _.Point1.ToStruct(), _.Point2.ToStruct() }).ToList();
+            var alignPts = lines.SelectMany(_ => new[] { _.Point1, _.Point2 });
 
 
             // project pts to grids 
             var halfGridSize = gridSize / 2;
             var halfGridSizeSquared = halfGridSize * halfGridSize;
             //var projectedPlanes2 = gridPlanes.Select(_ => new AlignGrid(_, alignPts.Where(p => Math.Abs(_.DistanceTo(p)) < halfGridSize))).ToList();
-            var projectedPlanes2 = gridPlanes.Select(_ => new AlignGrid(_, alignPts.Where(p => Math.Abs(_.DistanceToSquared(p)) < halfGridSizeSquared))).ToList();
+            var projectedPlanes2 = gridPlanes.Select(_ => new AlignGrid(_, alignPts.Where(p => Math.Abs(_.DistanceToSquared(p)) < halfGridSizeSquared)));
 
             var projectedPlanes = new List<AlignGrid>();
             var restPts = alignPts;
-            //foreach (var plane in gridPlanes)
-            //{
-            //    var pts = restPts.Where(p => plane.DistanceToSquared(p) < halfGridSizeSquared);
-            //    if (pts.Any())
-            //    {
-            //        var ag = new AlignGrid(plane, pts);
-            //        projectedPlanes.Add(ag);
-            //        restPts.RemoveAll(_ => pts.Contains(_));
-            //    }
-            //}
 
 
 

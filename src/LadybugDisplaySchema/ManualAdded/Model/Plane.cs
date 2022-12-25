@@ -1,27 +1,29 @@
 ﻿
 
+using System.Collections.Generic;
+using System;
+
 namespace LadybugDisplaySchema
 {
     public partial class Plane 
     {
 
-        //private Struct.Plane _plane= 
         public double NormalX => N[0];
         public double NormalY => N[1];
         public double NormalZ => N[2];
-        public Vector3D Normal => new Vector3D(NormalX, NormalY, NormalZ);
+        public Vector3D Normal => Vector3D.FromXYZ(NormalX, NormalY, NormalZ);
 
         public double OriginX => O[0]; 
         public double OriginY => O[1];
         public double OriginZ => O[2];
-        public Point3D Origin => new Point3D(OriginX, OriginY, OriginZ);
+        public Point3D Origin => Point3D.FromXYZ(OriginX, OriginY, OriginZ);
 
         public Vector3D XAxis 
         {
             get 
             {
                 if (X == null) ValidateX();
-                return new Vector3D(X[0], X[1], X[2]);
+                return Vector3D.FromXYZ(X[0], X[1], X[2]);
             }
         }
 
@@ -37,12 +39,29 @@ namespace LadybugDisplaySchema
         public Vector3D YAxis => Normal.Cross(XAxis);
 
         public Vector3D ZAxis => Normal;
-        //public double Size { get; set; }
+        public double Size { get; set; }
+
+        public Plane(List<double> n, List<double> o, bool validate, List<double> x = default)
+        {
+            // to ensure "n" is required (not null)
+            this.N = n ?? throw new ArgumentNullException("n is a required property for Plane and cannot be null");
+            // to ensure "o" is required (not null)
+            this.O = o ?? throw new ArgumentNullException("o is a required property for Plane and cannot be null");
+            this.X = x;
+
+            // Set non-required readonly properties with defaultValue
+            this.Type = "Plane";
+
+            // check if object is valid, only check for inherited class
+            if (validate && this.GetType() == typeof(Plane))
+                this.IsValid(throwException: true);
+        }
 
         public Plane(Vector3D n, Point3D o, Vector3D x = null): 
             this(
                 n.Normalize().ToDecimalList(), 
                 o.ToDecimalList(), 
+                false,
                 x?.Normalize()?.ToDecimalList())
         {
         }
@@ -72,7 +91,7 @@ namespace LadybugDisplaySchema
 
             var u = new double[] { X.X * point.X, X.Y * point.X, X.Z * point.X };
             var v = new double[] { YAxis.X * point.Y, YAxis.Y * point.Y, YAxis.Z * point.Y };
-            return new Point3D(
+            return Point3D.FromXYZ(
                 O.X + u[0] + v[0], 
                 O.Y + u[1] + v[1], 
                 O.Z + u[2] + v[2]);
@@ -88,8 +107,8 @@ namespace LadybugDisplaySchema
             var X = this.XAxis;
             var O = this.Origin;
 
-            var diff = new Vector3D(point.X - O.X, point.Y - O.Y, point.Z - O.Z);
-            return new Point2D(X.Dot(diff), YAxis.Dot(diff));
+            var diff = Vector3D.FromXYZ(point.X - O.X, point.Y - O.Y, point.Z - O.Z);
+            return Point2D.FromXY(X.Dot(diff), YAxis.Dot(diff));
         }
 
 
@@ -151,17 +170,6 @@ namespace LadybugDisplaySchema
             return cP.DistanceToSquared(testPoint);
         }
 
-        public Runtime.Plane ToStruct()
-        {
-            var p = new Runtime.Plane();
-            p.Normal = this.Normal.ToStruct();
-            p.Origin= this.Origin.ToStruct();
-            p.XAxis = this.XAxis.ToStruct();
-            p.YAxis = this.YAxis.ToStruct();
-            p.ZAxis = this.ZAxis.ToStruct();
-            p.K= this.K;
-            return p;
-        }
 
 
     }

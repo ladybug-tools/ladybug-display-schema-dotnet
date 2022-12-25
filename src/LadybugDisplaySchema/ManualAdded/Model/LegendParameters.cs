@@ -276,12 +276,12 @@ namespace LadybugDisplaySchema
         public void Reset3DBaseLocation(double X = default, double Y = default, double Z = default)
         {
             if (this.Properties3d == null)
-                this.Properties3d = new Legend3DParameters(new Plane(new Vector3D(0, 0, 1), new Point3D(X, Y, Z)));
+                this.Properties3d = new Legend3DParameters(new Plane(Vector3D.FromXYZ(0, 0, 1), Point3D.FromXYZ(X, Y, Z)));
 
             if (this.Properties3d.BasePlane == null)
-                this.Properties3d.BasePlane = new Plane(new Vector3D(0, 0, 1), new Point3D(X, Y, Z));
+                this.Properties3d.BasePlane = new Plane(Vector3D.FromXYZ(0, 0, 1), Point3D.FromXYZ(X, Y, Z));
 
-            var basePt = new Point3D(X, Y, Z);
+            var basePt = Point3D.FromXYZ(X, Y, Z);
             this.Properties3d.BasePlane.O = basePt.ToDecimalList();
         }
 
@@ -316,7 +316,7 @@ namespace LadybugDisplaySchema
             {
                 // get or assign default values
                 var l = this.Properties3d;
-                l.BasePlane = l.BasePlane ?? new Plane(new Vector3D(0, 0, 1), new Point3D(0, 0, 0));
+                l.BasePlane = l.BasePlane ?? new Plane(Vector3D.FromXYZ(0, 0, 1), Point3D.FromXYZ(0, 0, 0));
                 l.TextHeight = GetValue(l.TextHeight, 12);
                 l.SegmentWidth = GetValue(l.SegmentWidth, 25);
                 l.SegmentHeight = GetValue(l.SegmentHeight, 36);

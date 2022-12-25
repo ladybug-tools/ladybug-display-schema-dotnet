@@ -5,9 +5,9 @@ namespace LadybugDisplaySchema
 {
     public partial class Vector3D 
     {
-        public static Vector3D XAxis = new Vector3D(1, 0, 0);
-        public static Vector3D YAxis = new Vector3D(0, 1, 0);
-        public static Vector3D ZAxis = new Vector3D(0, 0, 1);
+        public static Vector3D XAxis = Vector3D.FromXYZ(1, 0, 0);
+        public static Vector3D YAxis = Vector3D.FromXYZ(0, 1, 0);
+        public static Vector3D ZAxis = Vector3D.FromXYZ(0, 0, 1);
         public double Length => Magnitude;
 
         public double SquareLength => MagnitudeSquared;
@@ -48,6 +48,28 @@ namespace LadybugDisplaySchema
             }
         }
 
+
+        public Vector3D
+        (
+          double x, double y, double z, bool validate
+        ) 
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+
+            this.Type = "Vector3D";
+
+            if (validate && this.GetType() == typeof(Vector3D))
+                this.IsValid(throwException: true);
+        }
+
+
+        public static Vector3D FromXYZ(double x, double y, double z)
+        {
+            return new Vector3D(x, y, z, false);
+        }
+
         /// <summary>
         /// Initialize a Vector3D from an array.
         /// </summary>
@@ -56,7 +78,7 @@ namespace LadybugDisplaySchema
         /// <returns>Vector3D object.</returns>
         public static Vector3D FromArray(double[] array)
         {
-            return new Vector3D(array[0], array[1], array[2]);
+            return Vector3D.FromXYZ(array[0], array[1], array[2]);
         }
 
         /// <summary>
@@ -101,7 +123,7 @@ namespace LadybugDisplaySchema
         /// <returns>Reversed Vector3D.</returns>
         public Vector3D Reverse()
         {
-            return new Vector3D(-X, -Y, -Z);
+            return Vector3D.FromXYZ(-X, -Y, -Z);
         }
 
         /// <summary>
@@ -111,7 +133,7 @@ namespace LadybugDisplaySchema
         /// <returns></returns>
         public Vector3D Cross(Vector3D other)
         {
-            return new Vector3D(Y * other.Z - Z * other.Y,
+            return Vector3D.FromXYZ(Y * other.Z - Z * other.Y,
                         -X * other.Z + Z * other.X,
                         X * other.Y - Y * other.X);
         }
@@ -125,11 +147,11 @@ namespace LadybugDisplaySchema
             var d = Magnitude;
             if (d != 0 && d != 1)
             {
-                return new Vector3D(X / d, Y / d, Z / d);
+                return Vector3D.FromXYZ(X / d, Y / d, Z / d);
             }
             else
             {
-                return new Vector3D(X, Y, Z);
+                return Vector3D.FromXYZ(X, Y, Z);
             }
         }
 
@@ -202,8 +224,8 @@ namespace LadybugDisplaySchema
         /// <returns>Vecto3D object.</returns>
         public Vector3D Rotate(double angle)
         {
-            var vec = (new Vector2D(X, Y)).Rotate(angle);
-            return new Vector3D(vec.X, vec.Y, Z);
+            var vec = (Vector2D.FromXY(X, Y)).Rotate(angle);
+            return Vector3D.FromXYZ(vec.X, vec.Y, Z);
         }
 
         /// <summary>
@@ -231,7 +253,7 @@ namespace LadybugDisplaySchema
             var yC = (v * dt + y * ct + (w * x - u * z) * st);
             var zC = (w * dt + z * ct + (-v * x + u * y) * st);
 
-            return new Vector3D(Math.Round(xC, APPROX),
+            return Vector3D.FromXYZ(Math.Round(xC, APPROX),
                 Math.Round(yC, APPROX), 
                 Math.Round(zC, APPROX));
         }
@@ -243,20 +265,20 @@ namespace LadybugDisplaySchema
            Vector3D normal)
         {
             var d = 2 * (vec.X * normal.X + vec.Y * normal.Y + vec.Z * normal.Z);
-            return new Vector3D(Math.Round(vec.X - d * normal.X, APPROX),
+            return Vector3D.FromXYZ(Math.Round(vec.X - d * normal.X, APPROX),
                         Math.Round(vec.Y - d * normal.Y, APPROX),
                         Math.Round(vec.Z - d * normal.Z, APPROX));
         }
 
         public static Vector3D operator +(Vector3D vec, Vector3D other)
         {
-            return new Vector3D(vec.X + other.X, vec.Y + 
+            return Vector3D.FromXYZ(vec.X + other.X, vec.Y + 
                 other.Y, vec.Z + other.Z);
         }
 
         public static Vector3D operator + (Vector3D vec, Point3D other)
         {
-            return new Vector3D(vec.X + other.X, vec.Y +
+            return Vector3D.FromXYZ(vec.X + other.X, vec.Y +
                 other.Y, vec.Z + other.Z);
         }
 
@@ -267,19 +289,19 @@ namespace LadybugDisplaySchema
 
         public static Vector3D operator -(Vector3D vec, Vector3D other)
         {
-            return new Vector3D(vec.X - other.X, vec.Y -
+            return Vector3D.FromXYZ(vec.X - other.X, vec.Y -
                 other.Y, vec.Z - other.Z);
         }
 
         public static Vector3D operator -(Vector3D vec, Point3D other)
         {
-            return new Vector3D(vec.X - other.X, vec.Y -
+            return Vector3D.FromXYZ(vec.X - other.X, vec.Y -
                 other.Y, vec.Z - other.Z);
         }
 
         public static Vector3D operator *(Vector3D vec, double other)
         {
-            return new Vector3D(vec.X * other, vec.Y * other,
+            return Vector3D.FromXYZ(vec.X * other, vec.Y * other,
                 vec.Z * other);
         }
 
@@ -295,26 +317,18 @@ namespace LadybugDisplaySchema
 
         public static Vector3D operator /(Vector3D vec, double other)
         {
-            return new Vector3D(vec.X / other, vec.Y / other,
+            return Vector3D.FromXYZ(vec.X / other, vec.Y / other,
                 vec.Z / other);
         }
 
         public Vector3D Floor(double other)
         {
-            return new Vector3D(Math.Floor(X / other),
+            return Vector3D.FromXYZ(Math.Floor(X / other),
                         Math.Floor(Y / other),
                         Math.Floor(Z / other));
         }
 
-        public Point3D ToPoint3D()
-        {
-            return new Point3D(X, Y, Z);
-        }
 
-        public Runtime.Vector3D ToStruct()
-        {
-            return new Runtime.Vector3D(X, Y, Z);
-        }
 
     }
 }

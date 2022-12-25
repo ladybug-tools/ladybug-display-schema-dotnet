@@ -39,6 +39,22 @@ namespace LadybugDisplaySchema
             }
         }
 
+        public Vector2D (double x, double y, bool validate)
+        {
+            this.X = x;
+            this.Y = y;
+
+            this.Type = "Vector2D";
+
+            if (validate && this.GetType() == typeof(Vector2D))
+                this.IsValid(throwException: true);
+        }
+
+
+        public static Vector2D FromXY(double x, double y)
+        {
+            return new Vector2D(x, y, false);
+        }
 
 
         /// <summary>
@@ -75,7 +91,7 @@ namespace LadybugDisplaySchema
             var d = Magnitude;
             if (d != 0)
             {
-                return new Vector2D(X / d, Y / d);
+                return Vector2D.FromXY(X / d, Y / d);
             }
             else
             {
@@ -89,7 +105,7 @@ namespace LadybugDisplaySchema
         /// <returns>Reversed Vector2D.</returns>
         public Vector2D Reverse()
         {
-            return new Vector2D(-X, -Y);
+            return Vector2D.FromXY(-X, -Y);
         }
 
         /// <summary>
@@ -118,7 +134,7 @@ namespace LadybugDisplaySchema
         /// <returns>Vector2D object.</returns>
         public Vector2D Cross()
         {
-            return new Vector2D(Y, -X);
+            return Vector2D.FromXY(Y, -X);
         }
 
         /// <summary>
@@ -227,12 +243,12 @@ namespace LadybugDisplaySchema
 
         public static Vector2D operator +(Vector2D vec, Vector2D other)
         {
-            return new Vector2D(vec.X + other.X, vec.Y + other.Y);
+            return Vector2D.FromXY(vec.X + other.X, vec.Y + other.Y);
         }
 
         public static Vector2D operator +(Vector2D vec, Point2D other)
         {
-            return new Vector2D(vec.X + other.X, vec.Y + other.Y);
+            return Vector2D.FromXY(vec.X + other.X, vec.Y + other.Y);
         }
 
         public static Vector2D operator -(Vector2D vec)
@@ -242,17 +258,17 @@ namespace LadybugDisplaySchema
 
         public static Vector2D operator -(Vector2D vec, Vector2D other)
         {
-            return new Vector2D(vec.X - other.X, vec.Y - other.Y);
+            return Vector2D.FromXY(vec.X - other.X, vec.Y - other.Y);
         }
 
         public static Vector2D operator *(Vector2D vec, double other)
         {
-            return new Vector2D(vec.X * other, vec.Y * other);
+            return Vector2D.FromXY(vec.X * other, vec.Y * other);
         }
 
         public static Vector2D operator /(Vector2D vec, double other)
         {
-            return new Vector2D(vec.X / other, vec.Y / other);
+            return Vector2D.FromXY(vec.X / other, vec.Y / other);
         }
 
         /// <summary>
@@ -262,7 +278,7 @@ namespace LadybugDisplaySchema
         /// <returns>Vecto2D object.</returns>
         public Vector2D Floor(double other)
         {
-            return new Vector2D(Math.Floor(X / other),
+            return Vector2D.FromXY(Math.Floor(X / other),
                         Math.Floor(Y / other));
         }
 
@@ -279,7 +295,7 @@ namespace LadybugDisplaySchema
             var qx = (cosA * vec.X - sinA * vec.Y);
             var qy = (sinA * vec.X + cosA * vec.Y);
 
-            return new Vector2D(Math.Round(qx, APPROX),
+            return Vector2D.FromXY(Math.Round(qx, APPROX),
                 Math.Round(qy, APPROX));
         }
 
@@ -295,13 +311,13 @@ namespace LadybugDisplaySchema
             var qx = vec.X - d * normal.X;
             var qy = vec.Y - d * normal.Y;
 
-            return new Vector2D(Math.Round(qx, APPROX),
+            return Vector2D.FromXY(Math.Round(qx, APPROX),
                 Math.Round(qy, APPROX));
         }
 
         public Point2D ToPoint2D()
         {
-            return new Point2D(X, Y);
+            return Point2D.FromXY(X, Y);
         }
     }
 }
