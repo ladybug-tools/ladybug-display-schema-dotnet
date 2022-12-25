@@ -117,7 +117,7 @@ namespace LadybugDisplaySchema
                     var pts = new List<Point2D>();
                     foreach (var p in holes[i])
                     {
-                        pts.Add(new Point2D(p.Y, p.X));
+                        pts.Add(Point2D.FromXY(p.Y, p.X));
                     }
                     holes[i] = pts.ToArray();
                 }

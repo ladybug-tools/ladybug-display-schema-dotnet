@@ -6,7 +6,22 @@ namespace LadybugDisplaySchema
     public partial class Point2D 
     {
 
-   
+        public Point2D (double x, double y, bool validate)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Type = "Point2D";
+
+            if (validate && this.GetType() == typeof(Point2D))
+                this.IsValid(throwException: true);
+        }
+
+        public static Point2D FromXY(double x, double y)
+        {
+            return new Point2D(x, y, false);
+        }
+
+
         /// <summary>
         /// Get a point that has been moved along a vector.
         /// </summary>
@@ -15,7 +30,7 @@ namespace LadybugDisplaySchema
         /// <returns>Point2D.</returns>
         public Point2D Move(Vector2D movingVec)
         {
-            return new Point2D(X + movingVec.X, Y + movingVec.Y);
+            return Point2D.FromXY(X + movingVec.X, Y + movingVec.Y);
         }
 
         /// <summary>
@@ -29,7 +44,7 @@ namespace LadybugDisplaySchema
             var vec = (this - origin).ToVector2D().Rotate(angle);
             var sum = (vec + origin);
 
-            return new Point2D(sum.X, sum.Y);
+            return Point2D.FromXY(sum.X, sum.Y);
         }
 
         /// <summary>
@@ -44,7 +59,7 @@ namespace LadybugDisplaySchema
             var vec = (this - origin).ToVector2D().Reflect(normal);
             var sum = (vec + origin);
 
-            return new Point2D(sum.X, sum.Y);
+            return Point2D.FromXY(sum.X, sum.Y);
         }
 
         /// <summary>
@@ -58,12 +73,12 @@ namespace LadybugDisplaySchema
         {
             if (origin is null)
             {
-                return new Point2D(X * factor, Y * factor);
+                return Point2D.FromXY(X * factor, Y * factor);
             }
             else
             {
                 var res = ((this - origin) * factor) + origin;
-                return new Point2D(Math.Round(res.X, APPROX),
+                return Point2D.FromXY(Math.Round(res.X, APPROX),
                     Math.Round(res.Y, APPROX));
             }
         }
@@ -76,7 +91,7 @@ namespace LadybugDisplaySchema
         /// <returns>Value.</returns>
         public double DistanceToPoint(Point2D other)
         {
-            var vec = new Vector2D(X - other.X, Y - other.Y);
+            var vec = Vector2D.FromXY(X - other.X, Y - other.Y);
             return Math.Sqrt(Math.Pow(vec.X, 2)
                 + Math.Pow(vec.Y, 2));
         }
@@ -92,27 +107,27 @@ namespace LadybugDisplaySchema
 
         public static Point2D operator +(Point2D pt, Point2D other)
         {
-            return new Point2D(pt.X + other.X, pt.Y + other.Y);
+            return Point2D.FromXY(pt.X + other.X, pt.Y + other.Y);
         }
 
         public static Point2D operator -(Point2D pt)
         {
-            return pt.ToVector2D().Reverse().ToPoint2D();
+            return Point2D.FromXY(-pt.X, -pt.Y);
         }
 
         public static Point2D operator -(Point2D pt, Point2D other)
         {
-            return new Point2D(pt.X - other.X, pt.Y - other.Y);
+            return Point2D.FromXY(pt.X - other.X, pt.Y - other.Y);
         }
 
         public static Point2D operator *(Point2D pt, double other)
         {
-            return new Point2D(pt.X * other, pt.Y * other);
+            return Point2D.FromXY(pt.X * other, pt.Y * other);
         }
 
         public static Point2D operator /(Point2D pt, double other)
         {
-            return new Point2D(pt.X / other, pt.Y / other);
+            return Point2D.FromXY(pt.X / other, pt.Y / other);
         }
 
    
@@ -129,7 +144,7 @@ namespace LadybugDisplaySchema
 
         public Vector2D ToVector2D()
         {
-            return new Vector2D(this.X, this.Y);
+            return Vector2D.FromXY(this.X, this.Y);
         }
     }
 }

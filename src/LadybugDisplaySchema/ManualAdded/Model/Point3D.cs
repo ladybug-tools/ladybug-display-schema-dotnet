@@ -5,7 +5,27 @@ namespace LadybugDisplaySchema
 {
     public partial class Point3D
     {
-  
+
+        public Point3D
+        (
+           double x, double y, double z, bool validate
+        )
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+
+            this.Type = "Point3D";
+
+            if (validate && this.GetType() == typeof(Point3D))
+                this.IsValid(throwException: true);
+        }
+
+        public static Point3D FromXYZ(double x, double y, double z)
+        {
+            return new Point3D(x, y, z, false);
+        }
+
         /// <summary>
         /// Get a point that has been moved along a vector.
         /// </summary>
@@ -14,7 +34,7 @@ namespace LadybugDisplaySchema
         /// <returns>Point2D object.</returns>
         public Point3D Move(Vector3D movingVec)
         {
-            return new Point3D(X + movingVec.X, Y + movingVec.Y,
+            return Point3D.FromXYZ(X + movingVec.X, Y + movingVec.Y,
                 Z + movingVec.Z);
         }
 
@@ -35,7 +55,7 @@ namespace LadybugDisplaySchema
             var vec = (this - origin).Rotate(axis, angle);
             var sum = vec + origin;
 
-            return new Point3D(sum.X, sum.Y, sum.Z);
+            return Point3D.FromXYZ(sum.X, sum.Y, sum.Z);
         }
 
         /// <summary>
@@ -51,7 +71,7 @@ namespace LadybugDisplaySchema
             var vec = (this - origin).Rotate(angle);
             var sum = vec + origin;
 
-            return new Point3D(sum.X, sum.Y, sum.Z);
+            return Point3D.FromXYZ(sum.X, sum.Y, sum.Z);
         }
 
         /// <summary>
@@ -66,7 +86,7 @@ namespace LadybugDisplaySchema
             var vec = (this - origin).Reflect(normal);
             var sum = (vec + origin);
 
-            return new Point3D(sum.X, sum.Y, sum.Z);
+            return Point3D.FromXYZ(sum.X, sum.Y, sum.Z);
         }
 
         /// <summary>
@@ -80,12 +100,12 @@ namespace LadybugDisplaySchema
         {
             if (origin is null)
             {
-                return new Point3D(X * factor, Y * factor, Z * factor);
+                return Point3D.FromXYZ(X * factor, Y * factor, Z * factor);
             }
             else
             {
                 var res = ((this - origin) * factor) + origin;
-                return new Point3D(Math.Round(res.X, APPROX),
+                return Point3D.FromXYZ(Math.Round(res.X, APPROX),
                     Math.Round(res.Y, APPROX),
                     Math.Round(res.Z, APPROX));
             }
@@ -104,7 +124,7 @@ namespace LadybugDisplaySchema
 
         public double DistanceToSquared(Point3D other)
         {
-            var vec = new Vector3D(X - other.X, Y - other.Y, Z - other.Z);
+            var vec = Vector3D.FromXYZ(X - other.X, Y - other.Y, Z - other.Z);
             return Math.Pow(vec.X, 2)
                 + Math.Pow(vec.Y, 2)
                 + Math.Pow(vec.Z, 2);
@@ -127,39 +147,39 @@ namespace LadybugDisplaySchema
 
         public static Point3D operator +(Point3D pt, Point3D other)
         {
-            return new Point3D(pt.X + other.X, 
+            return Point3D.FromXYZ(pt.X + other.X, 
                 pt.Y + other.Y, 
                 pt.Z + other.Z);
         }
 
         public static Point3D operator +(Point3D pt, Vector3D vector)
         {
-            return new Point3D(pt.X + vector.X, pt.Y + vector.Y, pt.Z + vector.Z);
+            return Point3D.FromXYZ(pt.X + vector.X, pt.Y + vector.Y, pt.Z + vector.Z);
         }
         public static Point3D operator /(Point3D point, double t)
         {
-            return new Point3D(point.X / t, point.Y / t, point.Z / t);
+            return Point3D.FromXYZ(point.X / t, point.Y / t, point.Z / t);
         }
         public static Point3D operator *(Point3D point, double t)
         {
-            return new Point3D(point.X * t, point.Y * t, point.Z * t);
+            return Point3D.FromXYZ(point.X * t, point.Y * t, point.Z * t);
         }
 
         public static Point3D operator -(Point3D pt)
         {
-            return pt.ToVector3D().Reverse().ToPoint3D();
+            return Point3D.FromXYZ(-pt.X, -pt.Y, -pt.Z);
         }
 
         public static Vector3D operator -(Point3D pt, Point3D other)
         {
-            return new Vector3D(pt.X - other.X, 
+            return Vector3D.FromXYZ(pt.X - other.X, 
                 pt.Y - other.Y, 
                 pt.Z - other.Z);
         }
 
         public static Point3D operator -(Point3D pt, Vector3D vector)
         {
-            return new Point3D(pt.X - vector.X, pt.Y - vector.Y, pt.Z - vector.Z);
+            return Point3D.FromXYZ(pt.X - vector.X, pt.Y - vector.Y, pt.Z - vector.Z);
         }
 
 
@@ -181,14 +201,6 @@ namespace LadybugDisplaySchema
             return 0;
         }
 
-        public Vector3D ToVector3D()
-        {
-            return new Vector3D(X, Y, Z);
-        }
 
-        public Runtime.Point3D ToStruct()
-        {
-            return new Runtime.Point3D(X, Y, Z);
-        }
     }
 }

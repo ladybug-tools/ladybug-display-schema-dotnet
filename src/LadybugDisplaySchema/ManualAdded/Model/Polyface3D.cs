@@ -7,7 +7,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     public partial class Polyface3D
     {
-        public IEnumerable<Point3D> VerticePoints => Vertices.Select(_ => new Point3D(_[0], _[1], _[2]));
+        public IEnumerable<Point3D> VerticePoints => Vertices.Select(_ => Point3D.FromXYZ(_[0], _[1], _[2]));
 
 
         private List<Face3D> _faces;
@@ -30,7 +30,7 @@ namespace LadybugDisplaySchema
         private void SetFacesIfNull()
         {
             var faces = new List<Face3D>();
-            var pp = Vertices.Select(_ => new Point3D(_[0], _[1], _[2]));
+            var pp = Vertices.Select(_ => Point3D.FromXYZ(_[0], _[1], _[2]));
             var vPts = this.VerticePoints.ToList();
             foreach (var face in FaceIndices)
             {

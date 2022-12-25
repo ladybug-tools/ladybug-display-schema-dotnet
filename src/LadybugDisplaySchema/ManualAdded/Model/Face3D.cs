@@ -8,9 +8,9 @@ namespace LadybugDisplaySchema
     public partial class Face3D 
     {
         private double? _area = null;
-        public IEnumerable<Point3D> BoundaryPoints => Boundary.Select(_ => new Point3D(_[0], _[1], _[2]));
+        public IEnumerable<Point3D> BoundaryPoints => Boundary.Select(_ => Point3D.FromXYZ(_[0], _[1], _[2]));
 
-        public IEnumerable<IEnumerable<Point3D>> HolePoints => Holes?.Select(b => b?.Select(_ => new Point3D(_[0], _[1], _[2])));
+        public IEnumerable<IEnumerable<Point3D>> HolePoints => Holes?.Select(b => b?.Select(_ => Point3D.FromXYZ(_[0], _[1], _[2])));
 
         public double Area
         {
@@ -154,12 +154,12 @@ namespace LadybugDisplaySchema
             var nZ = cprods.Select(_ => _.Z).Sum();
 
             var normal = new[] { nX, nY, nZ };
-            var normal_vec = new Vector3D(0, 0, 1);
+            var normal_vec = Vector3D.FromXYZ(0, 0, 1);
             var isZero = normal.SequenceEqual(new[] { 0.0, 0.0, 0.0 });
             if (!isZero) //# zero area Face3D; default to positive Z axis
             {
                 var ds = Math.Sqrt(nX * nX + nY * nY + nZ * nZ);
-                normal_vec = new Vector3D(nX / ds, nY / ds, nZ / ds);
+                normal_vec = Vector3D.FromXYZ(nX / ds, nY / ds, nZ / ds);
             }
 
             return new Plane(normal_vec, baseVert);

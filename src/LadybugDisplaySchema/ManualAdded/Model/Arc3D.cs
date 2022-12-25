@@ -4,7 +4,7 @@ namespace LadybugDisplaySchema
 {
     public partial class Arc3D
     {
-        private Arc2D _arc2D => new Arc2D(new Point2D(0, 0), this.Radius, this.A1, this.A2);
+        private Arc2D _arc2D => new Arc2D(Point2D.FromXY(0, 0), this.Radius, this.A1, this.A2);
 
         public bool IsCircle
         {
