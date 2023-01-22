@@ -7,7 +7,7 @@ namespace LadybugDisplaySchema
 
     public partial class VisualizationData
     {
-        public VisualizationData(List<double> results, LegendParameters legend = default)
+        public VisualizationData(List<double> results, LegendParameters legend = default) : this()
         {
             this.Values = results;
             this.LegendParameters = legend;
@@ -15,7 +15,7 @@ namespace LadybugDisplaySchema
         }
 
 
-        public VisualizationData(List<string> results, LegendParameters legend = default)
+        public VisualizationData(List<string> results, LegendParameters legend = default) : this()
         {
             this.LegendParameters = legend;
             var isNumber = results.All(_ => double.TryParse(_, out var n));
@@ -43,7 +43,7 @@ namespace LadybugDisplaySchema
                     var gp = gps[i];
                     var key = gp.Key ?? "None";
                     keyMapper.Add(i, key);
-                     
+                    
                     foreach (var item in gp)
                     {
                         values[item.i] = i;
