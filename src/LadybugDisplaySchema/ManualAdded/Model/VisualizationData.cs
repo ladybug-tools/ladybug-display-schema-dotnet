@@ -121,6 +121,11 @@ namespace LadybugDisplaySchema
                 legend.ContinuousLegend = false;
             }
 
+            if (string.IsNullOrEmpty(legend.Title))
+                legend.Title = this.DataType?.Obj is DataType dd ? dd._DataType.ToString() : "Legend";
+
+            legend.AddUserData("_unit", this.Unit);
+
             this.LegendParameters = legend;
 
         }
