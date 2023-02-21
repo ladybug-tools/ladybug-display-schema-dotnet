@@ -122,7 +122,7 @@ namespace LadybugDisplaySchema
             }
 
             if (string.IsNullOrEmpty(legend.Title))
-                legend.Title = this.DataType?.Obj is DataType dd ? dd._DataType.ToString() : "Legend";
+                legend.Title = this.DataType?.Obj is DataType dd ? (dd.Name ?? dd._DataType.ToString()) : "Legend";
 
             legend.AddUserData("_unit", this.Unit);
 
