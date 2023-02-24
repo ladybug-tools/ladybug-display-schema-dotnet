@@ -16,5 +16,6 @@ namespace LadybugDisplaySchema
 	public partial class Legend3DParameters: LadybugDisplaySchema.IVisualization {}
 	public partial class LegendParameters: LadybugDisplaySchema.IVisualization {}
 	public partial class VisualizationData: LadybugDisplaySchema.IVisualization {}
+	public partial class VisualizationMetaData: LadybugDisplaySchema.IVisualization {}
 	public partial class VisualizationSet: LadybugDisplaySchema.IVisualization {}
 }
