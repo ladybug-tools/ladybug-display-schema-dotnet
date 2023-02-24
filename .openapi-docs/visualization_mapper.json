@@ -57,6 +57,7 @@
         "Vector2D": "ladybug_display_schema.geometry2d",
         "Vector3D": "ladybug_display_schema.geometry3d",
         "VisualizationData": "ladybug_display_schema.visualization",
+        "VisualizationMetaData": "ladybug_display_schema.visualization",
         "VisualizationSet": "ladybug_display_schema.visualization",
         "_VisualizationBase": "ladybug_display_schema.visualization"
     },

@@ -2,7 +2,7 @@
     "packageName": "LadybugDisplaySchema",
     "projectName": "LadybugDisplaySchema",
     "packageUrl": "https://github.com/ladybug-tools/ladybug-display-schema-dotnet",
-    "packageVersion": "0.7.6",
+    "packageVersion": "0.7.7",
     "targetFramework": "v4.5",
     "sourceFolder": "src",
     "optionalAssemblyInfo": false,
