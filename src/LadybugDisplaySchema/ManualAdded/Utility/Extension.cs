@@ -312,13 +312,15 @@ namespace LadybugDisplaySchema
             return ud;
         }
 
-        public static void AddUserData(this LegendParameters obj, string key, object vaule)
+        public static LegendParameters AddUserData(this LegendParameters obj, string key, object vaule)
         {
             if (obj == null || vaule == null || key == null)
-                return;
+                return obj;
 
-            var ud = obj.GetUserData();
+            var dup = obj.DuplicateLegendParameters();
+            var ud = dup.GetUserData();
             ud.TryAddUpdate(key, vaule);
+            return dup;
         }
         public static Dictionary<string, object> GetUserData(this DisplayBaseModel obj)
         {
