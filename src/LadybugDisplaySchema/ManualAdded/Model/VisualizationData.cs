@@ -53,13 +53,13 @@ namespace LadybugDisplaySchema
 
                 var min = keyMapper.First().Key;
                 var max = keyMapper.Last().Key;
-                var count = keyMapper.Count;
+                //var count = keyMapper.Count;
                 var legendPar = this.LegendParameters ?? new LegendParameters(min, max, steps);
                 legendPar = legendPar.DuplicateLegendParameters();
 
-                legendPar.Min = legendPar.Min == null || legendPar.Min.Obj is Default ? min : legendPar.Min;
-                legendPar.Max = legendPar.Max == null || legendPar.Max.Obj is Default ? max : legendPar.Max;
-                legendPar.SegmentCount = legendPar.SegmentCount == null || legendPar.SegmentCount.Obj is Default ? steps : legendPar.SegmentCount;
+                legendPar.Min = min;
+                legendPar.Max = max;
+                legendPar.SegmentCount = steps;
                 legendPar.OrdinalDictionary = keyMapper;
                 legendPar.ContinuousLegend = false;
 
@@ -89,18 +89,15 @@ namespace LadybugDisplaySchema
                 legend = new LegendParameters(min, max, steps) { ContinuousLegend = true};
             }
             //legend = legend.DuplicateLegendParameters();
+            legend.Min = legend.Min == null || legend.Min.Obj is Default ? this.Values.Min() : legend.Min;
+            legend.Max = legend.Max == null || legend.Max.Obj is Default ? this.Values.Max() : legend.Max;
 
             var isNumber = !legend.HasOrdinalDictionary;
             if (isNumber)
             {
-                var values = this.Values;
-
-                legend.Min = legend.Min == null || legend.Min.Obj is Default ? values.Min() : legend.Min;
-                legend.Max = legend.Max == null || legend.Max.Obj is Default ? values.Max() : legend.Max;
-
                 if (legend.SegmentCount == null || legend.SegmentCount.Obj is Default)
                 {
-                    var distinctCounts = values.Distinct().Count();
+                    var distinctCounts = this.Values.Distinct().Count();
                     var steps = distinctCounts > 10 ? 10 : distinctCounts;
                     legend.SegmentCount = steps;
                 }
@@ -109,9 +106,6 @@ namespace LadybugDisplaySchema
             }
             else
             {
-
-                legend.Min = legend.Min == null || legend.Min.Obj is Default ? this.Values.Min() : legend.Min;
-                legend.Max = legend.Max == null || legend.Max.Obj is Default ? this.Values.Max() : legend.Max;
                 // it has ordinal dictionary
                 if (legend.SegmentCount == null || legend.SegmentCount.Obj is Default)
                 {
