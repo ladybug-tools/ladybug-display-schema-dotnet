@@ -85,7 +85,7 @@ namespace LadybugDisplaySchema
                 var min = values.Min();
                 var max = values.Max();
                 var distinctCounts = values.Distinct().Count();
-                var steps = distinctCounts > 10 ? 10 : distinctCounts;
+                var steps = distinctCounts > 11 ? 11 : distinctCounts;
                 legend = new LegendParameters(min, max, steps) { ContinuousLegend = true};
             }
             //legend = legend.DuplicateLegendParameters();
@@ -98,7 +98,7 @@ namespace LadybugDisplaySchema
                 if (legend.SegmentCount == null || legend.SegmentCount.Obj is Default)
                 {
                     var distinctCounts = this.Values.Distinct().Count();
-                    var steps = distinctCounts > 10 ? 10 : distinctCounts;
+                    var steps = distinctCounts > 11 ? 11 : distinctCounts;
                     legend.SegmentCount = steps;
                 }
 
