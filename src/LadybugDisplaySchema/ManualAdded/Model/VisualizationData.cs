@@ -63,6 +63,14 @@ namespace LadybugDisplaySchema
                 legendPar.OrdinalDictionary = keyMapper;
                 legendPar.ContinuousLegend = false;
 
+                // reset color if there is only one from the existing legend param
+                if ((legendPar.Colors?.Distinct()?.Count()).GetValueOrDefault() == 1 && steps > 1)
+                {
+                    legendPar.Colors = null;
+                }
+               
+
+
                 this.LegendParameters = legendPar;
             }
 
