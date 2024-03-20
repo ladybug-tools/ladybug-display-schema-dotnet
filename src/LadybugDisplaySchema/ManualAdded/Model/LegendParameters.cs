@@ -53,6 +53,11 @@ namespace LadybugDisplaySchema
 
         public double Width2D => this.Vertical ? this.SegmentWidth2D : this.SegmentWidth2D * this.SegmentCountValue;
         public double Height2D => this.Vertical ? this.SegmentHeight2D * this.SegmentCountValue : this.SegmentHeight2D;
+        public double Height2D_None =>  this.SegmentHeight2D / 4;
+        public double Height2D_Full => this.HasNone ? Height2D + this.Height2D_None + 10 : Height2D;
+
+        public double MinMaxRange => this.MaxValue.Equals(this.MinValue)? 0 : this.MaxValue - this.MinValue; // use Equals to catch double.NaN case
+
         public double TextHeight2D
         {
             get
@@ -61,6 +66,7 @@ namespace LadybugDisplaySchema
                 return GetPxValue(this.Properties2d.TextHeight);
             }
         }
+        public bool HasNone => this.HasNoneColor(out _);
 
         #endregion
 
@@ -133,6 +139,8 @@ namespace LadybugDisplaySchema
 
         public LegendParameters(double min, double max, int numSegs, List<Color> colors = default) : this()
         {
+            if (numSegs <= 0)
+                throw new System.ArgumentException("Segment count cannot be 0");
             init2DDefault();
             DecimalCount = 2;
 
@@ -140,8 +148,7 @@ namespace LadybugDisplaySchema
             Max = max;
             SegmentCount = numSegs;
 
-            var c = colors ?? _defaultColorSet.ToList();
-            Colors = numSegs > 1 ? c : new List<Color>() { c[0], c[0] };
+            Colors = _defaultColorSet.ToList();
         }
 
         private Legend2DParameters init2DDefault()
@@ -161,6 +168,43 @@ namespace LadybugDisplaySchema
 
         //public System.Drawing.Rectangle GetBoundary => new System.Drawing.Rectangle(this.X, this.Y, this.Width, this.Height);
 
+        public LegendParameters SetNoneColor(Color color)
+        {
+            return this.AddUserData("_noneColor", color);
+        }
+        public bool HasNoneColor(out Color noneColor)
+        {
+            var ud = this.GetUserData();
+            noneColor = null;
+            if (ud.TryGetValue("_noneColor", out var color))
+            {
+                if (color is Color lbC)
+                {
+                    noneColor = lbC;
+                }
+                try
+                {
+                    noneColor = Color.FromJson(color?.ToString());
+                }
+                catch (System.Exception)
+                {
+                }
+
+                return noneColor!= null;
+            }
+            return false;
+        }
+        internal Color GetNoneColorWithDefault()
+        {
+            if (this.HasNoneColor(out var c))
+                return c;
+            var colorStart = this.ColorsWithDefault.First();
+            return new Color(
+              System.Math.Max(0, colorStart.R - 50),
+              System.Math.Max(0, colorStart.G - 50),
+              System.Math.Max(0, colorStart.B - 50)
+              );
+        }
 
         private List<double> _colorDomains;
         private List<double> ColorDomains()
@@ -195,12 +239,18 @@ namespace LadybugDisplaySchema
             var colors = this.ColorsWithDefault.ToList();
             var colorStart = colors.First();
             var colorEnd = colors.Last();
+
+            // check if there is none color for legend
+            if (double.IsNaN(value))
+                return GetNoneColorWithDefault();
+
+
             if (value <= this.MinValue)
                 return colorStart;
             if (value >= this.MaxValue)
                 return colorEnd;
 
-            var range_p = this.MaxValue - this.MinValue;
+            var range_p = this.MinMaxRange;
             var factor = range_p == 0 ? 0 : (value - this.MinValue) / range_p;
 
             var colorDomains = ColorDomains();
