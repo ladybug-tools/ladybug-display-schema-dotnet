@@ -123,6 +123,23 @@ namespace LadybugDisplaySchema.Test
 
             var vData = new VisualizationData(data, null);
             var legend = vData.LegendParameters;
+            Assert.IsTrue(legend.OrdinalDictionary == null);
+            Assert.IsTrue(legend.HasNone);
+
+            data = new List<string>()
+            {
+                "Test",
+                "1.2",
+                "0.6",
+                "None",
+                "0.6",
+                "2.6",
+                "Test",
+                "-4",
+                "21"
+            };
+            vData = new VisualizationData(data, null);
+            legend = vData.LegendParameters;
             Assert.IsTrue(legend.OrdinalDictionary != null);
             Assert.AreEqual(legend.GetOrdinalDictionary().Count, 7);
         }
