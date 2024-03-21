@@ -7,11 +7,26 @@ namespace LadybugDisplaySchema
 
     public partial class VisualizationData
     {
+        /// <summary>
+        /// Possible max value while removing nones values. Max will be double.NaN if no numerical value found.
+        /// </summary>
+        public double Max { get; set; } = double.NaN;
+
+        /// <summary>
+        /// Possible min value while removing nones values. Min will be double.NaN if no numerical value found.
+        /// </summary>
+        public double Min { get; set; } = double.NaN;
+
         public VisualizationData(List<double> results, LegendParameters legend = default) : this()
         {
             this.Values = results;
             this.LegendParameters = legend;
-            UpdateLegendWithValues();
+            if (HasMinMax(results, out var numBounds))
+            {
+                this.Max = numBounds.Value.max;
+                this.Min = numBounds.Value.min;
+            }
+            UpdateLegendWithValues(numBounds);
         }
 
 
@@ -20,6 +35,13 @@ namespace LadybugDisplaySchema
             this.LegendParameters = legend;
             var isNumber = IsNumberList(results, out var nums, out var numBounds); // checks for None case
             var values = new List<double>(results.Count);
+
+            if (numBounds.HasValue)
+            {
+                this.Max = numBounds.Value.max;
+                this.Min = numBounds.Value.min;
+            }
+            
             if (isNumber)
             {
                 this.Values = nums;
@@ -29,13 +51,13 @@ namespace LadybugDisplaySchema
             else
             {
 
-                values = Enumerable.Repeat(-99.0, results.Count).ToList();
+                values = Enumerable.Repeat(double.NaN, results.Count).ToList();
                 var keyMapper = new Dictionary<double, string>();
                 var gps = results.Select((_, i) => new { _, i }).GroupBy(_ => _._).ToList();
 
                 // sort keys
                 var comparer = new StringComparer();
-                gps = gps.OrderByDescending(_ => _.Key, comparer).ToList();
+                gps = gps.OrderBy(_ => _.Key, comparer).ToList();
                 var steps = gps.Count;
                 for (int i = 0; i < steps; i++)
                 {
@@ -101,8 +123,7 @@ namespace LadybugDisplaySchema
 
                 // get bounds
                 // values.Min() will be NaN if there is any NaN found, Max() will return the max value and ignore the NaN
-                var nonNaNs = values.Where(_ => !double.IsNaN(_));
-                numBounds = nonNaNs.Any() ? (nonNaNs.Min(), nonNaNs.Max()): (double.NaN, double.NaN);
+                HasMinMax(values, out numBounds);
                 return true;
             }
             else
@@ -110,7 +131,21 @@ namespace LadybugDisplaySchema
                 return false;
             }
 
-            
+        }
+
+        private static bool HasMinMax(IEnumerable<double> values, out (double min, double max)? numBounds)
+        {
+            var nonNaNs = values.Where(_ => !double.IsNaN(_));
+            if (nonNaNs.Any())
+            {
+                numBounds = (nonNaNs.Min(), nonNaNs.Max());
+                return true;
+            }
+            else
+            {
+                numBounds = (double.NaN, double.NaN);
+                return false;
+            }
         }
 
         public void UpdateLegendWithValues((double min, double max)? numBounds = default)
