@@ -53,8 +53,6 @@ namespace LadybugDisplaySchema
 
         public double Width2D => this.Vertical ? this.SegmentWidth2D : this.SegmentWidth2D * this.SegmentCountValue;
         public double Height2D => this.Vertical ? this.SegmentHeight2D * this.SegmentCountValue : this.SegmentHeight2D;
-        public double Height2D_None =>  this.SegmentHeight2D / 4;
-        public double Height2D_Full => this.HasNone ? Height2D + this.Height2D_None + 10 : Height2D;
 
         public double MinMaxRange => this.MaxValue.Equals(this.MinValue)? 0 : this.MaxValue - this.MinValue; // use Equals to catch double.NaN case
 
@@ -66,7 +64,6 @@ namespace LadybugDisplaySchema
                 return GetPxValue(this.Properties2d.TextHeight);
             }
         }
-        public bool HasNone => this.HasNoneColor(out _);
 
         #endregion
 
@@ -267,10 +264,11 @@ namespace LadybugDisplaySchema
             var colors = this.ColorsWithDefault;
 
             var colorDomins = this.ColorDomains(colors.Count);
-            var noneColor = this.GetNoneColorWithDefault();
-            var hasNone = noneColor != null;
-            if (hasNone)
-            {
+            Color noneColor = null;
+            var hasNoneColor = this.HasNoneColor(out noneColor);
+            var hasNoneInOrdDic = hasNoneColor && ordinalDictionary.ContainsValue(VisualizationData.NoneKey);
+            if (hasNoneInOrdDic)
+            { // remove None from the dictionary, in order to calculate the color based on min/max correctly
                 max -= 1;
             }
 
