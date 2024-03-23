@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +7,9 @@ namespace LadybugDisplaySchema
 
     public partial class VisualizationData
     {
+        private static readonly string[] _noneKeys = new string[] { "None", "N/A", "NaN", string.Empty, null };
+        public static readonly string NoneKey = "N/A";
+
         /// <summary>
         /// Possible max value while removing nones values. Max will be double.NaN if no numerical value found.
         /// </summary>
@@ -17,97 +20,108 @@ namespace LadybugDisplaySchema
         /// </summary>
         public double Min { get; set; } = double.NaN;
 
+    
+
         public VisualizationData(List<double> results, LegendParameters legend = default) : this()
         {
             this.Values = results;
-            this.LegendParameters = legend;
             if (HasMinMax(results, out var numBounds))
             {
                 this.Max = numBounds.Value.max;
                 this.Min = numBounds.Value.min;
             }
-            UpdateLegendWithValues(numBounds);
+            var newLegend = UpdateLegendWithValues(this.Values, legend, numBounds);
+            this.LegendParameters = newLegend;
         }
 
 
-        public VisualizationData(List<string> results, LegendParameters legend = default) : this()
+        /// <summary>
+        /// This is currently only used in the GlobalRenderer for ColorByProperties
+        /// </summary>
+        /// <param name="results"></param>
+        /// <param name="legend"></param>
+        /// <param name="categorizedLegend">This is currently only used in the GlobalRenderer for ColorByProperties</param>
+        public VisualizationData(List<string> results, LegendParameters legend, bool categorizedLegend = false) : this()
         {
             this.LegendParameters = legend;
             var isNumber = IsNumberList(results, out var nums, out var numBounds); // checks for None case
-            var values = new List<double>(results.Count);
 
-            if (numBounds.HasValue)
+            var hasNone = false;
+            var allNones = false;
+
+
+            LegendParameters newLegend;
+            if (isNumber && !categorizedLegend)
             {
-                this.Max = numBounds.Value.max;
-                this.Min = numBounds.Value.min;
-            }
-            
-            if (isNumber)
-            {
+                // check the raw numbers with double.NaN
+                var valueMin = nums.Min();
+                var valueMax = nums.Max();
+
+                // check None case which is set to double.NaN
+                hasNone = double.IsNaN(valueMin);
+                allNones = double.IsNaN(valueMax);
+
+                // only true numbers can have max and min
+                if (numBounds.HasValue)
+                {
+                    this.Max = numBounds.Value.max;
+                    this.Min = numBounds.Value.min;
+                }
+
+                // update the legend
                 this.Values = nums;
-                UpdateLegendWithValues(numBounds);
-
+                newLegend = UpdateLegendWithValues(this.Values, legend, numBounds);
+          
             }
             else
             {
+                // this is all categorized
+                this.Values = CategorizeValues(results, out var keyMapper);
 
-                values = Enumerable.Repeat(double.NaN, results.Count).ToList();
-                var keyMapper = new Dictionary<double, string>();
-                var gps = results.Select((_, i) => new { _, i }).GroupBy(_ => _._).ToList();
+                // check nones
+                var mappers = keyMapper.Values.ToList();
+                hasNone = mappers.Any(_ => _ == NoneKey);
+                allNones = mappers.All(_ => _ == NoneKey);
 
-                // sort keys
-                var comparer = new StringComparer();
-                gps = gps.OrderBy(_ => _.Key, comparer).ToList();
-                var steps = gps.Count;
-                for (int i = 0; i < steps; i++)
-                {
-                    var gp = gps[i];
-                    var key = gp.Key ?? "None";
-                    keyMapper.Add(i, key);
-                    
-                    foreach (var item in gp)
-                    {
-                        values[item.i] = i;
-                    }
-                }
-                this.Values = values;
-
-                var min = keyMapper.First().Key;
-                var max = keyMapper.Last().Key;
-                //var count = keyMapper.Count;
-                var legendPar = this.LegendParameters ?? new LegendParameters(min, max, steps);
-                legendPar = legendPar.DuplicateLegendParameters();
-
-                legendPar.Min = min;
-                legendPar.Max = max;
-                legendPar.SegmentCount = steps;
-                legendPar.OrdinalDictionary = keyMapper;
-                legendPar.ContinuousLegend = false;
-
-                this.LegendParameters = legendPar;
+                // update the legend
+                newLegend = UpdateLegendWithTextValues(legend, keyMapper);
             }
 
+            // check legend title
+            if (string.IsNullOrEmpty(newLegend.Title))
+                newLegend.Title = this.DataType?.Obj is DataType dd ? (dd.Name ?? dd._DataType.ToString()) : "Legend";
+
+            // check legend unit
+            if (!string.IsNullOrEmpty(this.Unit))
+                newLegend = newLegend.AddUserData("_unit", this.Unit);
+
+            // set none color to legend
+            if (hasNone && !allNones)
+            {
+                newLegend = newLegend.SetNoneColor(newLegend.GetNoneColorWithDefault());
+            }
+
+            this.LegendParameters = newLegend;
         }
 
         public LegendParameters ValidLegendParameters 
         { 
             get
             {
-                UpdateLegendWithValues();
+                this.LegendParameters = UpdateLegendWithValues(this.Values, this.LegendParameters);
                 return this.LegendParameters;
             } 
         }
 
         /// <summary>
-        /// Checks all values 
+        /// Checks all values, and replace Nones ("None", string.Empty, null) with double.NaN
         /// </summary>
         /// <param name="results"></param>
         /// <param name="values"></param>
         /// <returns></returns>
         public static bool IsNumberList(List<string> results, out List<double> values, out (double min, double max)? numBounds)
         {
-            var noneKeys = new string[] { "None", string.Empty, null };
-            var gp = results.GroupBy(_ => noneKeys.Contains(_));
+            var gp = results.GroupBy(_ => _noneKeys.Contains(_));
             var hasNone = (gp.FirstOrDefault(_ => _.Key)?.Any()).GetValueOrDefault();
             // check if all the rest values are numbers. If an empty list found, consider it as true to the rest value is number.
             var allRestNums = (gp.FirstOrDefault(_ => !_.Key)?.All(r => double.TryParse(r, out _))).GetValueOrDefault(true);
@@ -148,12 +162,10 @@ namespace LadybugDisplaySchema
             }
         }
 
-        public void UpdateLegendWithValues((double min, double max)? numBounds = default)
+        public static LegendParameters UpdateLegendWithValues(List<double> values, LegendParameters legend, (double min, double max)? numBounds = default)
         {
-            var legend = this.LegendParameters;
-            var valueMin = this.Values.Min();
-            var valueMax = this.Values.Max();
-            var values = this.Values;
+            var valueMin = values.Min();
+            var valueMax = values.Max();
 
             // check None case which is set to double.NaN
             var hasNone = double.IsNaN(valueMin);
@@ -182,9 +194,6 @@ namespace LadybugDisplaySchema
                 legend.Min = valueMin;
             if (lMax == null || lMax is Default || lMax is double.NaN)
                 legend.Max = valueMax;
-
-            //legend.Min = legend.Min == null || legend.Min.Obj is Default || legend.Min.Obj is double.NaN ? valueMin : legend.Min;
-            //legend.Max = legend.Max == null || legend.Max.Obj is Default || legend.Max.Obj is double.NaN ? valueMax : legend.Max;
 
             // reset colors, min, max when previous saved legend is only for one value/color
             if (legend.MinMaxRange == 0 && valueMax>valueMin)
@@ -215,23 +224,57 @@ namespace LadybugDisplaySchema
                 legend.ContinuousLegend = false;
             }
 
-            if (string.IsNullOrEmpty(legend.Title))
-                legend.Title = this.DataType?.Obj is DataType dd ? (dd.Name ?? dd._DataType.ToString()) : "Legend";
-
-            if (!string.IsNullOrEmpty(this.Unit))
-                legend = legend.AddUserData("_unit", this.Unit);
-
-
-            if (hasNone && !allNones)
-            {
-                legend = legend.SetNoneColor(legend.GetNoneColorWithDefault());
-            }
+          
              
-            this.LegendParameters = legend;
+           return legend;
 
         }
 
 
+        public static LegendParameters UpdateLegendWithTextValues(LegendParameters legend, Dictionary<double, string> keyMapper)
+        {
+            var min = keyMapper.First().Key;
+            var max = keyMapper.Last().Key;
+            var steps = keyMapper.Count;
+            var legendPar = legend ?? new LegendParameters(min, max, steps);
+            legendPar = legendPar.DuplicateLegendParameters();
+
+
+            legendPar.Min = min;
+            legendPar.Max = max;
+            legendPar.SegmentCount = steps;
+            legendPar.OrdinalDictionary = keyMapper;
+            legendPar.ContinuousLegend = false;
+
+            return legendPar;
+        }
+
+        public static List<double> CategorizeValues(List<string> results, out Dictionary<double, string> mapper)
+        {
+            var values = Enumerable.Repeat(double.NaN, results.Count).ToList();
+            var keyMapper = new Dictionary<double, string>();
+            var gps = results.Select((_, i) => new { _, i }).GroupBy(_ => _._).ToList();
+
+            // sort keys
+            var comparer = new StringComparer();
+            gps = gps.OrderBy(_ => _.Key, comparer).ToList();
+            var steps = gps.Count;
+            for (int i = 0; i < steps; i++)
+            {
+                var gp = gps[i];
+                var key = _noneKeys.Contains(gp.Key) ? NoneKey : gp.Key;
+                keyMapper.Add(i, key);
+
+                foreach (var item in gp)
+                {
+                    values[item.i] = i;
+                }
+            }
+            mapper = keyMapper;
+            return values;
+
+
+        }
 
     }
 }

@@ -164,7 +164,7 @@ namespace LadybugDisplaySchema
             return this.Properties3d;
         }
 
-        private List<Color> _defaultColorSet = LegendColorSet.Presets.First().Value.ToList();
+        private static List<Color> _defaultColorSet = LegendColorSet.Presets.First().Value.ToList();
 
         //public System.Drawing.Rectangle GetBoundary => new System.Drawing.Rectangle(this.X, this.Y, this.Width, this.Height);
 
@@ -174,7 +174,11 @@ namespace LadybugDisplaySchema
         }
         public bool HasNoneColor(out Color noneColor)
         {
-            var ud = this.GetUserData();
+            return HasNoneColor(this.GetUserData(), out noneColor);
+        }
+
+        public static bool HasNoneColor(Dictionary<string, object> ud, out Color noneColor)
+        {
             noneColor = null;
             if (ud.TryGetValue("_noneColor", out var color))
             {
@@ -207,19 +211,40 @@ namespace LadybugDisplaySchema
         }
 
         private List<double> _colorDomains;
-        private List<double> ColorDomains()
+        private List<double> ColorDomains(int count)
         {
-            var cs = this.ColorsWithDefault;
-            if (_colorDomains != null && _colorDomains.Count == cs.Count)
+            if (_colorDomains != null && _colorDomains.Count == count)
                 return _colorDomains;
 
-            if (cs.Count < 2)
-                throw new System.ArgumentException("Need at least 2 colors");
+            _colorDomains = GenColorDomains(count);
+            return _colorDomains;
+        }
 
-            double factor = 1.0 / (cs.Count - 1);
-            var bounds = cs.Select((_, i) => i * factor).ToList();
-            _colorDomains = bounds;
-            return bounds;
+        public static List<double> GenColorDomains(int count)
+        {
+            if (count < 2)
+                throw new System.ArgumentException("Need at least 2 colors for color domains");
+
+            double factor = 1.0 / (count - 1);
+            var d = new List<double>();
+            for (int i = 0; i < count; i++)
+            {
+                d.Add(i * factor);
+            }
+            return d;
+        }
+
+        private static bool IsNone(double value, Dictionary<double,string> ordinalDictionary)
+        {
+            // check if there is none color for legend
+            if (double.IsNaN(value))
+                return true;
+
+            // check the key mapper to see if the value matches any of key mapper which is None
+            if (ordinalDictionary!= null && ordinalDictionary.TryGetValue(value, out var name))
+                return name == VisualizationData.NoneKey;
+
+            return false;
         }
         /// <summary>
         /// Blend between two colors based on input value.
@@ -229,37 +254,64 @@ namespace LadybugDisplaySchema
         {
             if (cache.TryGetValue(value, out var c))
                 return c;
-            var newColor = CalColor(value);
+            var newColor = CalColor(new double[] { value }).FirstOrDefault();
             cache.Add(value, newColor);
             return newColor;
         }
 
-        public Color CalColor(double value)
+        public List<Color> CalColor(IEnumerable<double> values)
         {
-            var colors = this.ColorsWithDefault.ToList();
+            var ordinalDictionary = GetOrdinalDictionary();
+            var min = this.MinValue;
+            var max = this.MaxValue;
+            var colors = this.ColorsWithDefault;
+
+            var colorDomins = this.ColorDomains(colors.Count);
+            var noneColor = this.GetNoneColorWithDefault();
+            var hasNone = noneColor != null;
+            if (hasNone)
+            {
+                max -= 1;
+            }
+
+            return CalColor(values, ordinalDictionary, min, max, colorDomins, colors, noneColor);
+        }
+
+        public static List<Color> CalColor(IEnumerable<double> values, Dictionary<double, string> ordinalDictionary, double min, double max, List<double> colorDomainValues, List<Color> colors, Color noneColor)
+        {
+            var cs = colors ?? _defaultColorSet;
+            var cd = colorDomainValues ?? GenColorDomains(cs.Count);
+            var cache = new Dictionary<double, Color>();
+            return values.Select(_=>CalColor(_, ordinalDictionary, min, max, cd, cs, noneColor, ref cache)).ToList();
+        }
+
+        public static Color CalColor(double value, Dictionary<double, string> ordinalDictionary, double min, double max, List<double> colorDomainValues, List<Color> colors, Color noneColor, ref Dictionary<double, Color> cache)
+        {
+            if (cache!=null && cache.TryGetValue(value, out var c))
+                return c;
+
+
+            // check if there is none color for legend
+            if (IsNone(value, ordinalDictionary))
+                return noneColor;
+
             var colorStart = colors.First();
             var colorEnd = colors.Last();
 
-            // check if there is none color for legend
-            if (double.IsNaN(value))
-                return GetNoneColorWithDefault();
-
-
-            if (value <= this.MinValue)
+            if (value <= min)
                 return colorStart;
-            if (value >= this.MaxValue)
+            if (value >= max)
                 return colorEnd;
 
-            var range_p = this.MinMaxRange;
-            var factor = range_p == 0 ? 0 : (value - this.MinValue) / range_p;
+            var range_p = max.Equals(min) ? 0 : max - min;
+            var factor = range_p == 0 ? 0 : (value - min) / range_p;
 
-            var colorDomains = ColorDomains();
-            var segFactor = colorDomains[1];
+            var segFactor = colorDomainValues[1];
             var colorFactor = 0.0;
-            for (int i = 1; i < colorDomains.Count; i++)
+            for (int i = 1; i < colorDomainValues.Count; i++)
             {
-                var cFactorBefore = colorDomains[i - 1];
-                var cFactor = colorDomains[i];
+                var cFactorBefore = colorDomainValues[i - 1];
+                var cFactor = colorDomainValues[i];
                 if (factor <= cFactor && factor >= cFactorBefore)
                 {
                     colorStart = colors[i - 1];
@@ -271,11 +323,11 @@ namespace LadybugDisplaySchema
             }
 
             var newColor = BlendColors(colorFactor, colorStart, colorEnd);
-
+            cache?.Add(value, newColor);
             return newColor;
         }
 
-        private Color BlendColors(double factor, Color c1, Color c2)
+        private static Color BlendColors(double factor, Color c1, Color c2)
         {
             var red = (int)(factor * (c2.R - c1.R) + c1.R);
             var green = (int)(factor * (c2.G - c1.G) + c1.G);
@@ -286,32 +338,14 @@ namespace LadybugDisplaySchema
 
         public Dictionary<double, string> GetOrdinalDictionary()
         {
-            var ud = ToDictionary(this.OrdinalDictionary);
+            if (this.OrdinalDictionary is Dictionary<double, string> od)
+                return od;
+
+            var ud = Extension.ToDictionary(this.OrdinalDictionary)?.ToDictionary(_=>double.Parse( _.Key), _=>_.Value.ToString());
+            this.OrdinalDictionary = ud;
             return ud;
         }
 
-
-        private static Dictionary<double, string> ToDictionary(object userData)
-        {
-            if (userData is Dictionary<double, string> dd)
-                return dd;
-
-            var uds = new Dictionary<double, string>();
-            Newtonsoft.Json.Linq.JObject jObj = null;
-            if (userData is string)
-                jObj = Newtonsoft.Json.Linq.JObject.Parse(userData?.ToString());
-            else if (userData is Newtonsoft.Json.Linq.JObject j)
-                jObj = j;
-
-            if (jObj != null)
-            {
-                uds = jObj.Children()
-                   .OfType<Newtonsoft.Json.Linq.JProperty>()
-                   .ToDictionary(_ => double.Parse(_.Name), _ => _.Value.ToString());
-            }
-            return uds;
-
-        }
 
         public void Reset2DBaseLocation(double X = default, double Y = default)
         {
