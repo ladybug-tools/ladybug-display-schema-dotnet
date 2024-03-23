@@ -124,7 +124,7 @@ namespace LadybugDisplaySchema.Test
             var vData = new VisualizationData(data, null);
             var legend = vData.LegendParameters;
             Assert.IsTrue(legend.OrdinalDictionary == null);
-            Assert.IsTrue(legend.HasNone);
+            Assert.IsTrue(legend.HasNoneColor(out _));
 
             data = new List<string>()
             {
