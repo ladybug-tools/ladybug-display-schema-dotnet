@@ -165,6 +165,33 @@ namespace LadybugDisplaySchema
 
         //public System.Drawing.Rectangle GetBoundary => new System.Drawing.Rectangle(this.X, this.Y, this.Width, this.Height);
 
+        public LegendParameters SetEmbed(bool ifEmbed)
+        {
+            var dic = this.GetUserData();
+
+            if (ifEmbed)
+                dic.TryAddUpdate("_embed", ifEmbed);
+            else if (dic.ContainsKey("_embed"))
+            {
+                dic.Remove("_embed");
+            }
+            this.UserData = dic;
+            return this;
+        }
+        public bool IsEmbedded()
+        {
+            var dic = this.GetUserData();
+            if (dic.TryGetValue("_embed", out var cached) )
+            {
+                if (cached is bool ifCached) return ifCached;
+                else if (cached?.ToString()?.ToLower() == "true")
+                    return true;
+
+            }
+            
+            return false;
+        }
+
         public LegendParameters SetNoneColor(Color color)
         {
             return this.AddUserData("_noneColor", color);
