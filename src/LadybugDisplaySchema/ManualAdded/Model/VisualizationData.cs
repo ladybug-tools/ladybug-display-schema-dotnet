@@ -43,6 +43,9 @@ namespace LadybugDisplaySchema
         /// <param name="categorizedLegend">This is currently only used in the GlobalRenderer for ColorByProperties</param>
         public VisualizationData(List<string> results, LegendParameters legend, bool categorizedLegend = false) : this()
         {
+
+            if (!categorizedLegend && legend != null) legend.OrdinalDictionary = null;
+
             this.LegendParameters = legend;
             var isNumber = IsNumberList(results, out var nums, out var numBounds); // checks for None case
 
@@ -55,11 +58,9 @@ namespace LadybugDisplaySchema
             {
                 // check the raw numbers with double.NaN
                 var valueMin = nums.Min();
-                var valueMax = nums.Max();
 
                 // check None case which is set to double.NaN
                 hasNone = double.IsNaN(valueMin);
-                allNones = double.IsNaN(valueMax);
 
                 // only true numbers can have max and min
                 if (numBounds.HasValue)
@@ -81,7 +82,6 @@ namespace LadybugDisplaySchema
                 // check nones
                 var mappers = keyMapper.Values.ToList();
                 hasNone = mappers.Any(_ => _ == NoneKey);
-                allNones = mappers.All(_ => _ == NoneKey);
 
                 // update the legend
                 newLegend = UpdateLegendWithTextValues(legend, keyMapper);
@@ -96,7 +96,7 @@ namespace LadybugDisplaySchema
                 newLegend = newLegend.AddUserData("_unit", this.Unit);
 
             // set none color to legend
-            if (hasNone && !allNones)
+            if (hasNone)
             {
                 newLegend = newLegend.SetNoneColor(newLegend.GetNoneColorWithDefault());
             }
@@ -176,9 +176,9 @@ namespace LadybugDisplaySchema
                 valueMax = numBounds.Value.max;
             }
 
-            // update the legend with the real number values except NaNs
-            if (hasNone && !allNones)
-                values = values.Where(_ => !double.IsNaN(_)).ToList();
+            //// update the legend with the real number values except NaNs
+            //if (hasNone && !allNones)
+            //    values = values.Where(_ => !double.IsNaN(_)).ToList();
 
             var distinctCounts = values.Distinct().Count();
             var steps = distinctCounts > 11 ? 11 : distinctCounts;
@@ -233,9 +233,29 @@ namespace LadybugDisplaySchema
 
         public static LegendParameters UpdateLegendWithTextValues(LegendParameters legend, Dictionary<double, string> keyMapper)
         {
-            var min = keyMapper.First().Key;
-            var max = keyMapper.Last().Key;
+            var keys = keyMapper.Keys;
+            var min = keys.Min();
+            var max = keys.Max();
             var steps = keyMapper.Count;
+
+            // has none
+            if (double.IsNaN(min))
+            {
+                min = 0;
+                //steps = steps > 1 ? steps - 1 : 0;
+            }
+
+            // all none
+            if (double.IsNaN(max))
+            {
+                min = 0;
+                max = 0;
+                steps = 1;
+            }
+
+            // the min of steps has to be 1
+            steps = steps == 0 ? 1 : steps;
+
             var legendPar = legend ?? new LegendParameters(min, max, steps);
             legendPar = legendPar.DuplicateLegendParameters();
 
@@ -258,17 +278,33 @@ namespace LadybugDisplaySchema
             // sort keys
             var comparer = new StringComparer();
             gps = gps.OrderBy(_ => _.Key, comparer).ToList();
-            var steps = gps.Count;
-            for (int i = 0; i < steps; i++)
+         
+            var catIndex = 0;
+            var hasNone = false;
+            foreach (var gp in gps)
             {
-                var gp = gps[i];
-                var key = _noneKeys.Contains(gp.Key) ? NoneKey : gp.Key;
-                keyMapper.Add(i, key);
-
+                var isNone = _noneKeys.Contains(gp.Key);
+                if (isNone)
+                {
+                    hasNone = true; 
+                    continue;
+                }
+                
+                var key = gp.Key;
+                var value = catIndex;
+                keyMapper.Add(value, key);
                 foreach (var item in gp)
                 {
-                    values[item.i] = i;
+                    values[item.i] = value;
                 }
+
+                catIndex++;
+            }
+
+            // add none key at the end
+            if (hasNone)
+            {
+                keyMapper.Add(double.NaN, NoneKey);
             }
             mapper = keyMapper;
             return values;

@@ -266,12 +266,7 @@ namespace LadybugDisplaySchema
             var colorDomins = this.ColorDomains(colors.Count);
             Color noneColor = null;
             var hasNoneColor = this.HasNoneColor(out noneColor);
-            var hasNoneInOrdDic = hasNoneColor && ordinalDictionary.ContainsValue(VisualizationData.NoneKey);
-            if (hasNoneInOrdDic)
-            { // remove None from the dictionary, in order to calculate the color based on min/max correctly
-                max -= 1;
-            }
-
+         
             return CalColor(values, ordinalDictionary, min, max, colorDomins, colors, noneColor);
         }
 
@@ -296,10 +291,12 @@ namespace LadybugDisplaySchema
             var colorStart = colors.First();
             var colorEnd = colors.Last();
 
-            if (value <= min)
-                return colorStart;
+            // check the max first
             if (value >= max)
                 return colorEnd;
+            if (value <= min)
+                return colorStart;
+
 
             var range_p = max.Equals(min) ? 0 : max - min;
             var factor = range_p == 0 ? 0 : (value - min) / range_p;
