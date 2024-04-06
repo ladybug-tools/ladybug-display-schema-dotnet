@@ -266,7 +266,7 @@ namespace LadybugDisplaySchema
 
             // check the key mapper to see if the value matches any of key mapper which is None
             if (ordinalDictionary!= null && ordinalDictionary.TryGetValue(value, out var name))
-                return name == VisualizationData.NoneKey;
+                return name == VisualizationData.NAKey;
 
             return false;
         }
