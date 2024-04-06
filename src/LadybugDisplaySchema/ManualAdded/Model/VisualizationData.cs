@@ -7,8 +7,9 @@ namespace LadybugDisplaySchema
 
     public partial class VisualizationData
     {
-        private static readonly string[] _noneKeys = new string[] { "None", "N/A", "NaN", string.Empty, null };
-        public static readonly string NoneKey = "N/A";
+        private static readonly string[] _naKeys = new string[] { "N/A", "NaN", string.Empty, null };
+        public static readonly string NAKey = "N/A";
+        public static readonly string NoneKey = "None";
 
         /// <summary>
         /// Possible max value while removing nones values. Max will be double.NaN if no numerical value found.
@@ -50,8 +51,6 @@ namespace LadybugDisplaySchema
             var isNumber = IsNumberList(results, out var nums, out var numBounds); // checks for None case
 
             var hasNone = false;
-            var allNones = false;
-
 
             LegendParameters newLegend;
             if (isNumber && !categorizedLegend)
@@ -81,7 +80,7 @@ namespace LadybugDisplaySchema
 
                 // check nones
                 var mappers = keyMapper.Values.ToList();
-                hasNone = mappers.Any(_ => _ == NoneKey);
+                hasNone = mappers.Any(_ => _ == NAKey);
 
                 // update the legend
                 newLegend = UpdateLegendWithTextValues(legend, keyMapper);
@@ -121,7 +120,7 @@ namespace LadybugDisplaySchema
         /// <returns></returns>
         public static bool IsNumberList(List<string> results, out List<double> values, out (double min, double max)? numBounds)
         {
-            var gp = results.GroupBy(_ => _noneKeys.Contains(_));
+            var gp = results.GroupBy(_ => _naKeys.Contains(_));
             var hasNone = (gp.FirstOrDefault(_ => _.Key)?.Any()).GetValueOrDefault();
             // check if all the rest values are numbers. If an empty list found, consider it as true to the rest value is number.
             var allRestNums = (gp.FirstOrDefault(_ => !_.Key)?.All(r => double.TryParse(r, out _))).GetValueOrDefault(true);
@@ -275,18 +274,32 @@ namespace LadybugDisplaySchema
             var keyMapper = new Dictionary<double, string>();
             var gps = results.Select((_, i) => new { _, i }).GroupBy(_ => _._).ToList();
 
+            // deal with None case first
+            var noneGp = gps.FirstOrDefault(_=>_.Key == NoneKey);
+            var noNoneGps = gps.Where(_ => _.Key != NoneKey);
+
+            var catIndex = 0;
+            if (noneGp!= null)
+            {
+                keyMapper.Add(catIndex, NoneKey);
+                foreach (var item in noneGp)
+                {
+                    values[item.i] = catIndex;
+                }
+                catIndex++;
+            }
+
             // sort keys
             var comparer = new StringComparer();
-            gps = gps.OrderBy(_ => _.Key, comparer).ToList();
+            gps = noNoneGps.OrderBy(_ => _.Key, comparer).ToList();
          
-            var catIndex = 0;
-            var hasNone = false;
+            var hasNA = false;
             foreach (var gp in gps)
             {
-                var isNone = _noneKeys.Contains(gp.Key);
-                if (isNone)
+                var isNA = _naKeys.Contains(gp.Key);
+                if (isNA)
                 {
-                    hasNone = true; 
+                    hasNA = true; 
                     continue;
                 }
                 
@@ -302,9 +315,9 @@ namespace LadybugDisplaySchema
             }
 
             // add none key at the end
-            if (hasNone)
+            if (hasNA)
             {
-                keyMapper.Add(double.NaN, NoneKey);
+                keyMapper.Add(double.NaN, NAKey);
             }
             mapper = keyMapper;
             return values;
