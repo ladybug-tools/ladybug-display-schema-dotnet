@@ -86,6 +86,11 @@ namespace LadybugDisplaySchema
             {"24: Multi-colored 2", _24 },
 
             {"25: Multi-colored 3", _25 },
+            {"26: OpenStudio Palette", _26 },
+
+            {"27: Cividis (colorblind friendly)", _27 },
+            {"28: Viridis (colorblind friendly)", _28 },
+            {"29: Parula (colorblind friendly)", _29 },
 
         };
 
@@ -277,6 +282,26 @@ namespace LadybugDisplaySchema
             new Color(0, 128, 0)
         };
 
+        //27 Cividis (colorblind friendly)
+        private static List<Color> _27 => new List<Color>()
+        {
+            new Color(0, 32, 81), new Color(60, 77, 110), new Color(127, 124, 117),
+            new Color(187, 175, 113), new Color(253, 234, 69)
+        };
+
+        //28 Viridis (colorblind friendly)
+        private static List<Color> _28 => new List<Color>()
+        {
+            new Color(68, 1, 84), new Color(59, 82, 139), new Color(33, 145, 140),
+            new Color(94, 201, 98), new Color(253, 231, 37)
+        };
+
+        //29 Parula (colorblind friendly)
+        private static List<Color> _29 => new List<Color>()
+        {
+            new Color(52, 62, 175), new Color(2, 99, 225), new Color(7, 155, 207), new Color(36, 180, 170), 
+            new Color(107, 190, 130),  new Color(232, 185, 78), new Color(252, 203, 47), new Color(248, 250, 13),
+        };
 
         #region base colors
 
