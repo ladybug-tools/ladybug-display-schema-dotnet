@@ -97,7 +97,7 @@ namespace LadybugDisplaySchema
             // set none color to legend
             if (hasNone)
             {
-                newLegend = newLegend.SetNoneColor(newLegend.GetNoneColorWithDefault());
+                newLegend = newLegend.SetNaNColor(newLegend.GetNaNColorWithDefault());
             }
 
             this.LegendParameters = newLegend;

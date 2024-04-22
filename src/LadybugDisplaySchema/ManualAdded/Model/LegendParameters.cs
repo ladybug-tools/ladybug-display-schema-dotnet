@@ -192,16 +192,16 @@ namespace LadybugDisplaySchema
             return false;
         }
 
-        public LegendParameters SetNoneColor(Color color)
+        public LegendParameters SetNaNColor(Color color)
         {
             return this.AddUserData("_noneColor", color);
         }
-        public bool HasNoneColor(out Color noneColor)
+        public bool HasNaNColor(out Color noneColor)
         {
-            return HasNoneColor(this.GetUserData(), out noneColor);
+            return HasNaNColor(this.GetUserData(), out noneColor);
         }
 
-        public static bool HasNoneColor(Dictionary<string, object> ud, out Color noneColor)
+        public static bool HasNaNColor(Dictionary<string, object> ud, out Color noneColor)
         {
             noneColor = null;
             if (ud.TryGetValue("_noneColor", out var color))
@@ -222,9 +222,9 @@ namespace LadybugDisplaySchema
             }
             return false;
         }
-        internal Color GetNoneColorWithDefault()
+        internal Color GetNaNColorWithDefault()
         {
-            if (this.HasNoneColor(out var c))
+            if (this.HasNaNColor(out var c))
                 return c;
             var colorStart = this.ColorsWithDefault.First();
             return new Color(
@@ -258,7 +258,7 @@ namespace LadybugDisplaySchema
             return d;
         }
 
-        private static bool IsNone(double value, Dictionary<double,string> ordinalDictionary)
+        private static bool IsNaN(double value, Dictionary<double,string> ordinalDictionary)
         {
             // check if there is none color for legend
             if (double.IsNaN(value))
@@ -292,7 +292,7 @@ namespace LadybugDisplaySchema
 
             var colorDomins = this.ColorDomains(colors.Count);
             Color noneColor = null;
-            var hasNoneColor = this.HasNoneColor(out noneColor);
+            var hasNoneColor = this.HasNaNColor(out noneColor);
          
             return CalColor(values, ordinalDictionary, min, max, colorDomins, colors, noneColor);
         }
@@ -312,7 +312,7 @@ namespace LadybugDisplaySchema
 
 
             // check if there is none color for legend
-            if (IsNone(value, ordinalDictionary))
+            if (IsNaN(value, ordinalDictionary))
                 return noneColor;
 
             var colorStart = colors.First();
