@@ -118,13 +118,14 @@ namespace LadybugDisplaySchema.Test
                 "2.6",
                 "0.6",
                 "-4",
-                "21"
+                "21",
+                "N/A"
             };
 
             var vData = new VisualizationData(data, null);
             var legend = vData.LegendParameters;
-            Assert.IsTrue(legend.OrdinalDictionary == null);
-            Assert.IsTrue(legend.HasNoneColor(out _));
+            Assert.IsTrue(legend.OrdinalDictionary != null);
+            Assert.IsTrue(legend.HasNaNColor(out _));
 
             data = new List<string>()
             {
