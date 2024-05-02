@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿
+extern alias LBTNewtonsoft; using System;
+using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace LadybugDisplaySchema
 {
@@ -27,7 +28,7 @@ namespace LadybugDisplaySchema
                 return new Dictionary<string, List<Color>>();
 
             var json = System.IO.File.ReadAllText(userFile);
-            var legend = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, List<Color>>>(json);
+            var legend = LBTNewtonsoft.Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, List<Color>>>(json);
             return legend;
         }
 
@@ -47,7 +48,7 @@ namespace LadybugDisplaySchema
                 dic.Add(name, colors);
             }
 
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(dic);
+            var json = LBTNewtonsoft.Newtonsoft.Json.JsonConvert.SerializeObject(dic);
             System.IO.File.WriteAllText(userFile, json);
             return true;
         }
