@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿
+extern alias LBTNewtonsoft; using System;
+using LBTNewtonsoft::Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -345,16 +346,16 @@ namespace LadybugDisplaySchema
                 return dd;
 
             var uds = new Dictionary<string, object>();
-            Newtonsoft.Json.Linq.JObject jObj = null;
+            LBTNewtonsoft.Newtonsoft.Json.Linq.JObject jObj = null;
             if (userData is string)
-                jObj = Newtonsoft.Json.Linq.JObject.Parse(userData?.ToString());
-            else if (userData is Newtonsoft.Json.Linq.JObject j)
+                jObj = LBTNewtonsoft.Newtonsoft.Json.Linq.JObject.Parse(userData?.ToString());
+            else if (userData is LBTNewtonsoft.Newtonsoft.Json.Linq.JObject j)
                 jObj = j;
 
             if (jObj != null)
             {
                 uds = jObj.Children()
-                   .OfType<Newtonsoft.Json.Linq.JProperty>()
+                   .OfType<LBTNewtonsoft.Newtonsoft.Json.Linq.JProperty>()
                    .ToDictionary(_ => _.Name, _ => _.Value as object);
             }
             return uds;

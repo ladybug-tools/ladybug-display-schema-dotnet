@@ -1,4 +1,4 @@
-﻿using System;
+﻿extern alias LBTNewtonsoft; using System;
 using System.Text.RegularExpressions;
 
 namespace LadybugDisplaySchema
