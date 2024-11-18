@@ -318,12 +318,10 @@ namespace LadybugDisplaySchema
             var colorStart = colors.First();
             var colorEnd = colors.Last();
 
-            // check the max first
-            if (value >= max)
-                return colorEnd;
             if (value <= min)
                 return colorStart;
-
+            if (value >= max)
+                return colorEnd;
 
             var range_p = max.Equals(min) ? 0 : max - min;
             var factor = range_p == 0 ? 0 : (value - min) / range_p;
