@@ -1,6 +1,8 @@
 .PHONY: sdk
 
-NEW_RELEASE_VERSION ?= 0.0.1
+updateVersion:
+	cd ./.generator/SchemaGenerator && dotnet run --updateVersion
+
 download:
 	cd ./.generator/SchemaGenerator && dotnet run --download --updateVersion
 
