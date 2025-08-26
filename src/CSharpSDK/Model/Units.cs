@@ -1,0 +1,37 @@
+﻿/* 
+ * LadybugDisplaySchema
+ *
+ * Contact: info@ladybug.tools
+ */
+
+ using System.Runtime.Serialization;
+ using LBT.Newtonsoft.Json;
+ using LBT.Newtonsoft.Json.Converters;
+
+namespace LadybugDisplaySchema
+{
+    /// <summary>
+    /// An enumeration.
+    /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum Units
+    {
+
+        [EnumMember(Value = "Meters")]
+        Meters = 1,
+
+        [EnumMember(Value = "Millimeters")]
+        Millimeters = 2,
+
+        [EnumMember(Value = "Feet")]
+        Feet = 3,
+
+        [EnumMember(Value = "Inches")]
+        Inches = 4,
+
+        [EnumMember(Value = "Centimeters")]
+        Centimeters = 5,
+
+    }
+ 
+}
