@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace LadybugDisplaySchema
 {
+    // This is a special version of the AnyOfJsonConverter, and different from the one from HoneybeeSchema
     public class AnyOfJsonConverter : JsonConverter<AnyOf>
     {
         private readonly Type _types;
@@ -31,9 +32,27 @@ namespace LadybugDisplaySchema
             {
                 var jObject = JObject.Load(reader);
 
-                if (jObject["type"] != null)
+                if (jObject["type"] == null)
+                    throw new ArgumentException($"Unable to load {reader.Path}");
+
+                var typeName = jObject["type"].Value<string>();
+                var interfaceTypes = validTypes.Where(_ => _.IsInterface);
+                if (interfaceTypes.Any())
                 {
-                    var typeName = jObject["type"].Value<string>();
+                    var assembly = objectType.Assembly;
+                    var assemblyName = assembly.GetName().Name;
+                    foreach (var interfaceType in interfaceTypes)
+                    {
+                        var realObjectType = assembly.GetType($"{assemblyName}.{typeName}", false, true);
+                        if (realObjectType != null && interfaceType.IsAssignableFrom(realObjectType))
+                        {
+                            data = jObject.ToObject(realObjectType, serializer);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
                     var type = validTypes.FirstOrDefault(_ => _.Name.Equals(typeName, StringComparison.CurrentCultureIgnoreCase));
                     if (type != null)
                     {
@@ -41,12 +60,14 @@ namespace LadybugDisplaySchema
                     }
                     else
                     {
-                        throw new ArgumentException($"{typeName} is not a valid type for {reader.Path}, this might because of mismatch version of honeybee schema!");
+                        throw new ArgumentException($"{typeName} is not a valid type for {reader.Path}, this might because of mismatch version of schema!");
                     }
                 }
-                else
+
+
+                if (data == null)
                 {
-                    throw new ArgumentException($"Unable to load {reader.Path}");
+                    throw new ArgumentException($"{typeName} is not a valid type of {string.Join(",", validTypes.Select(_ => _.Name))}, this might because of mismatch version of schema!");
                 }
             }
 
@@ -66,15 +87,8 @@ namespace LadybugDisplaySchema
                 inputType = typeof(int);
             }
 
-            if (validTypes.ToList().Contains(inputType))
-            {
-                var obj = Activator.CreateInstance(objectType, new object[] { data });
-                return obj as AnyOf;
-            }
-            else
-            {
-                throw new ArgumentException($"{data} is {inputType} type, which doesn't match any of [{string.Join(", ", validTypes.Select(_ => _.ToString()))}]");
-            }
+            var obj = Activator.CreateInstance(objectType, new object[] { data });
+            return obj as AnyOf;
 
         }
 
