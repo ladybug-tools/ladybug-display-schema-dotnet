@@ -3075,6 +3075,1155 @@
         "discriminator": {
           "propertyName": "type"
         }
+      },
+      "DataTypes": {
+        "title": "DataTypes",
+        "description": "An enumeration.",
+        "enum": [
+          "ActivityLevel",
+          "AerosolOpticalDepth",
+          "AirSpeed",
+          "AirTemperature",
+          "AirTemperatureDelta",
+          "Albedo",
+          "Angle",
+          "Area",
+          "AtmosphericStationPressure",
+          "CeilingHeight",
+          "ClothingInsulation",
+          "ConvectionCoefficient",
+          "CoolingDegreeTime",
+          "Current",
+          "DewPointTemperature",
+          "DiffuseHorizontalIlluminance",
+          "DiffuseHorizontalIrradiance",
+          "DiffuseHorizontalRadiation",
+          "DirectHorizontalIrradiance",
+          "DirectHorizontalRadiation",
+          "DirectNormalIlluminance",
+          "DirectNormalIrradiance",
+          "DirectNormalRadiation",
+          "DiscomfortReason",
+          "Distance",
+          "DryBulbTemperature",
+          "EffectiveRadiantField",
+          "Energy",
+          "EnergyFlux",
+          "EnergyIntensity",
+          "Enthalpy",
+          "ExtraterrestrialDirectNormalRadiation",
+          "ExtraterrestrialHorizontalRadiation",
+          "Fraction",
+          "GlobalHorizontalIlluminance",
+          "GlobalHorizontalIrradiance",
+          "GlobalHorizontalRadiation",
+          "GroundTemperature",
+          "HeatingDegreeTime",
+          "HorizontalInfraredRadiationIntensity",
+          "HumidityRatio",
+          "Illuminance",
+          "Irradiance",
+          "LiquidPrecipitationDepth",
+          "LiquidPrecipitationQuantity",
+          "Luminance",
+          "Mass",
+          "MassFlowRate",
+          "MeanRadiantTemperature",
+          "MetabolicRate",
+          "OpaqueSkyCover",
+          "OperativeTemperature",
+          "OperativeTemperatureDelta",
+          "PercentagePeopleDissatisfied",
+          "Power",
+          "PrecipitableWater",
+          "PredictedMeanVote",
+          "Pressure",
+          "PrevailingOutdoorTemperature",
+          "RValue",
+          "RadiantCoefficient",
+          "RadiantTemperature",
+          "RadiantTemperatureDelta",
+          "Radiation",
+          "RelativeHumidity",
+          "SkyTemperature",
+          "SnowDepth",
+          "SpecificEnergy",
+          "Speed",
+          "StandardEffectiveTemperature",
+          "Temperature",
+          "TemperatureDelta",
+          "TemperatureTime",
+          "ThermalComfort",
+          "ThermalCondition",
+          "ThermalConditionElevenPoint",
+          "ThermalConditionFivePoint",
+          "ThermalConditionNinePoint",
+          "ThermalConditionSevenPoint",
+          "Time",
+          "TotalSkyCover",
+          "UTCICategory",
+          "UValue",
+          "UniversalThermalClimateIndex",
+          "Visibility",
+          "Voltage",
+          "Volume",
+          "VolumeFlowRate",
+          "VolumeFlowRateIntensity",
+          "WetBulbTemperature",
+          "WindDirection",
+          "WindSpeed",
+          "ZenithLuminance"
+        ],
+        "type": "string"
+      },
+      "DataType": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data_type": {
+                "description": "Text to indicate the type of data. This governs the behavior of the data type and the acceptable units. The DataTypes enumeration contains all acceptable types.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DataTypes"
+                  }
+                ]
+              },
+              "name": {
+                "title": "Name",
+                "description": "Text to indicate how the data type displays. This can be more specific than the data_type.",
+                "type": "string"
+              },
+              "type": {
+                "title": "Type",
+                "default": "DataType",
+                "pattern": "^DataType$",
+                "type": "string",
+                "readOnly": true
+              }
+            },
+            "required": [
+              "data_type",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        ],
+        "title": "DataType",
+        "description": "Data type representation.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Legend3DParameters": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "title": "Type",
+                "default": "Legend3DParameters",
+                "pattern": "^Legend3DParameters$",
+                "type": "string",
+                "readOnly": true
+              },
+              "base_plane": {
+                "title": "Base Plane",
+                "description": "A Ladybug Plane object to note the starting position from where the legend will be generated. The default is the world XY plane at origin (0, 0, 0) unless the legend is assigned to a specific geometry, in which case the origin is in the lower right corner of the geometry bounding box for vertical legends and the upper right corner for horizontal legends.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Plane"
+                  }
+                ]
+              },
+              "segment_height": {
+                "title": "Segment Height",
+                "description": "A number to set the height for each of the legend segments. The default is 1 unless the legend is assigned to a specific geometry, in which case it is automatically set to a value on an appropriate scale (some fraction of the bounding box around the geometry).",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "segment_width": {
+                "title": "Segment Width",
+                "description": "A number to set the width for each of the legend segments. The default is 1 unless the legend is assigned to a specific geometry, in which case it is automatically set to a value on an appropriate scale (some fraction of the bounding box around the geometry).",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "text_height": {
+                "title": "Text Height",
+                "description": "A number to set the height for the legend text. Default is 1/3 of the segment_height.",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "Legend3DParameters",
+        "description": "Base class for all objects that are not extensible with additional keys.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Legend2DParameters": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "title": "Type",
+                "default": "Legend2DParameters",
+                "pattern": "^Legend2DParameters$",
+                "type": "string",
+                "readOnly": true
+              },
+              "origin_x": {
+                "title": "Origin X",
+                "description": "A text string to note the X coordinate of the base point from where the legend will be generated (assuming an origin in the upper-left corner of the viewport with higher positive values of X moving to the right). Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport width). Examples include 10px, 5%. The default is set to make the legend clearly visible on the viewport (usually 10px).",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\d*px|\\d*%$"
+                  }
+                ]
+              },
+              "origin_y": {
+                "title": "Origin Y",
+                "description": "A text string to note the Y coordinate of the base point from where the legend will be generated (assuming an origin in the upper-left corner of the viewport with higher positive values of Y moving downward). Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport height). Examples include 10px, 5%. The default is set to make the legend clearly visible on the viewport (usually 50px).",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\d*px|\\d*%$"
+                  }
+                ]
+              },
+              "segment_height": {
+                "title": "Segment Height",
+                "description": "A text string to note the height for each of the legend segments. Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport height). Examples include 10px, 5%. The default is set to make most legends readable (25px for horizontal legends and 36px for vertical legends).",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\d*px|\\d*%$"
+                  }
+                ]
+              },
+              "segment_width": {
+                "title": "Segment Width",
+                "description": "A text string to set the width for each of the legend segments. Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport width). Examples include 10px, 5%. The default is set to make most legends readable (36px for horizontal legends and 25px for vertical legends).",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\d*px|\\d*%$"
+                  }
+                ]
+              },
+              "text_height": {
+                "title": "Text Height",
+                "description": "A text string to set the height for the legend text. Text must be formatted as an integer followed by either \"px\" (to denote the number of viewport pixels) or \"%\" (to denote the percentage of the viewport height). Examples include 10px, 5%. Default is 1/3 of the segment_height. Default is 12px.",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^\\d*px|\\d*%$"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "Legend2DParameters",
+        "description": "Base class for all objects that are not extensible with additional keys.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "LegendParameters": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "title": "Type",
+                "default": "LegendParameters",
+                "pattern": "^LegendParameters$",
+                "type": "string",
+                "readOnly": true
+              },
+              "min": {
+                "title": "Min",
+                "description": "A number to set the lower boundary of the legend. If Default, the minimum of the values associated with the legend will be used.",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "max": {
+                "title": "Max",
+                "description": "A number to set the upper boundary of the legend. If Default, the maximum of the values associated with the legend will be used.",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "segment_count": {
+                "title": "Segment Count",
+                "description": "An integer representing the number of steps between the high and low boundary of the legend. The default is set to 11 or it will be equal to the number of items in the ordinal_dictionary. Any custom values input in here should always be greater than or equal to 1.",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                ]
+              },
+              "colors": {
+                "title": "Colors",
+                "description": "An list of color objects. Default is the Ladybug original colorset.",
+                "minItems": 2,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Color"
+                }
+              },
+              "title": {
+                "title": "Title",
+                "description": "Text string for Legend title. Typically, the units of the data are used here but the type of data might also be used.",
+                "default": "",
+                "type": "string"
+              },
+              "continuous_legend": {
+                "title": "Continuous Legend",
+                "description": "Boolean noting whether legend is drawn as a gradient or discrete segments.",
+                "default": false,
+                "type": "boolean"
+              },
+              "ordinal_dictionary": {
+                "title": "Ordinal Dictionary",
+                "description": "Optional dictionary that maps values to text categories. If None, numerical values will be used for the legend segments. If not, text categories will be used and the legend will be ordinal. Note that, if the number of items in the dictionary are less than the segment_count, some segments will not receive any label. Examples for possible dictionaries include: {-1: \"Cold\", 0: \"Neutral\", 1: \"Hot\"}, {0: \"False\", 1: \"True\"}",
+                "type": "object"
+              },
+              "decimal_count": {
+                "title": "Decimal Count",
+                "description": "An an integer for the number of decimal places in the legend text. Note that this input has no bearing on the resulting legend text when an ordinal_dictionary is present.",
+                "default": 2,
+                "minimum": 0,
+                "type": "integer",
+                "format": "int32"
+              },
+              "include_larger_smaller": {
+                "title": "Include Larger Smaller",
+                "description": "Boolean noting whether > and < should be included in legend segment text.",
+                "default": false,
+                "type": "boolean"
+              },
+              "vertical": {
+                "title": "Vertical",
+                "description": "Boolean noting whether legend is vertical (True) or horizontal (False).",
+                "default": true,
+                "type": "boolean"
+              },
+              "font": {
+                "title": "Font",
+                "description": "Text string to set the font for the legend text. Examples include \"Arial\", \"Times New Roman\", \"Courier\". Note that this parameter may not have an effect on certain interfaces that have limited access to fonts.",
+                "default": "Arial",
+                "type": "string"
+              },
+              "properties_3d": {
+                "title": "Properties 3D",
+                "description": "A Legend3DParameters object to specify the dimensional properties of the legend when it is rendered in the 3D environment of the geometry scene.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Legend3DParameters"
+                  }
+                ]
+              },
+              "properties_2d": {
+                "title": "Properties 2D",
+                "description": "A Legend2DParameters object to specify the dimensional properties of the legend when it is rendered in the 2D plane of a screen.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Legend2DParameters"
+                  }
+                ]
+              },
+              "user_data": {
+                "title": "User Data",
+                "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+                "type": "object"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "LegendParameters",
+        "description": "Legend parameters used to customize legends.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "GenericDataType": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+          },
+          {
+            "type": "object",
+            "required": [
+              "name",
+              "base_unit"
+            ],
+            "properties": {
+              "name": {
+                "title": "Name",
+                "description": "Text to indicate how the data type displays. This can be more specific than the data_type.",
+                "type": "string"
+              },
+              "base_unit": {
+                "title": "Base Unit",
+                "description": "Text string for the base unit of the data type, which should be standard SI units where possible.",
+                "type": "string"
+              },
+              "data_type": {
+                "title": "Data Type",
+                "default": "GenericType",
+                "pattern": "^GenericType$",
+                "type": "string"
+              },
+              "min": {
+                "title": "Min",
+                "description": "Optional lower limit for the data type, values below which should be physically or mathematically impossible. (Default: -inf)",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "max": {
+                "title": "Max",
+                "description": "Optional upper limit for the data type, values above which should be physically or mathematically impossible. (Default: +inf)",
+                "default": {
+                  "type": "Default"
+                },
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Default"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "abbreviation": {
+                "title": "Abbreviation",
+                "description": "An optional abbreviation for the data type as text.",
+                "default": "",
+                "type": "string"
+              },
+              "unit_descr": {
+                "title": "Unit Descr",
+                "description": "An optional dictionary describing categories that the numerical values of the units relate to. For example: {-1: \"Cold\", 0: \"Neutral\", +1: \"Hot\"}; {0: \"False\", 1: \"True\"}.",
+                "type": "object"
+              },
+              "point_in_time": {
+                "title": "Point In Time",
+                "description": "Boolean to note whether the data type represents conditions at a single instant in time (True) as opposed to being an average or accumulation over time (False) when it is found in hourly lists of data.",
+                "default": true,
+                "type": "boolean"
+              },
+              "cumulative": {
+                "title": "Cumulative",
+                "description": "Boolean to tell whether the data type can be cumulative when it is represented over time (True) or it can only be averaged over time to be meaningful (False). Note that cumulative cannot be True when point_in_time is also True.",
+                "default": false,
+                "type": "boolean"
+              },
+              "type": {
+                "title": "Type",
+                "default": "GenericDataType",
+                "pattern": "^GenericDataType$",
+                "type": "string",
+                "readOnly": true
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "GenericDataType",
+        "description": "Generic data type representation.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "VisualizationData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "values": {
+                "title": "Values",
+                "description": "A list of numerical values that will be used to generate the visualization colors.",
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "number",
+                  "format": "double"
+                }
+              },
+              "type": {
+                "title": "Type",
+                "default": "VisualizationData",
+                "pattern": "^VisualizationData$",
+                "type": "string",
+                "readOnly": true
+              },
+              "legend_parameters": {
+                "title": "Legend Parameters",
+                "description": "An Optional LegendParameters object to override default parameters of the legend. None indicates that default legend parameters will be used.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LegendParameters"
+                  }
+                ]
+              },
+              "data_type": {
+                "title": "Data Type",
+                "description": "Optional DataType from the ladybug datatype subpackage (ie. Temperature()) , which will be used to assign default legend properties. If None, the legend associated with this object will contain no units unless a unit below is specified.",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/DataType"
+                  },
+                  {
+                    "$ref": "#/components/schemas/GenericDataType"
+                  }
+                ]
+              },
+              "unit": {
+                "title": "Unit",
+                "description": "Optional text string for the units of the values. (ie. \"C\"). If None, the default units of the data_type will be used.",
+                "default": "",
+                "type": "string"
+              },
+              "user_data": {
+                "title": "User Data",
+                "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+                "type": "object"
+              }
+            },
+            "required": [
+              "values"
+            ],
+            "additionalProperties": false
+          }
+        ],
+        "title": "VisualizationData",
+        "description": "Represents a data set for visualization with legend parameters and data type.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "AnalysisGeometry": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_VisualizationBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "geometry",
+              "data_sets"
+            ],
+            "properties": {
+              "geometry": {
+                "title": "Geometry",
+                "description": "A list of ladybug-geometry objects that is aligned with the values in the input data_sets. The length of this list should usually be equal to the total number of values in each data_set, indicating that each geometry gets a single color. Alternatively, if all of the geometry objects are meshes, the number of values in the data can be equal to the total number of faces across the meshes or the total number of vertices across the meshes.",
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Vector2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Point2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Ray2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LineSegment2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Polyline2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Arc2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Polygon2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Mesh2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Vector3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Point3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Ray3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Plane"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LineSegment3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Polyline3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Arc3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Face3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Mesh3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Polyface3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Sphere"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Cone"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Cylinder"
+                    }
+                  ]
+                }
+              },
+              "data_sets": {
+                "title": "Data Sets",
+                "description": "An list of VisualizationData objects representing the data sets that are associated with the input geometry.",
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/VisualizationData"
+                }
+              },
+              "type": {
+                "title": "Type",
+                "default": "AnalysisGeometry",
+                "pattern": "^AnalysisGeometry$",
+                "type": "string",
+                "readOnly": true
+              },
+              "active_data": {
+                "title": "Active Data",
+                "description": "An integer to denote which of the input data_sets should be displayed by default.",
+                "default": 0,
+                "type": "integer",
+                "format": "int32"
+              },
+              "display_mode": {
+                "description": "Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.",
+                "default": "Surface",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DisplayModes"
+                  }
+                ]
+              },
+              "hidden": {
+                "title": "Hidden",
+                "description": "A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.",
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "AnalysisGeometry",
+        "description": "An object where multiple data streams correspond to the same geometry.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "VisualizationMetaData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "title": "Type",
+                "default": "VisualizationMetaData",
+                "pattern": "^VisualizationMetaData$",
+                "type": "string",
+                "readOnly": true
+              },
+              "legend_parameters": {
+                "title": "Legend Parameters",
+                "description": "An Optional LegendParameters object to override default parameters of the legend. None indicates that default legend parameters will be used.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LegendParameters"
+                  }
+                ]
+              },
+              "data_type": {
+                "title": "Data Type",
+                "description": "Optional DataType from the ladybug datatype subpackage (ie. Temperature()) , which will be used to assign default legend properties. If None, the legend associated with this object will contain no units unless a unit below is specified.",
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/DataType"
+                  },
+                  {
+                    "$ref": "#/components/schemas/GenericDataType"
+                  }
+                ]
+              },
+              "unit": {
+                "title": "Unit",
+                "description": "Optional text string for the units of the values. (ie. \"C\"). If None, the default units of the data_type will be used.",
+                "default": "",
+                "type": "string"
+              },
+              "user_data": {
+                "title": "User Data",
+                "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+                "type": "object"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "VisualizationMetaData",
+        "description": "Represents the visualization metadata that can be assigned to VisualizationData.\n    ",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "HorizontalAlignments": {
+        "title": "HorizontalAlignments",
+        "description": "An enumeration.",
+        "enum": [
+          "Left",
+          "Center",
+          "Right"
+        ],
+        "type": "string"
+      },
+      "VerticalAlignments": {
+        "title": "VerticalAlignments",
+        "description": "An enumeration.",
+        "enum": [
+          "Top",
+          "Middle",
+          "Bottom"
+        ],
+        "type": "string"
+      },
+      "DisplayText3D": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DisplayBaseModel"
+          },
+          {
+            "type": "object",
+            "required": [
+              "color",
+              "text",
+              "plane",
+              "height"
+            ],
+            "properties": {
+              "color": {
+                "title": "Color",
+                "description": "Color for the geometry.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Color"
+                  }
+                ]
+              },
+              "text": {
+                "title": "Text",
+                "description": "A text string to be displayed in the 3D scene.",
+                "type": "string"
+              },
+              "plane": {
+                "title": "Plane",
+                "description": "A ladybug-geometry Plane object to locate and orient the text in the 3D scene.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Plane"
+                  }
+                ]
+              },
+              "height": {
+                "title": "Height",
+                "description": "A number for the height of the text in the 3D scene.",
+                "exclusiveMinimum": 0,
+                "type": "number",
+                "format": "double"
+              },
+              "type": {
+                "title": "Type",
+                "default": "DisplayText3D",
+                "pattern": "^DisplayText3D$",
+                "type": "string",
+                "readOnly": true
+              },
+              "font": {
+                "title": "Font",
+                "description": "A text string for the font in which to draw the text. Note that this field may not be interpreted the same on all machines and in all interfaces, particularly when a machine lacks a given font.",
+                "default": "Arial",
+                "type": "string"
+              },
+              "horizontal_alignment": {
+                "description": "String to specify the horizontal alignment of the text.",
+                "default": "Left",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/HorizontalAlignments"
+                  }
+                ]
+              },
+              "vertical_alignment": {
+                "description": "String to specify the vertical alignment of the text.",
+                "default": "Bottom",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerticalAlignments"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "DisplayText3D",
+        "description": "A text object in 3D space with display properties.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "ContextGeometry": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_VisualizationBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "geometry"
+            ],
+            "properties": {
+              "geometry": {
+                "title": "Geometry",
+                "description": "A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.",
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/DisplayVector2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayPoint2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayRay2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayLineSegment2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayPolyline2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayArc2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayPolygon2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayMesh2D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayVector3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayPoint3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayRay3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayPlane"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayLineSegment3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayPolyline3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayArc3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayFace3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayMesh3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayPolyface3D"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplaySphere"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayCone"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayCylinder"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DisplayText3D"
+                    }
+                  ]
+                }
+              },
+              "type": {
+                "title": "Type",
+                "default": "ContextGeometry",
+                "pattern": "^ContextGeometry$",
+                "type": "string",
+                "readOnly": true
+              },
+              "hidden": {
+                "title": "Hidden",
+                "description": "A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.",
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "ContextGeometry",
+        "description": "An object representing context geometry to display.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Units": {
+        "title": "Units",
+        "description": "An enumeration.",
+        "enum": [
+          "Meters",
+          "Millimeters",
+          "Feet",
+          "Inches",
+          "Centimeters"
+        ],
+        "type": "string"
+      },
+      "VisualizationSet": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_VisualizationBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "title": "Type",
+                "default": "VisualizationSet",
+                "pattern": "^VisualizationSet$",
+                "type": "string",
+                "readOnly": true
+              },
+              "geometry": {
+                "title": "Geometry",
+                "description": "A list of AnalysisGeometry and ContextGeometry objects to display in the visualization. Each geometry object will typically be translated to its own layer within the interface that renders the VisualizationSet.",
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/AnalysisGeometry"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ContextGeometry"
+                    }
+                  ]
+                }
+              },
+              "units": {
+                "description": "Text indicating the units in which the model geometry exists. If None, the geometry will always be assumed to be in the current units system of the display interface.",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Units"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        ],
+        "title": "VisualizationSet",
+        "description": "A visualization set containing analysis and context geometry to be visualized.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "_VisualizationBase": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/_OpenAPIGenBaseModel"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "identifier": {
+                "title": "Identifier",
+                "description": "Text string for a unique object ID. Must be less than 100 characters and not contain spaces or special characters.",
+                "maxLength": 100,
+                "minLength": 1,
+                "pattern": "^[.A-Za-z0-9_-]+$",
+                "type": "string"
+              },
+              "display_name": {
+                "title": "Display Name",
+                "description": "Display name of the object with no character restrictions. This is typically used to set the layer of the object in the interface that renders the VisualizationSet. A :: in the display_name can be used to denote sub-layers following a convention of ParentLayer::SubLayer. If not set, the display_name will be equal to the object identifier.",
+                "type": "string"
+              },
+              "user_data": {
+                "title": "User Data",
+                "description": "Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).",
+                "type": "object"
+              },
+              "type": {
+                "title": "Type",
+                "default": "_VisualizationBase",
+                "type": "string",
+                "pattern": "^_VisualizationBase$",
+                "readOnly": true
+              }
+            },
+            "required": [
+              "identifier"
+            ],
+            "additionalProperties": false
+          }
+        ],
+        "title": "_VisualizationBase",
+        "description": "Base class for visualization objects.",
+        "discriminator": {
+          "propertyName": "type"
+        }
       }
     }
   }

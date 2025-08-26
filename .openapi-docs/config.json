@@ -1,0 +1,13 @@
+{
+  "sdkName": "LadybugDisplaySchema",
+  "moduleName": "ladybug_display_schema",
+  "baseURL": "https://www.ladybug.tools/ladybug-display-schema",
+  "files": [
+    "display_inheritance.json",
+    "display_mapper.json",
+    "geometry_inheritance.json",
+    "geometry_mapper.json",
+    "visualization_inheritance.json",
+    "visualization_mapper.json"
+  ]
+}

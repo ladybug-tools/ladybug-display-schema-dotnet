@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LadybugDisplaySchema", "src\LadybugDisplaySchema\LadybugDisplaySchema.csproj", "{2A2E1206-D8F7-4064-9298-580172F9ACEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LadybugDisplaySchema", "src\CSharpSDK\LadybugDisplaySchema.csproj", "{2A2E1206-D8F7-4064-9298-580172F9ACEE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LadybugDisplaySchema.Tests", "src\LadybugDisplaySchema.Tests\LadybugDisplaySchema.Tests.csproj", "{B363E5D5-CF99-4D26-B94C-A0B352AEAF11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LadybugDisplaySchema.Tests", "src\CSharpSDK.Tests\LadybugDisplaySchema.Tests.csproj", "{B363E5D5-CF99-4D26-B94C-A0B352AEAF11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", ".generator\SchemaGenerator\Generator.csproj", "{2DF1AF44-FA64-35CF-AC12-A4A0B0036168}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B363E5D5-CF99-4D26-B94C-A0B352AEAF11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B363E5D5-CF99-4D26-B94C-A0B352AEAF11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B363E5D5-CF99-4D26-B94C-A0B352AEAF11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DF1AF44-FA64-35CF-AC12-A4A0B0036168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF1AF44-FA64-35CF-AC12-A4A0B0036168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF1AF44-FA64-35CF-AC12-A4A0B0036168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF1AF44-FA64-35CF-AC12-A4A0B0036168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
