@@ -1,8 +1,8 @@
 name: CD
 
-on: 
+on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -14,20 +14,20 @@ jobs:
 
       - name: Update Assembly Version
         run: |
-          python .openapi-generator/update_assembly_version.py
-      
+          make updateVersion
+
       - name: Build
         run: |
           dotnet restore
           dotnet build --configuration Release /nowarn:CS0472,CS0108
 
       - name: Run Unit Tests
-        working-directory: src/LadybugDisplaySchema.Tests
+        working-directory: src/CSharpSDK.Tests
         run: |
           dotnet test --configuration Release
 
       - name: Deploy
-        working-directory: src/LadybugDisplaySchema
+        working-directory: src/CSharpSDK
         run: |
           dotnet pack --configuration Release
           dotnet nuget push bin\Release\LadybugDisplaySchema.*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
