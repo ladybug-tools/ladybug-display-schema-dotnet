@@ -28,17 +28,17 @@ namespace LadybugDisplaySchema
     public partial class DataType : OpenAPIGenBaseModel, System.IEquatable<DataType>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataType" /> class.
+        /// Initializes a new instance of the <see cref="_DataType" /> class.
         /// </summary>
         [LBT.Newtonsoft.Json.JsonConstructorAttribute]
         // [System.Text.Json.Serialization.JsonConstructor] // for future switching to System.Text.Json
-        protected DataType() 
-        { 
+        protected DataType()
+        {
             // Set readonly properties with defaultValue
             this.Type = "DataType";
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataType" /> class.
+        /// Initializes a new instance of the <see cref="_DataType" /> class.
         /// </summary>
         /// <param name="dataType">Text to indicate the type of data. This governs the behavior of the data type and the acceptable units. The DataTypes enumeration contains all acceptable types.</param>
         /// <param name="name">Text to indicate how the data type displays. This can be more specific than the data_type.</param>
@@ -47,7 +47,7 @@ namespace LadybugDisplaySchema
             DataTypes dataType, string name
         ) : base()
         {
-            this.DataType = dataType;
+            this._DataType = dataType;
             this.Name = name ?? throw new System.ArgumentNullException("name is a required property for DataType and cannot be null");
 
             // Set readonly properties with defaultValue
@@ -58,8 +58,8 @@ namespace LadybugDisplaySchema
                 this.IsValid(throwException: true);
         }
 
-	
-	
+
+
         /// <summary>
         /// Text to indicate the type of data. This governs the behavior of the data type and the acceptable units. The DataTypes enumeration contains all acceptable types.
         /// </summary>
@@ -69,7 +69,7 @@ namespace LadybugDisplaySchema
         [DataMember(Name = "data_type", IsRequired = true)] // For internal Serialization XML/JSON
         [JsonProperty("data_type", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("data_type")] // For System.Text.Json
-        public DataTypes DataType { get; set; }
+        public DataTypes _DataType { get; set; }
 
         /// <summary>
         /// Text to indicate how the data type displays. This can be more specific than the data_type.
@@ -101,10 +101,10 @@ namespace LadybugDisplaySchema
         {
             if (!detailed)
                 return this.ToString();
-            
+
             var sb = new StringBuilder();
             sb.Append("DataType:\n");
-            sb.Append("  DataType: ").Append(this.DataType).Append("\n");
+            sb.Append("  DataType: ").Append(this._DataType).Append("\n");
             sb.Append("  Name: ").Append(this.Name).Append("\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
             return sb.ToString();
@@ -167,8 +167,8 @@ namespace LadybugDisplaySchema
         {
             if (input == null)
                 return false;
-            return base.Equals(input) && 
-                    Extension.Equals(this.DataType, input.DataType) && 
+            return base.Equals(input) &&
+                    Extension.Equals(this._DataType, input._DataType) &&
                     Extension.Equals(this.Name, input.Name);
         }
 
@@ -182,8 +182,8 @@ namespace LadybugDisplaySchema
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
-                if (this.DataType != null)
-                    hashCode = hashCode * 59 + this.DataType.GetHashCode();
+                if (this._DataType != null)
+                    hashCode = hashCode * 59 + this._DataType.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 return hashCode;

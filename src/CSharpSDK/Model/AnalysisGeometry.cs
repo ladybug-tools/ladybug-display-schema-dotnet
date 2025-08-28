@@ -32,8 +32,8 @@ namespace LadybugDisplaySchema
         /// </summary>
         [LBT.Newtonsoft.Json.JsonConstructorAttribute]
         // [System.Text.Json.Serialization.JsonConstructor] // for future switching to System.Text.Json
-        protected AnalysisGeometry() 
-        { 
+        protected AnalysisGeometry()
+        {
             // Set readonly properties with defaultValue
             this.Type = "AnalysisGeometry";
         }
@@ -50,7 +50,7 @@ namespace LadybugDisplaySchema
         /// <param name="hidden">A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.</param>
         public AnalysisGeometry
         (
-            string identifier, List<AnyOf<Vector2D, Point2D, Ray2D, LineSegment2D, Polyline2D, Arc2D, Polygon2D, Mesh2D, Vector3D, Point3D, Ray3D, Plane, LineSegment3D, Polyline3D, Arc3D, Face3D, Mesh3D, Polyface3D, Sphere, Cone, Cylinder>> geometry, List<VisualizationData> dataSets, string displayName = default, object userData = default, int activeData = 0, DisplayModes displayMode = DisplayModes.Surface, bool hidden = false
+            string identifier, List<AnyOf<IGeometry>> geometry, List<VisualizationData> dataSets, string displayName = default, object userData = default, int activeData = 0, DisplayModes displayMode = DisplayModes.Surface, bool hidden = false
         ) : base(identifier: identifier, displayName: displayName, userData: userData)
         {
             this.Geometry = geometry ?? throw new System.ArgumentNullException("geometry is a required property for AnalysisGeometry and cannot be null");
@@ -67,8 +67,8 @@ namespace LadybugDisplaySchema
                 this.IsValid(throwException: true);
         }
 
-	
-	
+
+
         /// <summary>
         /// A list of ladybug-geometry objects that is aligned with the values in the input data_sets. The length of this list should usually be equal to the total number of values in each data_set, indicating that each geometry gets a single color. Alternatively, if all of the geometry objects are meshes, the number of values in the data can be equal to the total number of faces across the meshes or the total number of vertices across the meshes.
         /// </summary>
@@ -78,7 +78,7 @@ namespace LadybugDisplaySchema
         [DataMember(Name = "geometry", IsRequired = true)] // For internal Serialization XML/JSON
         [JsonProperty("geometry", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("geometry")] // For System.Text.Json
-        public List<AnyOf<Vector2D, Point2D, Ray2D, LineSegment2D, Polyline2D, Arc2D, Polygon2D, Mesh2D, Vector3D, Point3D, Ray3D, Plane, LineSegment3D, Polyline3D, Arc3D, Face3D, Mesh3D, Polyface3D, Sphere, Cone, Cylinder>> Geometry { get; set; }
+        public List<AnyOf<IGeometry>> Geometry { get; set; }
 
         /// <summary>
         /// An list of VisualizationData objects representing the data sets that are associated with the input geometry.
@@ -140,7 +140,7 @@ namespace LadybugDisplaySchema
         {
             if (!detailed)
                 return this.ToString();
-            
+
             var sb = new StringBuilder();
             sb.Append("AnalysisGeometry:\n");
             sb.Append("  Identifier: ").Append(this.Identifier).Append("\n");
@@ -212,11 +212,11 @@ namespace LadybugDisplaySchema
         {
             if (input == null)
                 return false;
-            return base.Equals(input) && 
-                    Extension.AllEquals(this.Geometry, input.Geometry) && 
-                    Extension.AllEquals(this.DataSets, input.DataSets) && 
-                    Extension.Equals(this.ActiveData, input.ActiveData) && 
-                    Extension.Equals(this.DisplayMode, input.DisplayMode) && 
+            return base.Equals(input) &&
+                    Extension.AllEquals(this.Geometry, input.Geometry) &&
+                    Extension.AllEquals(this.DataSets, input.DataSets) &&
+                    Extension.Equals(this.ActiveData, input.ActiveData) &&
+                    Extension.Equals(this.DisplayMode, input.DisplayMode) &&
                     Extension.Equals(this.Hidden, input.Hidden);
         }
 
