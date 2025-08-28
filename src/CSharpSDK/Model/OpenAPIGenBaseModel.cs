@@ -21,7 +21,7 @@ namespace LadybugDisplaySchema
 {
     [Summary(@"")]
     [System.Serializable]
-    [DataContract(Name = "_OpenAPIGenBaseModel")]
+    [DataContract(Name = "OpenAPIGenBaseModel")] // Enables DataMember rules. For internal Serialization XML/JSON
     public abstract partial class OpenAPIGenBaseModel : System.IEquatable<OpenAPIGenBaseModel>
     {
         /// <summary>
@@ -49,10 +49,10 @@ namespace LadybugDisplaySchema
         /// A base class to use when there is no baseclass available to fall on.
         /// </summary>
         [Summary(@"A base class to use when there is no baseclass available to fall on.")]
-        [DataMember(Name = "type")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "type")] // For internal Serialization XML/JSON
+        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("type")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public string Type { get; protected set; } = "InvalidType";
 
 
@@ -70,7 +70,7 @@ namespace LadybugDisplaySchema
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
-        public override string ToString(bool detailed)
+        public virtual string ToString(bool detailed)
         {
             if (!detailed)
                 return this.ToString();
@@ -116,7 +116,7 @@ namespace LadybugDisplaySchema
         /// Creates a new instance with the same properties.
         /// </summary>
         /// <returns>OpenAPIGenBaseModel</returns>
-        public override OpenAPIGenBaseModel Duplicate()
+        public OpenAPIGenBaseModel Duplicate()
         {
             return DuplicateOpenAPIGenBaseModel();
         }

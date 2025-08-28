@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A mesh in 3D space with display properties.")]
     [System.Serializable]
-    [DataContract(Name = "DisplayMesh3D")]
+    [DataContract(Name = "DisplayMesh3D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class DisplayMesh3D : DisplayBaseModel, System.IEquatable<DisplayMesh3D>
     {
         /// <summary>
@@ -67,8 +67,10 @@ namespace LadybugDisplaySchema
         /// Color for the geometry.
         /// </summary>
         [Summary(@"Color for the geometry.")]
-        [Required]
-        [DataMember(Name = "color", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "color", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("color", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("color")] // For System.Text.Json
         public Color Color { get; set; }
 
@@ -76,8 +78,10 @@ namespace LadybugDisplaySchema
         /// Mesh3D for the geometry.
         /// </summary>
         [Summary(@"Mesh3D for the geometry.")]
-        [Required]
-        [DataMember(Name = "geometry", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "geometry", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("geometry", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("geometry")] // For System.Text.Json
         public Mesh3D Geometry { get; set; }
 
@@ -85,10 +89,10 @@ namespace LadybugDisplaySchema
         /// Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.
         /// </summary>
         [Summary(@"Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.")]
-        [DataMember(Name = "display_mode")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "display_mode")] // For internal Serialization XML/JSON
+        [JsonProperty("display_mode", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("display_mode")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public DisplayModes DisplayMode { get; set; } = DisplayModes.Surface;
 
 

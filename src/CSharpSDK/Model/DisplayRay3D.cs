@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A ray object in 3D space with display properties.")]
     [System.Serializable]
-    [DataContract(Name = "DisplayRay3D")]
+    [DataContract(Name = "DisplayRay3D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class DisplayRay3D : DisplayBaseModel, System.IEquatable<DisplayRay3D>
     {
         /// <summary>
@@ -65,8 +65,10 @@ namespace LadybugDisplaySchema
         /// Color for the geometry.
         /// </summary>
         [Summary(@"Color for the geometry.")]
-        [Required]
-        [DataMember(Name = "color", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "color", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("color", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("color")] // For System.Text.Json
         public Color Color { get; set; }
 
@@ -74,8 +76,10 @@ namespace LadybugDisplaySchema
         /// Ray3D for the geometry.
         /// </summary>
         [Summary(@"Ray3D for the geometry.")]
-        [Required]
-        [DataMember(Name = "geometry", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "geometry", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("geometry", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("geometry")] // For System.Text.Json
         public Ray3D Geometry { get; set; }
 

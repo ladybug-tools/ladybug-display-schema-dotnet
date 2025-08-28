@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"Object to signify when the default value of a visual interface should be used.")]
     [System.Serializable]
-    [DataContract(Name = "Default")]
+    [DataContract(Name = "Default")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Default : OpenAPIGenBaseModel, System.IEquatable<Default>
     {
         /// <summary>

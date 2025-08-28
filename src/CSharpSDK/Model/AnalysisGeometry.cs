@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"An object where multiple data streams correspond to the same geometry.")]
     [System.Serializable]
-    [DataContract(Name = "AnalysisGeometry")]
+    [DataContract(Name = "AnalysisGeometry")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class AnalysisGeometry : VisualizationBase, System.IEquatable<AnalysisGeometry>
     {
         /// <summary>
@@ -50,7 +50,7 @@ namespace LadybugDisplaySchema
         /// <param name="hidden">A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.</param>
         public AnalysisGeometry
         (
-            string identifier, List<AnyOf<IGeometry>> geometry, List<VisualizationData> dataSets, string displayName = default, object userData = default, int activeData = 0, DisplayModes displayMode = DisplayModes.Surface, bool hidden = false
+            string identifier, List<AnyOf<Vector2D, Point2D, Ray2D, LineSegment2D, Polyline2D, Arc2D, Polygon2D, Mesh2D, Vector3D, Point3D, Ray3D, Plane, LineSegment3D, Polyline3D, Arc3D, Face3D, Mesh3D, Polyface3D, Sphere, Cone, Cylinder>> geometry, List<VisualizationData> dataSets, string displayName = default, object userData = default, int activeData = 0, DisplayModes displayMode = DisplayModes.Surface, bool hidden = false
         ) : base(identifier: identifier, displayName: displayName, userData: userData)
         {
             this.Geometry = geometry ?? throw new System.ArgumentNullException("geometry is a required property for AnalysisGeometry and cannot be null");
@@ -73,17 +73,21 @@ namespace LadybugDisplaySchema
         /// A list of ladybug-geometry objects that is aligned with the values in the input data_sets. The length of this list should usually be equal to the total number of values in each data_set, indicating that each geometry gets a single color. Alternatively, if all of the geometry objects are meshes, the number of values in the data can be equal to the total number of faces across the meshes or the total number of vertices across the meshes.
         /// </summary>
         [Summary(@"A list of ladybug-geometry objects that is aligned with the values in the input data_sets. The length of this list should usually be equal to the total number of values in each data_set, indicating that each geometry gets a single color. Alternatively, if all of the geometry objects are meshes, the number of values in the data can be equal to the total number of faces across the meshes or the total number of vertices across the meshes.")]
-        [Required]
-        [DataMember(Name = "geometry", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "geometry", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("geometry", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("geometry")] // For System.Text.Json
-        public List<AnyOf<IGeometry>> Geometry { get; set; }
+        public List<AnyOf<Vector2D, Point2D, Ray2D, LineSegment2D, Polyline2D, Arc2D, Polygon2D, Mesh2D, Vector3D, Point3D, Ray3D, Plane, LineSegment3D, Polyline3D, Arc3D, Face3D, Mesh3D, Polyface3D, Sphere, Cone, Cylinder>> Geometry { get; set; }
 
         /// <summary>
         /// An list of VisualizationData objects representing the data sets that are associated with the input geometry.
         /// </summary>
         [Summary(@"An list of VisualizationData objects representing the data sets that are associated with the input geometry.")]
-        [Required]
-        [DataMember(Name = "data_sets", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "data_sets", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("data_sets", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("data_sets")] // For System.Text.Json
         public List<VisualizationData> DataSets { get; set; }
 
@@ -91,30 +95,30 @@ namespace LadybugDisplaySchema
         /// An integer to denote which of the input data_sets should be displayed by default.
         /// </summary>
         [Summary(@"An integer to denote which of the input data_sets should be displayed by default.")]
-        [DataMember(Name = "active_data")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "active_data")] // For internal Serialization XML/JSON
+        [JsonProperty("active_data", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("active_data")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public int ActiveData { get; set; } = 0;
 
         /// <summary>
         /// Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.
         /// </summary>
         [Summary(@"Text to indicate the display mode (surface, wireframe, etc.). The DisplayModes enumeration contains all acceptable types.")]
-        [DataMember(Name = "display_mode")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "display_mode")] // For internal Serialization XML/JSON
+        [JsonProperty("display_mode", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("display_mode")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public DisplayModes DisplayMode { get; set; } = DisplayModes.Surface;
 
         /// <summary>
         /// A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.
         /// </summary>
         [Summary(@"A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.")]
-        [DataMember(Name = "hidden")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "hidden")] // For internal Serialization XML/JSON
+        [JsonProperty("hidden", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("hidden")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool Hidden { get; set; } = false;
 
 

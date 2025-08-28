@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A polyline in 2D space.")]
     [System.Serializable]
-    [DataContract(Name = "Polyline2D")]
+    [DataContract(Name = "Polyline2D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Polyline2D : OpenAPIGenBaseModel, System.IEquatable<Polyline2D>
     {
         /// <summary>
@@ -64,8 +64,10 @@ namespace LadybugDisplaySchema
         /// A list of points representing the the vertices of the polyline. The list should include at least 3 points and each point should be a list of 2 (x, y) values.
         /// </summary>
         [Summary(@"A list of points representing the the vertices of the polyline. The list should include at least 3 points and each point should be a list of 2 (x, y) values.")]
-        [Required]
-        [DataMember(Name = "vertices", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "vertices", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("vertices", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("vertices")] // For System.Text.Json
         public List<List<double>> Vertices { get; set; }
 
@@ -73,10 +75,10 @@ namespace LadybugDisplaySchema
         /// A boolean to note whether the polyline should be interpolated between the input vertices when it is translated to other interfaces.
         /// </summary>
         [Summary(@"A boolean to note whether the polyline should be interpolated between the input vertices when it is translated to other interfaces.")]
-        [DataMember(Name = "interpolated")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "interpolated")] // For internal Serialization XML/JSON
+        [JsonProperty("interpolated", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("interpolated")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool Interpolated { get; set; } = false;
 
 

@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"An object representing context geometry to display.")]
     [System.Serializable]
-    [DataContract(Name = "ContextGeometry")]
+    [DataContract(Name = "ContextGeometry")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class ContextGeometry : VisualizationBase, System.IEquatable<ContextGeometry>
     {
         /// <summary>
@@ -47,7 +47,7 @@ namespace LadybugDisplaySchema
         /// <param name="hidden">A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.</param>
         public ContextGeometry
         (
-            string identifier, List<AnyOf<IDisplay>> geometry, string displayName = default, object userData = default, bool hidden = false
+            string identifier, List<AnyOf<DisplayVector2D, DisplayPoint2D, DisplayRay2D, DisplayLineSegment2D, DisplayPolyline2D, DisplayArc2D, DisplayPolygon2D, DisplayMesh2D, DisplayVector3D, DisplayPoint3D, DisplayRay3D, DisplayPlane, DisplayLineSegment3D, DisplayPolyline3D, DisplayArc3D, DisplayFace3D, DisplayMesh3D, DisplayPolyface3D, DisplaySphere, DisplayCone, DisplayCylinder, DisplayText3D>> geometry, string displayName = default, object userData = default, bool hidden = false
         ) : base(identifier: identifier, displayName: displayName, userData: userData)
         {
             this.Geometry = geometry ?? throw new System.ArgumentNullException("geometry is a required property for ContextGeometry and cannot be null");
@@ -67,19 +67,21 @@ namespace LadybugDisplaySchema
         /// A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.
         /// </summary>
         [Summary(@"A list of ladybug-geometry or ladybug-display objects that gives context to analysis geometry or other aspects of the visualization. Typically, these will display in wireframe around the geometry, though the properties of display geometry can be used to customize the visualization.")]
-        [Required]
-        [DataMember(Name = "geometry", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "geometry", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("geometry", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("geometry")] // For System.Text.Json
-        public List<AnyOf<IDisplay>> Geometry { get; set; }
+        public List<AnyOf<DisplayVector2D, DisplayPoint2D, DisplayRay2D, DisplayLineSegment2D, DisplayPolyline2D, DisplayArc2D, DisplayPolygon2D, DisplayMesh2D, DisplayVector3D, DisplayPoint3D, DisplayRay3D, DisplayPlane, DisplayLineSegment3D, DisplayPolyline3D, DisplayArc3D, DisplayFace3D, DisplayMesh3D, DisplayPolyface3D, DisplaySphere, DisplayCone, DisplayCylinder, DisplayText3D>> Geometry { get; set; }
 
         /// <summary>
         /// A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.
         /// </summary>
         [Summary(@"A boolean to note whether the geometry is hidden by default and must be un-hidden to be visible in the 3D scene.")]
-        [DataMember(Name = "hidden")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "hidden")] // For internal Serialization XML/JSON
+        [JsonProperty("hidden", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("hidden")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool Hidden { get; set; } = false;
 
 

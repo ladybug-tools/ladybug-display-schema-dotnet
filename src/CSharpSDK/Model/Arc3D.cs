@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A single arc or circle in 3D space.")]
     [System.Serializable]
-    [DataContract(Name = "Arc3D")]
+    [DataContract(Name = "Arc3D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Arc3D : OpenAPIGenBaseModel, System.IEquatable<Arc3D>
     {
         /// <summary>
@@ -68,8 +68,10 @@ namespace LadybugDisplaySchema
         /// A Plane in which the arc lies with an origin representing the center of the circle for the arc.
         /// </summary>
         [Summary(@"A Plane in which the arc lies with an origin representing the center of the circle for the arc.")]
-        [Required]
-        [DataMember(Name = "plane", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "plane", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("plane", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("plane")] // For System.Text.Json
         public Plane Plane { get; set; }
 
@@ -77,8 +79,10 @@ namespace LadybugDisplaySchema
         /// A number representing the radius of the arc.
         /// </summary>
         [Summary(@"A number representing the radius of the arc.")]
-        [Required]
-        [DataMember(Name = "radius", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "radius", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("radius", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("radius")] // For System.Text.Json
         public double Radius { get; set; }
 
@@ -86,22 +90,22 @@ namespace LadybugDisplaySchema
         /// A number between 0 and 2 * pi for the start angle of the arc.
         /// </summary>
         [Summary(@"A number between 0 and 2 * pi for the start angle of the arc.")]
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
         [Range(0, 6.283185307179586)]
-        [DataMember(Name = "a1")] // For Newtonsoft.Json
+        [DataMember(Name = "a1")] // For internal Serialization XML/JSON
+        [JsonProperty("a1", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("a1")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public double A1 { get; set; } = 0D;
 
         /// <summary>
         /// A number between 0 and 2 * pi for the end angle of the arc.
         /// </summary>
         [Summary(@"A number between 0 and 2 * pi for the end angle of the arc.")]
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
         [Range(0, 6.283185307179586)]
-        [DataMember(Name = "a2")] // For Newtonsoft.Json
+        [DataMember(Name = "a2")] // For internal Serialization XML/JSON
+        [JsonProperty("a2", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("a2")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public double A2 { get; set; } = 6.283185307179586D;
 
 

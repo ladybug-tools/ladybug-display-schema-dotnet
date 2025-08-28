@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A sphere object.")]
     [System.Serializable]
-    [DataContract(Name = "Sphere")]
+    [DataContract(Name = "Sphere")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Sphere : OpenAPIGenBaseModel, System.IEquatable<Sphere>
     {
         /// <summary>
@@ -64,8 +64,10 @@ namespace LadybugDisplaySchema
         /// The center of the sphere as 3 (x, y, z) values.
         /// </summary>
         [Summary(@"The center of the sphere as 3 (x, y, z) values.")]
-        [Required]
-        [DataMember(Name = "center", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "center", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("center", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("center")] // For System.Text.Json
         public List<double> Center { get; set; }
 
@@ -73,8 +75,10 @@ namespace LadybugDisplaySchema
         /// A number representing the radius of the sphere.
         /// </summary>
         [Summary(@"A number representing the radius of the sphere.")]
-        [Required]
-        [DataMember(Name = "radius", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "radius", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("radius", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("radius")] // For System.Text.Json
         public double Radius { get; set; }
 

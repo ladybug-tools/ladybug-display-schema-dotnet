@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A visualization set containing analysis and context geometry to be visualized.")]
     [System.Serializable]
-    [DataContract(Name = "VisualizationSet")]
+    [DataContract(Name = "VisualizationSet")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class VisualizationSet : VisualizationBase, System.IEquatable<VisualizationSet>
     {
         /// <summary>
@@ -67,20 +67,20 @@ namespace LadybugDisplaySchema
         /// A list of AnalysisGeometry and ContextGeometry objects to display in the visualization. Each geometry object will typically be translated to its own layer within the interface that renders the VisualizationSet.
         /// </summary>
         [Summary(@"A list of AnalysisGeometry and ContextGeometry objects to display in the visualization. Each geometry object will typically be translated to its own layer within the interface that renders the VisualizationSet.")]
-        [DataMember(Name = "geometry")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "geometry")] // For internal Serialization XML/JSON
+        [JsonProperty("geometry", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("geometry")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public List<AnyOf<AnalysisGeometry, ContextGeometry>> Geometry { get; set; }
 
         /// <summary>
         /// Text indicating the units in which the model geometry exists. If None, the geometry will always be assumed to be in the current units system of the display interface.
         /// </summary>
         [Summary(@"Text indicating the units in which the model geometry exists. If None, the geometry will always be assumed to be in the current units system of the display interface.")]
-        [DataMember(Name = "units")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "units")] // For internal Serialization XML/JSON
+        [JsonProperty("units", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("units")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public Units Units { get; set; }
 
 

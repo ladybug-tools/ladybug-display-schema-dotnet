@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A plane object.")]
     [System.Serializable]
-    [DataContract(Name = "Plane")]
+    [DataContract(Name = "Plane")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Plane : OpenAPIGenBaseModel, System.IEquatable<Plane>
     {
         /// <summary>
@@ -66,8 +66,10 @@ namespace LadybugDisplaySchema
         /// Plane normal as 3 (x, y, z) values.
         /// </summary>
         [Summary(@"Plane normal as 3 (x, y, z) values.")]
-        [Required]
-        [DataMember(Name = "n", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "n", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("n", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("n")] // For System.Text.Json
         public List<double> N { get; set; }
 
@@ -75,8 +77,10 @@ namespace LadybugDisplaySchema
         /// Plane origin as 3 (x, y, z) values
         /// </summary>
         [Summary(@"Plane origin as 3 (x, y, z) values")]
-        [Required]
-        [DataMember(Name = "o", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "o", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("o", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("o")] // For System.Text.Json
         public List<double> O { get; set; }
 
@@ -84,10 +88,10 @@ namespace LadybugDisplaySchema
         /// Plane x-axis as 3 (x, y, z) values. If None, it is autocalculated.
         /// </summary>
         [Summary(@"Plane x-axis as 3 (x, y, z) values. If None, it is autocalculated.")]
-        [DataMember(Name = "x")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "x")] // For internal Serialization XML/JSON
+        [JsonProperty("x", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("x")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public List<double> X { get; set; }
 
 

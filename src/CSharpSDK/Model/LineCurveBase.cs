@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"Base class for all Geometric Display objects with a line like properties.")]
     [System.Serializable]
-    [DataContract(Name = "LineCurveBase")]
+    [DataContract(Name = "LineCurveBase")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class LineCurveBase : DisplayBaseModel, System.IEquatable<LineCurveBase>
     {
         /// <summary>
@@ -67,8 +67,10 @@ namespace LadybugDisplaySchema
         /// Color for the geometry.
         /// </summary>
         [Summary(@"Color for the geometry.")]
-        [Required]
-        [DataMember(Name = "color", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "color", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("color", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("color")] // For System.Text.Json
         public Color Color { get; set; }
 
@@ -76,20 +78,20 @@ namespace LadybugDisplaySchema
         /// Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.
         /// </summary>
         [Summary(@"Number for line width in pixels (for the screen) or millimeters (in print). Set to zero to hide the geometry.")]
-        [DataMember(Name = "line_width")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "line_width")] // For internal Serialization XML/JSON
+        [JsonProperty("line_width", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("line_width")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, double> LineWidth { get; set; } = new Default();
 
         /// <summary>
         /// Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.
         /// </summary>
         [Summary(@"Text to indicate the type of line to display (dashed, dotted, etc.). The LineTypes enumeration contains all acceptable types.")]
-        [DataMember(Name = "line_type")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "line_type")] // For internal Serialization XML/JSON
+        [JsonProperty("line_type", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("line_type")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public LineTypes LineType { get; set; } = LineTypes.Continuous;
 
 

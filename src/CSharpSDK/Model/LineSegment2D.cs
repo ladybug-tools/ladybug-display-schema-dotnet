@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A single line segment face in 2D space.")]
     [System.Serializable]
-    [DataContract(Name = "LineSegment2D")]
+    [DataContract(Name = "LineSegment2D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class LineSegment2D : OpenAPIGenBaseModel, System.IEquatable<LineSegment2D>
     {
         /// <summary>
@@ -64,8 +64,10 @@ namespace LadybugDisplaySchema
         /// Line segment base point as 2 (x, y) values.
         /// </summary>
         [Summary(@"Line segment base point as 2 (x, y) values.")]
-        [Required]
-        [DataMember(Name = "p", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "p", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("p", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("p")] // For System.Text.Json
         public List<double> P { get; set; }
 
@@ -73,8 +75,10 @@ namespace LadybugDisplaySchema
         /// Line segment direction vector as 2 (x, y) values.
         /// </summary>
         [Summary(@"Line segment direction vector as 2 (x, y) values.")]
-        [Required]
-        [DataMember(Name = "v", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "v", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("v", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("v")] // For System.Text.Json
         public List<double> V { get; set; }
 
