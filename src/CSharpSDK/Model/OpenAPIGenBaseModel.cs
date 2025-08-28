@@ -31,7 +31,7 @@ namespace LadybugDisplaySchema
         // [System.Text.Json.Serialization.JsonConstructor] // for future switching to System.Text.Json
         public OpenAPIGenBaseModel
         (
-            
+
         )
         {
 
@@ -43,8 +43,8 @@ namespace LadybugDisplaySchema
                 this.IsValid(throwException: true);
         }
 
-	
-	
+
+
         /// <summary>
         /// A base class to use when there is no baseclass available to fall on.
         /// </summary>
@@ -70,11 +70,11 @@ namespace LadybugDisplaySchema
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
-        public virtual string ToString(bool detailed)
+        public override string ToString(bool detailed)
         {
             if (!detailed)
                 return this.ToString();
-            
+
             var sb = new StringBuilder();
             sb.Append("OpenAPIGenBaseModel:\n");
             sb.Append("  Type: ").Append(this.Type).Append("\n");
@@ -116,7 +116,7 @@ namespace LadybugDisplaySchema
         /// Creates a new instance with the same properties.
         /// </summary>
         /// <returns>OpenAPIGenBaseModel</returns>
-        public OpenAPIGenBaseModel Duplicate()
+        public override OpenAPIGenBaseModel Duplicate()
         {
             return DuplicateOpenAPIGenBaseModel();
         }
@@ -143,7 +143,7 @@ namespace LadybugDisplaySchema
         {
             if (input == null)
                 return false;
-            return true && 
+            return true &&
                     Extension.Equals(this.Type, input.Type);
         }
 
@@ -191,7 +191,7 @@ namespace LadybugDisplaySchema
             if (isValid)
                 return true;
 
-            var resMsgs = string.Join( "; ", res.Select(_ => _.ErrorMessage));
+            var resMsgs = string.Join("; ", res.Select(_ => _.ErrorMessage));
             if (throwException)
                 throw new System.ArgumentException($"This is an invalid {this.Type} object! Error: {resMsgs}");
             else
