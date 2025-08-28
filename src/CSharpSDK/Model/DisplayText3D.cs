@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A text object in 3D space with display properties.")]
     [System.Serializable]
-    [DataContract(Name = "DisplayText3D")]
+    [DataContract(Name = "DisplayText3D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class DisplayText3D : DisplayBaseModel, System.IEquatable<DisplayText3D>
     {
         /// <summary>
@@ -75,8 +75,10 @@ namespace LadybugDisplaySchema
         /// Color for the geometry.
         /// </summary>
         [Summary(@"Color for the geometry.")]
-        [Required]
-        [DataMember(Name = "color", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "color", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("color", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("color")] // For System.Text.Json
         public Color Color { get; set; }
 
@@ -84,8 +86,10 @@ namespace LadybugDisplaySchema
         /// A text string to be displayed in the 3D scene.
         /// </summary>
         [Summary(@"A text string to be displayed in the 3D scene.")]
-        [Required]
-        [DataMember(Name = "text", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "text", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("text", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("text")] // For System.Text.Json
         public string Text { get; set; }
 
@@ -93,8 +97,10 @@ namespace LadybugDisplaySchema
         /// A ladybug-geometry Plane object to locate and orient the text in the 3D scene.
         /// </summary>
         [Summary(@"A ladybug-geometry Plane object to locate and orient the text in the 3D scene.")]
-        [Required]
-        [DataMember(Name = "plane", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "plane", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("plane", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("plane")] // For System.Text.Json
         public Plane Plane { get; set; }
 
@@ -102,8 +108,10 @@ namespace LadybugDisplaySchema
         /// A number for the height of the text in the 3D scene.
         /// </summary>
         [Summary(@"A number for the height of the text in the 3D scene.")]
-        [Required]
-        [DataMember(Name = "height", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "height", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("height", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("height")] // For System.Text.Json
         public double Height { get; set; }
 
@@ -111,30 +119,30 @@ namespace LadybugDisplaySchema
         /// A text string for the font in which to draw the text. Note that this field may not be interpreted the same on all machines and in all interfaces, particularly when a machine lacks a given font.
         /// </summary>
         [Summary(@"A text string for the font in which to draw the text. Note that this field may not be interpreted the same on all machines and in all interfaces, particularly when a machine lacks a given font.")]
-        [DataMember(Name = "font")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "font")] // For internal Serialization XML/JSON
+        [JsonProperty("font", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("font")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public string Font { get; set; } = "Arial";
 
         /// <summary>
         /// String to specify the horizontal alignment of the text.
         /// </summary>
         [Summary(@"String to specify the horizontal alignment of the text.")]
-        [DataMember(Name = "horizontal_alignment")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "horizontal_alignment")] // For internal Serialization XML/JSON
+        [JsonProperty("horizontal_alignment", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("horizontal_alignment")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public HorizontalAlignments HorizontalAlignment { get; set; } = HorizontalAlignments.Left;
 
         /// <summary>
         /// String to specify the vertical alignment of the text.
         /// </summary>
         [Summary(@"String to specify the vertical alignment of the text.")]
-        [DataMember(Name = "vertical_alignment")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "vertical_alignment")] // For internal Serialization XML/JSON
+        [JsonProperty("vertical_alignment", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("vertical_alignment")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public VerticalAlignments VerticalAlignment { get; set; } = VerticalAlignments.Bottom;
 
 

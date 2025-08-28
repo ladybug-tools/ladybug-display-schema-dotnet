@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A cone object.")]
     [System.Serializable]
-    [DataContract(Name = "Cone")]
+    [DataContract(Name = "Cone")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Cone : OpenAPIGenBaseModel, System.IEquatable<Cone>
     {
         /// <summary>
@@ -66,8 +66,10 @@ namespace LadybugDisplaySchema
         /// The point at the tip of the cone as 3 (x, y, z) values.
         /// </summary>
         [Summary(@"The point at the tip of the cone as 3 (x, y, z) values.")]
-        [Required]
-        [DataMember(Name = "vertex", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "vertex", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("vertex", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("vertex")] // For System.Text.Json
         public List<double> Vertex { get; set; }
 
@@ -75,8 +77,10 @@ namespace LadybugDisplaySchema
         /// The vector representing the direction of the cone as 3 (x, y, z) values. The vector extends from the vertex to the center of the base.
         /// </summary>
         [Summary(@"The vector representing the direction of the cone as 3 (x, y, z) values. The vector extends from the vertex to the center of the base.")]
-        [Required]
-        [DataMember(Name = "axis", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "axis", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("axis", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("axis")] // For System.Text.Json
         public List<double> Axis { get; set; }
 
@@ -84,8 +88,10 @@ namespace LadybugDisplaySchema
         /// An angle in radians representing the half angle between the axis and the surface.
         /// </summary>
         [Summary(@"An angle in radians representing the half angle between the axis and the surface.")]
-        [Required]
-        [DataMember(Name = "angle", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "angle", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("angle", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("angle")] // For System.Text.Json
         public double Angle { get; set; }
 

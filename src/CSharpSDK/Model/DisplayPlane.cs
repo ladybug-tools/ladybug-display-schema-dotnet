@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A plane object with display properties.")]
     [System.Serializable]
-    [DataContract(Name = "DisplayPlane")]
+    [DataContract(Name = "DisplayPlane")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class DisplayPlane : DisplayBaseModel, System.IEquatable<DisplayPlane>
     {
         /// <summary>
@@ -69,8 +69,10 @@ namespace LadybugDisplaySchema
         /// Color for the geometry.
         /// </summary>
         [Summary(@"Color for the geometry.")]
-        [Required]
-        [DataMember(Name = "color", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "color", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("color", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("color")] // For System.Text.Json
         public Color Color { get; set; }
 
@@ -78,8 +80,10 @@ namespace LadybugDisplaySchema
         /// Plane for the geometry.
         /// </summary>
         [Summary(@"Plane for the geometry.")]
-        [Required]
-        [DataMember(Name = "geometry", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "geometry", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("geometry", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("geometry")] // For System.Text.Json
         public Plane Geometry { get; set; }
 
@@ -87,20 +91,20 @@ namespace LadybugDisplaySchema
         /// A boolean to note whether the plane should be displayed with XY axes instead of just an origin point and a normal vector.
         /// </summary>
         [Summary(@"A boolean to note whether the plane should be displayed with XY axes instead of just an origin point and a normal vector.")]
-        [DataMember(Name = "show_axes")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "show_axes")] // For internal Serialization XML/JSON
+        [JsonProperty("show_axes", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("show_axes")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool ShowAxes { get; set; } = false;
 
         /// <summary>
         /// A boolean to note whether the plane should be displayed with a grid.
         /// </summary>
         [Summary(@"A boolean to note whether the plane should be displayed with a grid.")]
-        [DataMember(Name = "show_grid")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "show_grid")] // For internal Serialization XML/JSON
+        [JsonProperty("show_grid", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("show_grid")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool ShowGrid { get; set; } = false;
 
 

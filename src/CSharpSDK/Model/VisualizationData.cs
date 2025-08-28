@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"Represents a data set for visualization with legend parameters and data type.")]
     [System.Serializable]
-    [DataContract(Name = "VisualizationData")]
+    [DataContract(Name = "VisualizationData")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class VisualizationData : OpenAPIGenBaseModel, System.IEquatable<VisualizationData>
     {
         /// <summary>
@@ -70,8 +70,10 @@ namespace LadybugDisplaySchema
         /// A list of numerical values that will be used to generate the visualization colors.
         /// </summary>
         [Summary(@"A list of numerical values that will be used to generate the visualization colors.")]
-        [Required]
-        [DataMember(Name = "values", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "values", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("values", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("values")] // For System.Text.Json
         public List<double> Values { get; set; }
 
@@ -79,40 +81,40 @@ namespace LadybugDisplaySchema
         /// An Optional LegendParameters object to override default parameters of the legend. None indicates that default legend parameters will be used.
         /// </summary>
         [Summary(@"An Optional LegendParameters object to override default parameters of the legend. None indicates that default legend parameters will be used.")]
-        [DataMember(Name = "legend_parameters")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "legend_parameters")] // For internal Serialization XML/JSON
+        [JsonProperty("legend_parameters", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("legend_parameters")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public LegendParameters LegendParameters { get; set; }
 
         /// <summary>
         /// Optional DataType from the ladybug datatype subpackage (ie. Temperature()) , which will be used to assign default legend properties. If None, the legend associated with this object will contain no units unless a unit below is specified.
         /// </summary>
         [Summary(@"Optional DataType from the ladybug datatype subpackage (ie. Temperature()) , which will be used to assign default legend properties. If None, the legend associated with this object will contain no units unless a unit below is specified.")]
-        [DataMember(Name = "data_type")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "data_type")] // For internal Serialization XML/JSON
+        [JsonProperty("data_type", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("data_type")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<DataType, GenericDataType> DataType { get; set; }
 
         /// <summary>
         /// Optional text string for the units of the values. (ie. ""C""). If None, the default units of the data_type will be used.
         /// </summary>
         [Summary(@"Optional text string for the units of the values. (ie. ""C""). If None, the default units of the data_type will be used.")]
-        [DataMember(Name = "unit")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "unit")] // For internal Serialization XML/JSON
+        [JsonProperty("unit", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("unit")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public string Unit { get; set; } = "";
 
         /// <summary>
         /// Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).
         /// </summary>
         [Summary(@"Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).")]
-        [DataMember(Name = "user_data")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "user_data")] // For internal Serialization XML/JSON
+        [JsonProperty("user_data", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("user_data")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public object UserData { get; set; }
 
 

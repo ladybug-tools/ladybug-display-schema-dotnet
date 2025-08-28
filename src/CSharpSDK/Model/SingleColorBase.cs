@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"Base class for all Geometric Display objects with a single color.")]
     [System.Serializable]
-    [DataContract(Name = "SingleColorBase")]
+    [DataContract(Name = "SingleColorBase")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class SingleColorBase : DisplayBaseModel, System.IEquatable<SingleColorBase>
     {
         /// <summary>
@@ -63,8 +63,10 @@ namespace LadybugDisplaySchema
         /// Color for the geometry.
         /// </summary>
         [Summary(@"Color for the geometry.")]
-        [Required]
-        [DataMember(Name = "color", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "color", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("color", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("color")] // For System.Text.Json
         public Color Color { get; set; }
 

@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A cylinder object.")]
     [System.Serializable]
-    [DataContract(Name = "Cylinder")]
+    [DataContract(Name = "Cylinder")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Cylinder : OpenAPIGenBaseModel, System.IEquatable<Cylinder>
     {
         /// <summary>
@@ -66,8 +66,10 @@ namespace LadybugDisplaySchema
         /// The center of the bottom base of the cylinder as 3 (x, y, z) values.
         /// </summary>
         [Summary(@"The center of the bottom base of the cylinder as 3 (x, y, z) values.")]
-        [Required]
-        [DataMember(Name = "center", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "center", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("center", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("center")] // For System.Text.Json
         public List<double> Center { get; set; }
 
@@ -75,8 +77,10 @@ namespace LadybugDisplaySchema
         /// The vector representing the direction of the cylinder as 3 (x, y, z) values. The vector extends from the bottom base center to the top base center.
         /// </summary>
         [Summary(@"The vector representing the direction of the cylinder as 3 (x, y, z) values. The vector extends from the bottom base center to the top base center.")]
-        [Required]
-        [DataMember(Name = "axis", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "axis", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("axis", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("axis")] // For System.Text.Json
         public List<double> Axis { get; set; }
 
@@ -84,8 +88,10 @@ namespace LadybugDisplaySchema
         /// A number representing the radius of the cylinder.
         /// </summary>
         [Summary(@"A number representing the radius of the cylinder.")]
-        [Required]
-        [DataMember(Name = "radius", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "radius", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("radius", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("radius")] // For System.Text.Json
         public double Radius { get; set; }
 

@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A Polyface in 3D space.")]
     [System.Serializable]
-    [DataContract(Name = "Polyface3D")]
+    [DataContract(Name = "Polyface3D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Polyface3D : OpenAPIGenBaseModel, System.IEquatable<Polyface3D>
     {
         /// <summary>
@@ -66,8 +66,10 @@ namespace LadybugDisplaySchema
         /// A list of points representing the vertices of the polyface. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.
         /// </summary>
         [Summary(@"A list of points representing the vertices of the polyface. The list should include at least 3 points and each point should be a list of 3 (x, y, z) values.")]
-        [Required]
-        [DataMember(Name = "vertices", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "vertices", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("vertices", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("vertices")] // For System.Text.Json
         public List<List<double>> Vertices { get; set; }
 
@@ -75,8 +77,10 @@ namespace LadybugDisplaySchema
         /// A list of lists with one list for each face of the polyface. Each face list must contain at least one sub-list of integers corresponding to indices within the vertices list. Additional sub-lists of integers may follow this one such that the first sub-list denotes the boundary of the face while each subsequent sub-list denotes a hole in the face.
         /// </summary>
         [Summary(@"A list of lists with one list for each face of the polyface. Each face list must contain at least one sub-list of integers corresponding to indices within the vertices list. Additional sub-lists of integers may follow this one such that the first sub-list denotes the boundary of the face while each subsequent sub-list denotes a hole in the face.")]
-        [Required]
-        [DataMember(Name = "face_indices", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "face_indices", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("face_indices", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("face_indices")] // For System.Text.Json
         public List<List<List<int>>> FaceIndices { get; set; }
 
@@ -84,10 +88,10 @@ namespace LadybugDisplaySchema
         /// Optional edge information, which will speed up the creation of the Polyface object if it is available but should be left as None if it is unknown. If None, edge_information will be computed from the vertices and face_indices inputs.
         /// </summary>
         [Summary(@"Optional edge information, which will speed up the creation of the Polyface object if it is available but should be left as None if it is unknown. If None, edge_information will be computed from the vertices and face_indices inputs.")]
-        [DataMember(Name = "edge_information")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "edge_information")] // For internal Serialization XML/JSON
+        [JsonProperty("edge_information", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("edge_information")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public PolyfaceEdgeInfo EdgeInformation { get; set; }
 
 

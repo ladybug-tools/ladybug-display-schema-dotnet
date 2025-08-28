@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"Legend parameters used to customize legends.")]
     [System.Serializable]
-    [DataContract(Name = "LegendParameters")]
+    [DataContract(Name = "LegendParameters")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class LegendParameters : OpenAPIGenBaseModel, System.IEquatable<LegendParameters>
     {
         /// <summary>
@@ -88,141 +88,141 @@ namespace LadybugDisplaySchema
         /// A number to set the lower boundary of the legend. If Default, the minimum of the values associated with the legend will be used.
         /// </summary>
         [Summary(@"A number to set the lower boundary of the legend. If Default, the minimum of the values associated with the legend will be used.")]
-        [DataMember(Name = "min")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "min")] // For internal Serialization XML/JSON
+        [JsonProperty("min", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("min")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, double> Min { get; set; } = new Default();
 
         /// <summary>
         /// A number to set the upper boundary of the legend. If Default, the maximum of the values associated with the legend will be used.
         /// </summary>
         [Summary(@"A number to set the upper boundary of the legend. If Default, the maximum of the values associated with the legend will be used.")]
-        [DataMember(Name = "max")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "max")] // For internal Serialization XML/JSON
+        [JsonProperty("max", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("max")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, double> Max { get; set; } = new Default();
 
         /// <summary>
         /// An integer representing the number of steps between the high and low boundary of the legend. The default is set to 11 or it will be equal to the number of items in the ordinal_dictionary. Any custom values input in here should always be greater than or equal to 1.
         /// </summary>
         [Summary(@"An integer representing the number of steps between the high and low boundary of the legend. The default is set to 11 or it will be equal to the number of items in the ordinal_dictionary. Any custom values input in here should always be greater than or equal to 1.")]
-        [DataMember(Name = "segment_count")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "segment_count")] // For internal Serialization XML/JSON
+        [JsonProperty("segment_count", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("segment_count")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, int> SegmentCount { get; set; } = new Default();
 
         /// <summary>
         /// An list of color objects. Default is the Ladybug original colorset.
         /// </summary>
         [Summary(@"An list of color objects. Default is the Ladybug original colorset.")]
-        [DataMember(Name = "colors")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "colors")] // For internal Serialization XML/JSON
+        [JsonProperty("colors", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("colors")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public List<Color> Colors { get; set; }
 
         /// <summary>
         /// Text string for Legend title. Typically, the units of the data are used here but the type of data might also be used.
         /// </summary>
         [Summary(@"Text string for Legend title. Typically, the units of the data are used here but the type of data might also be used.")]
-        [DataMember(Name = "title")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "title")] // For internal Serialization XML/JSON
+        [JsonProperty("title", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("title")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public string Title { get; set; } = "";
 
         /// <summary>
         /// Boolean noting whether legend is drawn as a gradient or discrete segments.
         /// </summary>
         [Summary(@"Boolean noting whether legend is drawn as a gradient or discrete segments.")]
-        [DataMember(Name = "continuous_legend")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "continuous_legend")] // For internal Serialization XML/JSON
+        [JsonProperty("continuous_legend", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("continuous_legend")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool ContinuousLegend { get; set; } = false;
 
         /// <summary>
         /// Optional dictionary that maps values to text categories. If None, numerical values will be used for the legend segments. If not, text categories will be used and the legend will be ordinal. Note that, if the number of items in the dictionary are less than the segment_count, some segments will not receive any label. Examples for possible dictionaries include: {-1: ""Cold"", 0: ""Neutral"", 1: ""Hot""}, {0: ""False"", 1: ""True""}
         /// </summary>
         [Summary(@"Optional dictionary that maps values to text categories. If None, numerical values will be used for the legend segments. If not, text categories will be used and the legend will be ordinal. Note that, if the number of items in the dictionary are less than the segment_count, some segments will not receive any label. Examples for possible dictionaries include: {-1: ""Cold"", 0: ""Neutral"", 1: ""Hot""}, {0: ""False"", 1: ""True""}")]
-        [DataMember(Name = "ordinal_dictionary")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "ordinal_dictionary")] // For internal Serialization XML/JSON
+        [JsonProperty("ordinal_dictionary", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("ordinal_dictionary")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public object OrdinalDictionary { get; set; }
 
         /// <summary>
         /// An an integer for the number of decimal places in the legend text. Note that this input has no bearing on the resulting legend text when an ordinal_dictionary is present.
         /// </summary>
         [Summary(@"An an integer for the number of decimal places in the legend text. Note that this input has no bearing on the resulting legend text when an ordinal_dictionary is present.")]
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
         [Range(0, int.MaxValue)]
-        [DataMember(Name = "decimal_count")] // For Newtonsoft.Json
+        [DataMember(Name = "decimal_count")] // For internal Serialization XML/JSON
+        [JsonProperty("decimal_count", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("decimal_count")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public int DecimalCount { get; set; } = 2;
 
         /// <summary>
         /// Boolean noting whether > and < should be included in legend segment text.
         /// </summary>
         [Summary(@"Boolean noting whether > and < should be included in legend segment text.")]
-        [DataMember(Name = "include_larger_smaller")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "include_larger_smaller")] // For internal Serialization XML/JSON
+        [JsonProperty("include_larger_smaller", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("include_larger_smaller")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool IncludeLargerSmaller { get; set; } = false;
 
         /// <summary>
         /// Boolean noting whether legend is vertical (True) or horizontal (False).
         /// </summary>
         [Summary(@"Boolean noting whether legend is vertical (True) or horizontal (False).")]
-        [DataMember(Name = "vertical")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "vertical")] // For internal Serialization XML/JSON
+        [JsonProperty("vertical", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("vertical")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool Vertical { get; set; } = true;
 
         /// <summary>
         /// Text string to set the font for the legend text. Examples include ""Arial"", ""Times New Roman"", ""Courier"". Note that this parameter may not have an effect on certain interfaces that have limited access to fonts.
         /// </summary>
         [Summary(@"Text string to set the font for the legend text. Examples include ""Arial"", ""Times New Roman"", ""Courier"". Note that this parameter may not have an effect on certain interfaces that have limited access to fonts.")]
-        [DataMember(Name = "font")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "font")] // For internal Serialization XML/JSON
+        [JsonProperty("font", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("font")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public string Font { get; set; } = "Arial";
 
         /// <summary>
         /// A Legend3DParameters object to specify the dimensional properties of the legend when it is rendered in the 3D environment of the geometry scene.
         /// </summary>
         [Summary(@"A Legend3DParameters object to specify the dimensional properties of the legend when it is rendered in the 3D environment of the geometry scene.")]
-        [DataMember(Name = "properties_3d")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "properties_3d")] // For internal Serialization XML/JSON
+        [JsonProperty("properties_3d", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("properties_3d")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public Legend3DParameters Properties3d { get; set; }
 
         /// <summary>
         /// A Legend2DParameters object to specify the dimensional properties of the legend when it is rendered in the 2D plane of a screen.
         /// </summary>
         [Summary(@"A Legend2DParameters object to specify the dimensional properties of the legend when it is rendered in the 2D plane of a screen.")]
-        [DataMember(Name = "properties_2d")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "properties_2d")] // For internal Serialization XML/JSON
+        [JsonProperty("properties_2d", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("properties_2d")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public Legend2DParameters Properties2d { get; set; }
 
         /// <summary>
         /// Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).
         /// </summary>
         [Summary(@"Optional dictionary of user data associated with the object.All keys and values of this dictionary should be of a standard data type to ensure correct serialization of the object (eg. str, float, int, list).")]
-        [DataMember(Name = "user_data")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "user_data")] // For internal Serialization XML/JSON
+        [JsonProperty("user_data", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("user_data")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public object UserData { get; set; }
 
 

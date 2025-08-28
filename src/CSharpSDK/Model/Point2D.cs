@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A point object in 2D space.")]
     [System.Serializable]
-    [DataContract(Name = "Point2D")]
+    [DataContract(Name = "Point2D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Point2D : OpenAPIGenBaseModel, System.IEquatable<Point2D>
     {
         /// <summary>
@@ -64,8 +64,10 @@ namespace LadybugDisplaySchema
         /// Number for X coordinate.
         /// </summary>
         [Summary(@"Number for X coordinate.")]
-        [Required]
-        [DataMember(Name = "x", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "x", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("x", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("x")] // For System.Text.Json
         public double X { get; set; }
 
@@ -73,8 +75,10 @@ namespace LadybugDisplaySchema
         /// Number for Y coordinate.
         /// </summary>
         [Summary(@"Number for Y coordinate.")]
-        [Required]
-        [DataMember(Name = "y", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "y", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("y", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("y")] // For System.Text.Json
         public double Y { get; set; }
 

@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"Base class for all objects that are not extensible with additional keys.")]
     [System.Serializable]
-    [DataContract(Name = "Legend2DParameters")]
+    [DataContract(Name = "Legend2DParameters")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Legend2DParameters : OpenAPIGenBaseModel, System.IEquatable<Legend2DParameters>
     {
         /// <summary>
@@ -70,50 +70,50 @@ namespace LadybugDisplaySchema
         /// A text string to note the X coordinate of the base point from where the legend will be generated (assuming an origin in the upper-left corner of the viewport with higher positive values of X moving to the right). Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport width). Examples include 10px, 5%. The default is set to make the legend clearly visible on the viewport (usually 10px).
         /// </summary>
         [Summary(@"A text string to note the X coordinate of the base point from where the legend will be generated (assuming an origin in the upper-left corner of the viewport with higher positive values of X moving to the right). Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport width). Examples include 10px, 5%. The default is set to make the legend clearly visible on the viewport (usually 10px).")]
-        [DataMember(Name = "origin_x")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "origin_x")] // For internal Serialization XML/JSON
+        [JsonProperty("origin_x", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("origin_x")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, string> OriginX { get; set; } = new Default();
 
         /// <summary>
         /// A text string to note the Y coordinate of the base point from where the legend will be generated (assuming an origin in the upper-left corner of the viewport with higher positive values of Y moving downward). Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport height). Examples include 10px, 5%. The default is set to make the legend clearly visible on the viewport (usually 50px).
         /// </summary>
         [Summary(@"A text string to note the Y coordinate of the base point from where the legend will be generated (assuming an origin in the upper-left corner of the viewport with higher positive values of Y moving downward). Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport height). Examples include 10px, 5%. The default is set to make the legend clearly visible on the viewport (usually 50px).")]
-        [DataMember(Name = "origin_y")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "origin_y")] // For internal Serialization XML/JSON
+        [JsonProperty("origin_y", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("origin_y")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, string> OriginY { get; set; } = new Default();
 
         /// <summary>
         /// A text string to note the height for each of the legend segments. Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport height). Examples include 10px, 5%. The default is set to make most legends readable (25px for horizontal legends and 36px for vertical legends).
         /// </summary>
         [Summary(@"A text string to note the height for each of the legend segments. Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport height). Examples include 10px, 5%. The default is set to make most legends readable (25px for horizontal legends and 36px for vertical legends).")]
-        [DataMember(Name = "segment_height")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "segment_height")] // For internal Serialization XML/JSON
+        [JsonProperty("segment_height", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("segment_height")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, string> SegmentHeight { get; set; } = new Default();
 
         /// <summary>
         /// A text string to set the width for each of the legend segments. Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport width). Examples include 10px, 5%. The default is set to make most legends readable (36px for horizontal legends and 25px for vertical legends).
         /// </summary>
         [Summary(@"A text string to set the width for each of the legend segments. Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport width). Examples include 10px, 5%. The default is set to make most legends readable (36px for horizontal legends and 25px for vertical legends).")]
-        [DataMember(Name = "segment_width")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "segment_width")] // For internal Serialization XML/JSON
+        [JsonProperty("segment_width", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("segment_width")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, string> SegmentWidth { get; set; } = new Default();
 
         /// <summary>
         /// A text string to set the height for the legend text. Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport height). Examples include 10px, 5%. Default is 1/3 of the segment_height. Default is 12px.
         /// </summary>
         [Summary(@"A text string to set the height for the legend text. Text must be formatted as an integer followed by either ""px"" (to denote the number of viewport pixels) or ""%"" (to denote the percentage of the viewport height). Examples include 10px, 5%. Default is 1/3 of the segment_height. Default is 12px.")]
-        [DataMember(Name = "text_height")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "text_height")] // For internal Serialization XML/JSON
+        [JsonProperty("text_height", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("text_height")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, string> TextHeight { get; set; } = new Default();
 
 

@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A polygon in 2D space (without holes).")]
     [System.Serializable]
-    [DataContract(Name = "Polygon2D")]
+    [DataContract(Name = "Polygon2D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Polygon2D : OpenAPIGenBaseModel, System.IEquatable<Polygon2D>
     {
         /// <summary>
@@ -62,8 +62,10 @@ namespace LadybugDisplaySchema
         /// A list of points representing the vertices of the polygon. The list should include at least 3 points and each point should be a list of 2 (x, y) values.
         /// </summary>
         [Summary(@"A list of points representing the vertices of the polygon. The list should include at least 3 points and each point should be a list of 2 (x, y) values.")]
-        [Required]
-        [DataMember(Name = "vertices", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "vertices", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("vertices", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("vertices")] // For System.Text.Json
         public List<List<double>> Vertices { get; set; }
 

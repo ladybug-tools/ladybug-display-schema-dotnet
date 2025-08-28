@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A point object in 3D space with display properties.")]
     [System.Serializable]
-    [DataContract(Name = "DisplayPoint3D")]
+    [DataContract(Name = "DisplayPoint3D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class DisplayPoint3D : DisplayBaseModel, System.IEquatable<DisplayPoint3D>
     {
         /// <summary>
@@ -67,8 +67,10 @@ namespace LadybugDisplaySchema
         /// Color for the geometry.
         /// </summary>
         [Summary(@"Color for the geometry.")]
-        [Required]
-        [DataMember(Name = "color", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "color", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("color", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("color")] // For System.Text.Json
         public Color Color { get; set; }
 
@@ -76,8 +78,10 @@ namespace LadybugDisplaySchema
         /// Point3D for the geometry.
         /// </summary>
         [Summary(@"Point3D for the geometry.")]
-        [Required]
-        [DataMember(Name = "geometry", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "geometry", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("geometry", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("geometry")] // For System.Text.Json
         public Point3D Geometry { get; set; }
 
@@ -85,10 +89,10 @@ namespace LadybugDisplaySchema
         /// Number for the radius with which the point should be displayed in pixels (for the screen) or millimeters (in print).
         /// </summary>
         [Summary(@"Number for the radius with which the point should be displayed in pixels (for the screen) or millimeters (in print).")]
-        [DataMember(Name = "radius")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "radius")] // For internal Serialization XML/JSON
+        [JsonProperty("radius", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("radius")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, double> Radius { get; set; } = new Default();
 
 

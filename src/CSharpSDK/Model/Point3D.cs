@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"A point object in 3D space.")]
     [System.Serializable]
-    [DataContract(Name = "Point3D")]
+    [DataContract(Name = "Point3D")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class Point3D : OpenAPIGenBaseModel, System.IEquatable<Point3D>
     {
         /// <summary>
@@ -66,8 +66,10 @@ namespace LadybugDisplaySchema
         /// Number for X coordinate.
         /// </summary>
         [Summary(@"Number for X coordinate.")]
-        [Required]
-        [DataMember(Name = "x", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "x", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("x", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("x")] // For System.Text.Json
         public double X { get; set; }
 
@@ -75,8 +77,10 @@ namespace LadybugDisplaySchema
         /// Number for Y coordinate.
         /// </summary>
         [Summary(@"Number for Y coordinate.")]
-        [Required]
-        [DataMember(Name = "y", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "y", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("y", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("y")] // For System.Text.Json
         public double Y { get; set; }
 
@@ -84,8 +88,10 @@ namespace LadybugDisplaySchema
         /// Number for Z coordinate.
         /// </summary>
         [Summary(@"Number for Z coordinate.")]
-        [Required]
-        [DataMember(Name = "z", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "z", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("z", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("z")] // For System.Text.Json
         public double Z { get; set; }
 

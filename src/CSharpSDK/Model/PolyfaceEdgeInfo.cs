@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"Optional edge information for Polyface.")]
     [System.Serializable]
-    [DataContract(Name = "PolyfaceEdgeInfo")]
+    [DataContract(Name = "PolyfaceEdgeInfo")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class PolyfaceEdgeInfo : OpenAPIGenBaseModel, System.IEquatable<PolyfaceEdgeInfo>
     {
         /// <summary>
@@ -64,8 +64,10 @@ namespace LadybugDisplaySchema
         /// An array objects that each contain two integers. These integers correspond to indices within the vertices list and each tuple represents a line segment for an edge of the polyface.
         /// </summary>
         [Summary(@"An array objects that each contain two integers. These integers correspond to indices within the vertices list and each tuple represents a line segment for an edge of the polyface.")]
-        [Required]
-        [DataMember(Name = "edge_indices", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "edge_indices", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("edge_indices", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("edge_indices")] // For System.Text.Json
         public List<List<int>> EdgeIndices { get; set; }
 
@@ -73,8 +75,10 @@ namespace LadybugDisplaySchema
         /// An array of integers for each edge that parallels the edge_indices list. An integer of 0 denotes a naked edge, an integer of 1 denotes an internal edge. Anything higher is a non-manifold edge.
         /// </summary>
         [Summary(@"An array of integers for each edge that parallels the edge_indices list. An integer of 0 denotes a naked edge, an integer of 1 denotes an internal edge. Anything higher is a non-manifold edge.")]
-        [Required]
-        [DataMember(Name = "edge_types", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "edge_types", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("edge_types", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("edge_types")] // For System.Text.Json
         public List<int> EdgeTypes { get; set; }
 

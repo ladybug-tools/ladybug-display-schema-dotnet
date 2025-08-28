@@ -24,7 +24,7 @@ namespace LadybugDisplaySchema
     /// </summary>
     [Summary(@"Generic data type representation.")]
     [System.Serializable]
-    [DataContract(Name = "GenericDataType")]
+    [DataContract(Name = "GenericDataType")] // Enables DataMember rules. For internal Serialization XML/JSON
     public partial class GenericDataType : OpenAPIGenBaseModel, System.IEquatable<GenericDataType>
     {
         /// <summary>
@@ -78,8 +78,10 @@ namespace LadybugDisplaySchema
         /// Text to indicate how the data type displays. This can be more specific than the data_type.
         /// </summary>
         [Summary(@"Text to indicate how the data type displays. This can be more specific than the data_type.")]
-        [Required]
-        [DataMember(Name = "name", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "name", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("name", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("name")] // For System.Text.Json
         public string Name { get; set; }
 
@@ -87,8 +89,10 @@ namespace LadybugDisplaySchema
         /// Text string for the base unit of the data type, which should be standard SI units where possible.
         /// </summary>
         [Summary(@"Text string for the base unit of the data type, which should be standard SI units where possible.")]
-        [Required]
-        [DataMember(Name = "base_unit", IsRequired = true)] // For Newtonsoft.Json
+        [Required] // For validation after deserialization
+        // [System.Text.Json.Serialization.JsonRequired] // For System.Text.Json 
+        [DataMember(Name = "base_unit", IsRequired = true)] // For internal Serialization XML/JSON
+        [JsonProperty("base_unit", Required = Required.Always)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("base_unit")] // For System.Text.Json
         public string BaseUnit { get; set; }
 
@@ -96,71 +100,71 @@ namespace LadybugDisplaySchema
         /// DataType
         /// </summary>
         [Summary(@"DataType")]
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
         [RegularExpression(@"^GenericType$")]
-        [DataMember(Name = "data_type")] // For Newtonsoft.Json
+        [DataMember(Name = "data_type")] // For internal Serialization XML/JSON
+        [JsonProperty("data_type", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("data_type")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public string DataType { get; set; } = "GenericType";
 
         /// <summary>
         /// Optional lower limit for the data type, values below which should be physically or mathematically impossible. (Default: -inf)
         /// </summary>
         [Summary(@"Optional lower limit for the data type, values below which should be physically or mathematically impossible. (Default: -inf)")]
-        [DataMember(Name = "min")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "min")] // For internal Serialization XML/JSON
+        [JsonProperty("min", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("min")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, double> Min { get; set; } = new Default();
 
         /// <summary>
         /// Optional upper limit for the data type, values above which should be physically or mathematically impossible. (Default: +inf)
         /// </summary>
         [Summary(@"Optional upper limit for the data type, values above which should be physically or mathematically impossible. (Default: +inf)")]
-        [DataMember(Name = "max")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "max")] // For internal Serialization XML/JSON
+        [JsonProperty("max", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("max")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public AnyOf<Default, double> Max { get; set; } = new Default();
 
         /// <summary>
         /// An optional abbreviation for the data type as text.
         /// </summary>
         [Summary(@"An optional abbreviation for the data type as text.")]
-        [DataMember(Name = "abbreviation")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "abbreviation")] // For internal Serialization XML/JSON
+        [JsonProperty("abbreviation", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("abbreviation")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public string Abbreviation { get; set; } = "";
 
         /// <summary>
         /// An optional dictionary describing categories that the numerical values of the units relate to. For example: {-1: ""Cold"", 0: ""Neutral"", +1: ""Hot""}; {0: ""False"", 1: ""True""}.
         /// </summary>
         [Summary(@"An optional dictionary describing categories that the numerical values of the units relate to. For example: {-1: ""Cold"", 0: ""Neutral"", +1: ""Hot""}; {0: ""False"", 1: ""True""}.")]
-        [DataMember(Name = "unit_descr")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "unit_descr")] // For internal Serialization XML/JSON
+        [JsonProperty("unit_descr", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("unit_descr")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public object UnitDescr { get; set; }
 
         /// <summary>
         /// Boolean to note whether the data type represents conditions at a single instant in time (True) as opposed to being an average or accumulation over time (False) when it is found in hourly lists of data.
         /// </summary>
         [Summary(@"Boolean to note whether the data type represents conditions at a single instant in time (True) as opposed to being an average or accumulation over time (False) when it is found in hourly lists of data.")]
-        [DataMember(Name = "point_in_time")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "point_in_time")] // For internal Serialization XML/JSON
+        [JsonProperty("point_in_time", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("point_in_time")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool PointInTime { get; set; } = true;
 
         /// <summary>
         /// Boolean to tell whether the data type can be cumulative when it is represented over time (True) or it can only be averaged over time to be meaningful (False). Note that cumulative cannot be True when point_in_time is also True.
         /// </summary>
         [Summary(@"Boolean to tell whether the data type can be cumulative when it is represented over time (True) or it can only be averaged over time to be meaningful (False). Note that cumulative cannot be True when point_in_time is also True.")]
-        [DataMember(Name = "cumulative")] // For Newtonsoft.Json
+        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json  
+        [DataMember(Name = "cumulative")] // For internal Serialization XML/JSON
+        [JsonProperty("cumulative", NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
         // [System.Text.Json.Serialization.JsonPropertyName("cumulative")] // For System.Text.Json
-        [LBT.Newtonsoft.Json.JsonProperty(NullValueHandling = NullValueHandling.Ignore)] // For Newtonsoft.Json
-        // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]  // For System.Text.Json
         public bool Cumulative { get; set; } = false;
 
 

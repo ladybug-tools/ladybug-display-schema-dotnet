@@ -19,7 +19,7 @@ namespace LadybugDisplaySchema
                 {
                     _setting = new JsonSerializerSettings
                     {
-                        NullValueHandling = NullValueHandling.Ignore,
+                        // NullValueHandling = NullValueHandling.Ignore, // Handled per-property
                         FloatFormatHandling = FloatFormatHandling.Symbol,
                         //DefaultValueHandling = DefaultValueHandling.,
                         Converters = new List<JsonConverter>() { new AnyOfJsonConverter() },
